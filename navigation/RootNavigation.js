@@ -15,11 +15,20 @@ import {
   FontAwesome,
 } from '@exponent/vector-icons';
 
+import Router from '../navigation/Router';
+
 import Alerts from '../constants/Alerts';
 import Colors from '../constants/Colors';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 
 export default class RootNavigation extends React.Component {
+  componentWillMount() {
+    const rootNavigator = this.props.navigation.getNavigator('root');  
+    if(!this.props.route.params.authed) {
+      rootNavigator.immediatelyResetStack([Router.getRoute('auth')], 0);
+    }
+  }
+
   componentDidMount() {
     this._notificationSubscription = this._registerForPushNotifications();
   }
@@ -34,15 +43,27 @@ export default class RootNavigation extends React.Component {
         tabBarHeight={56}
         initialTab="home">
         <TabNavigationItem
+          id="search"
+          renderIcon={isSelected => this._renderIcon('search', isSelected)}>
+          <StackNavigation initialRoute="search" />
+        </TabNavigationItem>
+
+        <TabNavigationItem
           id="home"
           renderIcon={isSelected => this._renderIcon('home', isSelected)}>
           <StackNavigation initialRoute="home" />
         </TabNavigationItem>
 
         <TabNavigationItem
-          id="links"
-          renderIcon={isSelected => this._renderIcon('book', isSelected)}>
-          <StackNavigation initialRoute="links" />
+          id="profile"
+          renderIcon={isSelected => this._renderIcon('user', isSelected)}>
+          <StackNavigation initialRoute="profile" />
+        </TabNavigationItem>
+
+        <TabNavigationItem
+          id="upcoming"
+          renderIcon={isSelected => this._renderIcon('calendar', isSelected)}>
+          <StackNavigation initialRoute="upcoming" />
         </TabNavigationItem>
 
         <TabNavigationItem

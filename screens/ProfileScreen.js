@@ -3,14 +3,11 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import {
-  ExponentLinksView,
-} from '@exponent/samples';
 
-export default class LinksScreen extends React.Component {
+export default class ProfileScreen extends React.Component {
   static route = {
     navigationBar: {
-      title: 'Links',
+      title: 'Profile',
     },
   }
 
@@ -19,11 +16,7 @@ export default class LinksScreen extends React.Component {
       <ScrollView
         style={styles.container}
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
-
-        { /* Go ahead and delete ExponentLinksView and replace it with your
-           * content, we just wanted to provide you with some helpful links */ }
-        <ExponentLinksView />
-
+        
       </ScrollView>
     );
   }

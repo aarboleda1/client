@@ -10,6 +10,8 @@ import {
   View,
 } from 'react-native';
 
+import Router from '../navigation/Router';
+
 import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
