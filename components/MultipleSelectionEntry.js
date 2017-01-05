@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   checkMark: {
     position: 'absolute',
     right: 2,
-    bottom: 2,
+    bottom: 1,
+    backgroundColor: 'rgba(0,0,0,0)',
   }
 });
