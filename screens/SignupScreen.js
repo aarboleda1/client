@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Button,
   Alert,
+  TextInput,
 } from 'react-native';
 
 import Router from '../navigation/Router';
@@ -20,6 +21,22 @@ export default class SignupScreen extends React.Component {
       <ScrollView
         style={styles.container}
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
+        <TextInput
+          style={styles.formInput}
+          underlineColorAndroid="rgba(0,0,0,0)"
+          maxLength={64}
+          autoCapitalize="none"
+          placeholder="E-Mail"
+          keyboardType="email-address"
+        />
+        <TextInput
+            style={styles.formInput}
+            underlineColorAndroid="rgba(0,0,0,0)"
+            maxLength={32}
+            autoCapitalize="none"
+            placeholder="Password"
+            secureTextEntry={true}
+          />
         <Button
           onPress={this._fakeSignup.bind(this)}
           title="Fake Signup!"
@@ -49,4 +66,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 15,
   },
+  formInput: {
+    flex: 1,
+    height: 30,
+  }
 });
