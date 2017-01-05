@@ -99,6 +99,7 @@ export default class ChefPageViewScreen extends React.Component {
         right: 2,
         bottom: 2,
         alignItems: 'flex-end',
+        backgroundColor: 'rgba(0,0,0,0)',
       },
       quantitySelection: {
         flexDirection: 'row',
