@@ -7,10 +7,10 @@ import {
   ExponentLinksView,
 } from '@exponent/samples';
 
-export default class LinksScreen extends React.Component {
+export default class UpcomingScreen extends React.Component {
   static route = {
     navigationBar: {
-      title: 'Links',
+      title: 'Upcoming',
     },
   }
 

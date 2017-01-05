@@ -2,15 +2,13 @@ import React from 'react';
 import {
   ScrollView,
   StyleSheet,
+  Text,
 } from 'react-native';
-import {
-  ExponentConfigView,
-} from '@exponent/samples';
 
-export default class SettingsScreen extends React.Component {
+export default class ProfileScreen extends React.Component {
   static route = {
     navigationBar: {
-      title: 'Settings',
+      title: 'Profile',
     },
   }
 
@@ -19,18 +17,16 @@ export default class SettingsScreen extends React.Component {
       <ScrollView
         style={styles.container}
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
-
-        { /* Go ahead and delete ExponentConfigView and replace it with your
-           * content, we just wanted to give you a quick view of your config */ }
-        <ExponentConfigView />
-
+        <Text>Profile</Text>
       </ScrollView>
     );
   }
+
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 15,
   },
 });

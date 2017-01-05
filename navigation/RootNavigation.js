@@ -15,11 +15,19 @@ import {
   FontAwesome,
 } from '@exponent/vector-icons';
 
+import Router from '../navigation/Router';
+
 import Alerts from '../constants/Alerts';
 import Colors from '../constants/Colors';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 
 export default class RootNavigation extends React.Component {
+  componentWillMount() {
+    if (!this.props.route.params.authed) {
+      this.props.navigator.replace('auth');
+    }
+  }
+
   componentDidMount() {
     this._notificationSubscription = this._registerForPushNotifications();
   }
@@ -32,7 +40,14 @@ export default class RootNavigation extends React.Component {
     return (
       <TabNavigation
         tabBarHeight={56}
-        initialTab="home">
+        initialTab="home"
+        navigatorUID="main">
+        <TabNavigationItem
+          id="search"
+          renderIcon={isSelected => this._renderIcon('search', isSelected)}>
+          <StackNavigation initialRoute="search" navigatorUID="search"/>
+        </TabNavigationItem>
+
         <TabNavigationItem
           id="home"
           renderIcon={isSelected => this._renderIcon('home', isSelected)}>
@@ -40,9 +55,15 @@ export default class RootNavigation extends React.Component {
         </TabNavigationItem>
 
         <TabNavigationItem
-          id="links"
-          renderIcon={isSelected => this._renderIcon('book', isSelected)}>
-          <StackNavigation initialRoute="links" />
+          id="profile"
+          renderIcon={isSelected => this._renderIcon('user', isSelected)}>
+          <StackNavigation initialRoute="profile" />
+        </TabNavigationItem>
+
+        <TabNavigationItem
+          id="upcoming"
+          renderIcon={isSelected => this._renderIcon('calendar', isSelected)}>
+          <StackNavigation initialRoute="upcoming" />
         </TabNavigationItem>
 
         <TabNavigationItem
@@ -69,7 +90,7 @@ export default class RootNavigation extends React.Component {
     // You can comment the following line out if you want to stop receiving
     // a notification every time you open the app. Check out the source
     // for this function in api/registerForPushNotificationsAsync.js
-    registerForPushNotificationsAsync();
+    // registerForPushNotificationsAsync();
 
     // Watch for incoming notifications
     this._notificationSubscription = Notifications.addListener(this._handleNotification);
