@@ -30,16 +30,15 @@ export default class LoginScreen extends React.Component {
 
   _fakeLogin() {
     const rootNavigator = this.props.navigation.getNavigator('root');
-
     function finishAuth() {
-      rootNavigator.immediatelyResetStack([Router.getRoute('rootNavigation', {authed: true})], 0);
+      rootNavigator.immediatelyResetStack([Router.getRoute('rootNavigation', {authed: true})]);
     }
 
     Alert.alert(
       'You pretended to Log In!',
       'Real user auth will be implemented soon!',
       [
-        {text: 'ok...', onPress: () => {finishAuth()}},
+        {text: 'Ok...', onPress: () => {finishAuth()}},
       ]
     );
   }

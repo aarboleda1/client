@@ -3,31 +3,38 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  Button
+  Button,
+  View,
+  Dimensions,
 } from 'react-native';
+
+const {height, width} = Dimensions.get('window');
 
 export default class AuthScreen extends React.Component {
   static route = {
     navigationBar: {
+      visible: false,
       title: 'Auth',
     },
   }
 
   render() {
     return (
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={this.props.route.getContentContainerStyle()}>
+      <View style={styles.container}>
         <Text style={styles.title}>Black Ocean</Text>
-        <Button
-          onPress={this._goToLogin.bind(this)}
-          title="Login"
-          />
-        <Button
-          onPress={this._goToSignup.bind(this)}
-          title="Signup"
-        />
-      </ScrollView>
+        <View style={styles.buttonJustifier}>
+          <View style={styles.buttonSpacer}>
+            <Button
+              onPress={this._goToLogin.bind(this)}
+              title="Login"
+              />
+            <Button
+              onPress={this._goToSignup.bind(this)}
+              title="Signup"
+            />
+          </View>
+        </View>
+      </View>
     );
   }
 
@@ -43,10 +50,20 @@ export default class AuthScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
+    paddingBottom: 48,
+    paddingTop: 48,
+    alignItems: 'center'
   },
   title: {
-    textAlign: 'center',
-    fontSize: 32
+    fontSize: 32,
+  },
+  buttonJustifier: {
+    flex: 0.8,
+    justifyContent: 'flex-end',
+  },
+  buttonSpacer: {
+    height: height * 0.2,
+    width: width * 0.60,
+    justifyContent: 'space-around',
   }
 });

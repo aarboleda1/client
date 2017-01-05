@@ -14,6 +14,11 @@ import UpcomingScreen from '../screens/UpcomingScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
+/* Other Screens */
+import ChooseLocationScreen from '../screens/ChooseLocationScreen';
+import ChefPageViewScreen from '../screens/ChefPageViewScreen';
+import ConfirmEventScreen from '../screens/ConfirmEventScreen';
+import SearchResultsScreen from '../screens/SearchResultsScreen';
 import RootNavigation from './RootNavigation';
 
 export default createRouter(() => ({
@@ -21,9 +26,13 @@ export default createRouter(() => ({
   login: () => LoginScreen,
   signup: () => SignupScreen,
   search: () => SearchScreen,
+  searchResults: () => SearchResultsScreen,
   home: () => HomeScreen,
   upcoming: () => UpcomingScreen,
   profile: () => ProfileScreen,
   settings: () => SettingsScreen,
+  chooseLocation: () => ChooseLocationScreen,
+  chefPageView: () => ChefPageViewScreen,
+  confirmEvent: () => ConfirmEventScreen,
   rootNavigation: () => RootNavigation,
 }));

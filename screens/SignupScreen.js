@@ -32,14 +32,14 @@ export default class SignupScreen extends React.Component {
     const rootNavigator = this.props.navigation.getNavigator('root');
 
     function finishAuth() {
-      rootNavigator.immediatelyResetStack([Router.getRoute('rootNavigation', {authed: true})], 0);
+      rootNavigator.immediatelyResetStack([Router.getRoute('rootNavigation', {authed: true})]);
     }
 
     Alert.alert(
       'You pretended to Sign Up!',
       'Real user auth will be implemented soon!',
       [
-        {text: 'ok...', onPress: () => finishAuth()},
+        {text: 'Ok...', onPress: () => finishAuth()},
       ]);
   }
 }

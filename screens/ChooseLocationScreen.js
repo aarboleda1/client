@@ -2,22 +2,22 @@ import React from 'react';
 import {
   ScrollView,
   StyleSheet,
-  Text,
+  Text
 } from 'react-native';
 
-export default class ProfileScreen extends React.Component {
+export default class ChooseLocationScreen extends React.Component {
   static route = {
     navigationBar: {
-      title: 'Profile',
+      title: 'Choose Location',
     },
   }
 
   render() {
+        // style={styles.container} this is causing the top bar to not render consistently
     return (
       <ScrollView
-        style={styles.container}
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
-        <Text>Profile</Text>
+        <Text>Map goes here</Text>
       </ScrollView>
     );
   }
@@ -26,7 +26,5 @@ export default class ProfileScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 15,
   },
 });

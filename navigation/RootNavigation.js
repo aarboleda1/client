@@ -23,9 +23,8 @@ import registerForPushNotificationsAsync from '../api/registerForPushNotificatio
 
 export default class RootNavigation extends React.Component {
   componentWillMount() {
-    const rootNavigator = this.props.navigation.getNavigator('root');  
-    if(!this.props.route.params.authed) {
-      rootNavigator.immediatelyResetStack([Router.getRoute('auth')], 0);
+    if (!this.props.route.params.authed) {
+      this.props.navigator.replace('auth');
     }
   }
 
@@ -41,11 +40,12 @@ export default class RootNavigation extends React.Component {
     return (
       <TabNavigation
         tabBarHeight={56}
-        initialTab="home">
+        initialTab="home"
+        navigatorUID="main">
         <TabNavigationItem
           id="search"
           renderIcon={isSelected => this._renderIcon('search', isSelected)}>
-          <StackNavigation initialRoute="search" />
+          <StackNavigation initialRoute="search" navigatorUID="search"/>
         </TabNavigationItem>
 
         <TabNavigationItem
@@ -90,7 +90,7 @@ export default class RootNavigation extends React.Component {
     // You can comment the following line out if you want to stop receiving
     // a notification every time you open the app. Check out the source
     // for this function in api/registerForPushNotificationsAsync.js
-    registerForPushNotificationsAsync();
+    // registerForPushNotificationsAsync();
 
     // Watch for incoming notifications
     this._notificationSubscription = Notifications.addListener(this._handleNotification);

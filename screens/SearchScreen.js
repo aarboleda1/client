@@ -3,17 +3,26 @@ import {
   ScrollView,
   StyleSheet,
   TextInput,
-  View
+  View,
+  Picker,
+  Dimensions,
+  Button,
+  Text,
 } from 'react-native';
 import {
   FontAwesome,
 } from '@exponent/vector-icons';
 
 import Colors from '../constants/Colors';
+import MultipleSelection from '../components/MultipleSelection';
 
 export default class SearchScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      cuisine: 'italian',
+      location: null
+    }
   }
 
   static route = {
@@ -22,45 +31,113 @@ export default class SearchScreen extends React.Component {
     },
   }
 
+  _chooseLocation() {
+    this.props.navigator.push('chooseLocation');
+  }
+
+  _search() {
+    this.props.navigator.push('searchResults', {queryString: null}); //add query string when implementing search
+  }
+
   render() {
+    const {height, width} = Dimensions.get('window'); //This must be in the render function to adjust to device rotation
+
+    const styles = StyleSheet.create({
+      container: {
+        flex: 1,
+        paddingTop: 15,
+      },
+      restrictions: {
+        width: width * 0.75,
+        marginLeft: width * 0.25 / 2,
+        marginBottom: 12,
+      },
+      pricing: {
+        width: width * 0.75,
+        marginLeft: width * 0.25 / 2,
+        marginBottom: 12,
+      },
+      cuisine: {
+        marginBottom: 12,
+      },
+      location: {
+        fontSize: 16,
+        textAlign: 'center',
+      }
+    });
+
     return (
       <ScrollView
         style={styles.container}
-        contentContainerStyle={this.props.route.getContentContainerStyle()}>
-        <View style={styles.searchBarContainer}>
-          <FontAwesome
-            style={styles.searchBarIcon}
-            name="search"
-            size={16}
-            color={Colors.tabIconDefault}
-          />
-          <TextInput style={styles.searchBarInput} underlineColorAndroid="rgba(0,0,0,0)" />
-        </View>
+        contentContainerStyle={[this.props.route.getContentContainerStyle(), ]}>
+
+        <Picker
+        selectedValue={this.state.cuisine}
+        onValueChange={(type) => this.setState({cuisine: type})}
+        style={styles.cuisine}>
+           <Picker.Item label="Italian" value="italian" />
+           <Picker.Item label="Korean" value="korean" />
+           <Picker.Item label="Pastry" value="pastry" />
+        </Picker>
+
+        <MultipleSelection style={styles.restrictions} options={restrictions}/>
+        <MultipleSelection style={styles.pricing} options={pricing}/>
+
+        <Button
+          onPress={this._chooseLocation.bind(this)}
+          title="Set Location"
+        />
+
+        {this.state.location ?
+          <Text style={styles.location}>{this.state.location}</Text> : null}
+
+        <Button
+          onPress={this._search.bind(this)}
+          title="Search"
+        >
+          <FontAwesome name='search' size={16} color='#FFF' comment='This does not render'/>
+        </Button>
+
       </ScrollView>
     );
   }
-
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
+const pricing = [
+  {
+    name: '$',
+    value: 'low'
   },
-  searchBarContainer: {
-    flex: 1,
-    left: -8,
-    borderColor: 'black',
-    flexDirection: 'row',
+  {
+    name: '$$',
+    value: 'medium'
   },
-  searchBarInput: {
-    flex: 1,
-    height: 30,
-    borderWidth: 1,
-    paddingLeft: 24,
+  {
+    name: '$$$',
+    value: 'high'
   },
-  searchBarIcon: {
-    left: 20,
-    top: 6,
-  }
-});
+];
+
+const restrictions = [
+  {
+    name: 'Nut',
+    value: 'nut',
+  },
+  {
+    name: 'Dairy',
+    value: 'dairy',
+  },
+  {
+    name: 'Kosher',
+    value: 'kosher',
+  },
+  {
+    name: 'Vegetarian',
+    value: 'vegetarian',
+  },
+  {
+    name: 'Vegan',
+    value: 'vegan',
+  },
+];
+
