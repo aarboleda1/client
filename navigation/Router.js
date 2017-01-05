@@ -19,6 +19,7 @@ import ChooseLocationScreen from '../screens/ChooseLocationScreen';
 import ChefPageViewScreen from '../screens/ChefPageViewScreen';
 import ConfirmEventScreen from '../screens/ConfirmEventScreen';
 import SearchResultsScreen from '../screens/SearchResultsScreen';
+import MapScreen from '../screens/MapScreen';
 import RootNavigation from './RootNavigation';
 
 export default createRouter(() => ({
@@ -27,6 +28,7 @@ export default createRouter(() => ({
   signup: () => SignupScreen,
   search: () => SearchScreen,
   searchResults: () => SearchResultsScreen,
+  map: () => MapScreen,
   home: () => HomeScreen,
   upcoming: () => UpcomingScreen,
   profile: () => ProfileScreen,
