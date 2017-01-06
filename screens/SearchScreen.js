@@ -13,6 +13,8 @@ import {
   FontAwesome,
 } from '@exponent/vector-icons';
 
+import Router from '../navigation/Router';
+
 import Colors from '../constants/Colors';
 import MultipleSelection from '../components/MultipleSelection';
 
@@ -22,6 +24,17 @@ export default class SearchScreen extends React.Component {
     this.state = {
       cuisine: 'italian',
       location: null
+    }
+  }
+
+  componentWillMount() {
+
+    //FIXME: Replace this after MobX/Redux is implemented
+    if (!this.props.route.params.viewed) {
+      this.props.navigator.push('searchResults');
+      this.props.navigator.updateCurrentRouteParams({
+        viewed: true,
+      });
     }
   }
 
@@ -36,7 +49,13 @@ export default class SearchScreen extends React.Component {
   }
 
   _search() {
-    this.props.navigator.push('searchResults', {queryString: null}); //add query string when implementing search
+    /*
+    REDUX: GET request for results
+    display loading thing while waiting
+    store data in redux
+    reroute to search results
+    */
+    this.props.navigator.push('searchResults'); //add query string when implementing search
   }
 
   render() {

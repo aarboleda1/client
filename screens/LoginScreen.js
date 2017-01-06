@@ -3,7 +3,9 @@ import {
   ScrollView,
   StyleSheet,
   Button,
+  Text,
   Alert,
+  TextInput,
 } from 'react-native';
 
 import Router from '../navigation/Router';
@@ -15,11 +17,52 @@ export default class LoginScreen extends React.Component {
     },
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      email: '',
+      password: '',
+      verifyPassword: '',
+    }
+  }
+
   render() {
     return (
       <ScrollView
         style={styles.container}
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
+          <TextInput
+            style={styles.formInput}
+            underlineColorAndroid="rgba(0,0,0,0)"
+            maxLength={64}
+            autoCapitalize="words"
+            placeholder="Full Name"
+          />
+          <TextInput
+            style={styles.formInput}
+            underlineColorAndroid="rgba(0,0,0,0)"
+            maxLength={64}
+            autoCapitalize="none"
+            placeholder="E-Mail"
+            keyboardType="email-address"
+          />
+          <TextInput
+            style={styles.formInput}
+            underlineColorAndroid="rgba(0,0,0,0)"
+            maxLength={32}
+            autoCapitalize="none"
+            placeholder="Password"
+            secureTextEntry={true}
+          />
+          <TextInput
+            style={styles.formInput}
+            underlineColorAndroid="rgba(0,0,0,0)"
+            maxLength={32}
+            autoCapitalize="none"
+            placeholder="Verify Password"
+            secureTextEntry={true}
+          />
         <Button
           onPress={this._fakeLogin.bind(this)}
           title="Fake Login!"
@@ -49,4 +92,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 15,
   },
+  formInput: {
+    flex: 1,
+    height: 30,
+  }
 });

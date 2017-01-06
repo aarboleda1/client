@@ -9,7 +9,6 @@ import SignupScreen from '../screens/SignupScreen';
 
 /* Tab Bar Screens */
 import SearchScreen from '../screens/SearchScreen';
-import HomeScreen from '../screens/HomeScreen';
 import UpcomingScreen from '../screens/UpcomingScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -29,7 +28,6 @@ export default createRouter(() => ({
   search: () => SearchScreen,
   searchResults: () => SearchResultsScreen,
   map: () => MapScreen,
-  home: () => HomeScreen,
   upcoming: () => UpcomingScreen,
   profile: () => ProfileScreen,
   settings: () => SettingsScreen,

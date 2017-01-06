@@ -18,6 +18,12 @@ export default class ChefListing extends Component {
   }
 
   viewChef() {
+    /*
+    REDUX: GET chef profile 
+    show loading thing
+    save chef profile to redux
+    go to chef profile
+    */
     let details = {
       img: this.props.img,
       name: this.props.name,
