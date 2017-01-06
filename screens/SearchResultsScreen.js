@@ -101,21 +101,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 15,
   },
-  chefEntry: {
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  chefImage: {
-    height: 48,
-    width: 48,
-    marginRight: 6,
-    borderRadius: 24,
-  },
   scrollViewContainer: {
-    alignItems: 'center',
     paddingBottom: 30,
-  },
-  rating: {
-    flexDirection: 'row',
   },
 });
