@@ -21,7 +21,6 @@ export default class MultipleSelectionEntry extends React.Component {
   }
 
   _toggleSelection() {
-    console.log();
     this.setState({
       selected: !this.state.selected
     });
