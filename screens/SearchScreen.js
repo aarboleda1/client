@@ -49,7 +49,13 @@ export default class SearchScreen extends React.Component {
   }
 
   _search() {
-    this.props.navigator.push('searchResults', {queryString: null}); //add query string when implementing search
+    /*
+    REDUX: GET request for results
+    display loading thing while waiting
+    store data in redux
+    reroute to search results
+    */
+    this.props.navigator.push('searchResults'); //add query string when implementing search
   }
 
   render() {

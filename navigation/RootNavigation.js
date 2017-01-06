@@ -23,6 +23,10 @@ import registerForPushNotificationsAsync from '../api/registerForPushNotificatio
 
 export default class RootNavigation extends React.Component {
   componentWillMount() {
+    /*
+      TODO: Save auth token using AsyncStorage
+      https://facebook.github.io/react-native/docs/asyncstorage.html
+    */
     if (!this.props.route.params.authed) {
       this.props.navigator.replace('auth');
     }
