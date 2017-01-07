@@ -35,13 +35,11 @@ export default class UpcomingScreen extends React.Component {
         <EventListing
           name="John Doe"
           chef="Guy Fierri"
-          cost="Too Much!"
           dateTime="12/31/2016 4:15PM"
         />
         <EventListing
           name="Big Bird"
           chef="Papa John"
-          cost="5"
           dateTime="1/7/2016 1:00AM"
           isChef={true}
         />

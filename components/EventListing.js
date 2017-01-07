@@ -23,7 +23,12 @@ export default class EventListing extends Component {
   }
 
   viewEvent() {
-    let details = {};
+    let details = {
+      chef: this.props.chef,
+      name: this.props.name,
+      dateTime: this.props.dateTime,
+      isChef: this.props.isChef,
+    };
     this.props.navigator.push(Router.getRoute('eventDetailsView', { details }));
   }
 
