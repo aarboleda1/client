@@ -59,12 +59,22 @@ export default class ChefPageViewScreen extends React.Component {
     this.props.navigator.push(Router.getRoute('confirmEvent', eventDetails));
   }
 
+  changeQuantity(change) {
+    let newVal;
+    if (change < 0) {
+      newVal = Math.max(this.state.quantity + change, 0);
+    } else {
+      newVal = Math.min(this.state.quantity + change, 100);
+    }
+    this.setState({quantity: newVal});
+  }
+
   render() {
     const details = this.props.route.params.details;
     const {height, width} = Dimensions.get('window'); //This must be in the render function to adjust to device rotation
 
     const styles = StyleSheet.create({
-      menu: {
+      flex: {
         flex: 1,
       },
       container: {
@@ -104,10 +114,19 @@ export default class ChefPageViewScreen extends React.Component {
       quantitySelection: {
         flexDirection: 'row',
       },
+      row: {
+        flexDirection: 'row',
+      },
+      textCenter: {
+        textAlign: 'center',
+      },
+      changeQuantityButton: {
+        flex: 0.5,
+      },
     });
 
     return (
-      <View style={styles.menu}>
+      <View style={styles.flex}>
         <Text>Menu</Text>
         <ScrollView
           style={styles.container}
@@ -117,15 +136,22 @@ export default class ChefPageViewScreen extends React.Component {
             {[1,2,3,4,5,6,7,8,9,10].map(renderDish.bind(this))}
           </View>
           {/* TODO: Quantity will be moved to individual food modals */}
-          <View style={styles.quantitySelection}>
-            <Text>Quantity: </Text>
-            <TextInput
-              keyboardType='phone-pad'
-              onChangeText={(text) => this.formatNumber(text)}
-              value={`${this.state.quantity}`}
-              underlineColorAndroid="rgba(0,0,0,0)"
-              maxLength={3}
-            />
+          <View style={styles.quantity}>
+            <Text style={styles.textCenter}>Quantity: {this.state.quantity}</Text>
+            <View style={styles.row}>
+              <View style={styles.changeQuantityButton}>
+                <Button
+                  title="-"
+                  onPress={this.changeQuantity.bind(this, -1)}
+                />
+              </View>
+              <View style={styles.changeQuantityButton}>
+                <Button
+                  title="+"
+                  onPress={this.changeQuantity.bind(this, 1)}
+                />
+              </View>
+            </View>
           </View>
           <Button
             title="Confirm Event"
