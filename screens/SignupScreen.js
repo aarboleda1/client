@@ -36,7 +36,7 @@ export default class SignupScreen extends React.Component {
   render() {
     return (
       <ScrollView
-        style={styles.container}
+        style={[styles.container, styles.textPadding]}
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
         <TextInput
           onChangeText={this.update.bind(this, 'name')}
@@ -134,5 +134,11 @@ const styles = StyleSheet.create({
   formInput: {
     flex: 1,
     height: 30,
-  }
+  },
+  textPadding: {
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 8,
+    paddingBottom: 8,
+  },
 });
