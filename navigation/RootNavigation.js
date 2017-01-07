@@ -2,6 +2,8 @@ import React from 'react';
 import {
   StyleSheet,
   View,
+  AsyncStorage,
+  ActivityIndicator,
 } from 'react-native';
 import {
   Notifications,
@@ -22,14 +24,25 @@ import Colors from '../constants/Colors';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 
 export default class RootNavigation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      authed: false,
+    };
+  }
+  
   componentWillMount() {
-    /*
-      TODO: Save auth token using AsyncStorage
-      https://facebook.github.io/react-native/docs/asyncstorage.html
-    */
-    if (!this.props.route.params.authed) {
-      this.props.navigator.replace('auth');
-    }
+    let nav = this.props.navigator;
+    let context = this;
+    AsyncStorage.getItem('AuthToken').then(function(AuthToken) {
+      if (AuthToken === null) {
+        nav.replace('auth');
+      } else {
+        context.setState({authed: true});
+      }
+    }).catch(function(err) {
+      alert(err);
+    });
   }
 
   componentDidMount() {
@@ -41,7 +54,11 @@ export default class RootNavigation extends React.Component {
   }
 
   render() {
-    return (
+    return !this.state.authed ? (
+        <View style={styles.center}>
+          <ActivityIndicator size="large"/>
+        </View>
+      ) : (
       <TabNavigation
         tabBarHeight={56}
         initialTab="search"
@@ -110,4 +127,9 @@ const styles = StyleSheet.create({
   selectedTab: {
     color: Colors.tabIconSelected,
   },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
