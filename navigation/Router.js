@@ -17,6 +17,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import ChooseLocationScreen from '../screens/ChooseLocationScreen';
 import ChefPageViewScreen from '../screens/ChefPageViewScreen';
 import ConfirmEventScreen from '../screens/ConfirmEventScreen';
+import EventDetailsScreen from '../screens/EventDetailsScreen';
 import SearchResultsScreen from '../screens/SearchResultsScreen';
 import MapScreen from '../screens/MapScreen';
 import RootNavigation from './RootNavigation';
@@ -34,5 +35,6 @@ export default createRouter(() => ({
   chooseLocation: () => ChooseLocationScreen,
   chefPageView: () => ChefPageViewScreen,
   confirmEvent: () => ConfirmEventScreen,
+  eventDetailsView: () => EventDetailsScreen,
   rootNavigation: () => RootNavigation,
 }));
