@@ -78,7 +78,15 @@ export default class LoginScreen extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(loginData)
-    }).then(resp => resp.json())
+    }).then(function(resp) {
+      if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+        return resp.json();
+      } else {
+        return resp.text().then(function(message) {
+          throw new Error(message);
+        });
+      }
+    })
     .then(function(data) {
       return AsyncStorage.setItem('AuthToken', data.AuthToken);
     }).then(function() {
@@ -90,7 +98,7 @@ export default class LoginScreen extends React.Component {
         ]
       );
     }).catch(function(err) {
-      alert(err);
+      Alert.alert(err.message);
     });
 
     function finishAuth() {
