@@ -29,6 +29,7 @@ export default class ChefListing extends Component {
       name: this.props.name,
       desc: this.props.desc,
       rating: this.props.rating,
+      id: this.props.id,
     }
     this.props.navigator.push('chefPageView', { details });
   }

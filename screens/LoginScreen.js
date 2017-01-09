@@ -88,7 +88,11 @@ export default class LoginScreen extends React.Component {
       }
     })
     .then(function(data) {
-      return AsyncStorage.setItem('AuthToken', data.AuthToken);
+      return AsyncStorage.multiSet([
+        ['AuthToken', data.AuthToken],
+        ['currentUser', data.id.toString()],
+        ['currentUserMD5', data.md5],
+        ]);
     }).then(function() {
       Alert.alert(
         'Logged In Successfully',

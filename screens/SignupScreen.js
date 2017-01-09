@@ -10,6 +10,8 @@ import {
 
 import Router from '../navigation/Router';
 
+import { serverURI } from '../config';
+
 export default class SignupScreen extends React.Component {
   static route = {
     navigationBar: {
@@ -95,12 +97,12 @@ export default class SignupScreen extends React.Component {
         );
     } else {
       let signupData = {
-        name: this.state.name,
-        email: this.state.email,
-        password: this.state.password,
+        name: this.state.name.trim(),
+        email: this.state.email.trim(),
+        password: this.state.password.trim(),
       };
 
-      fetch('http://localhost:3000/signup/', {
+      fetch(`${serverURI}/signup`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -117,7 +119,11 @@ export default class SignupScreen extends React.Component {
         }
       })
       .then(function (data) {
-        return AsyncStorage.setItem('AuthToken', data.AuthToken);
+        return AsyncStorage.multiSet([
+          ['AuthToken', data.AuthToken],
+          ['currentUser', data.id.toString()],
+          ['currentUserMD5', data.md5],
+        ]);
       }).then(function() {
         Alert.alert(
           'Registered successfully',

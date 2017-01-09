@@ -16,7 +16,7 @@ export default class Rating extends Component {
     let icons = [];
 
     for (let i = 0; i < 5; i++) {
-      if (i < this.props.stars) {
+      if (i < this.props.stars || 5) {
         icons.push('star');
       } else {
         icons.push('star-o');

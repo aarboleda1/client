@@ -5,11 +5,15 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage,
+  ActivityIndicator,
 } from 'react-native';
 import {
   FontAwesome,
 } from '@exponent/vector-icons';
+
+import { serverURI } from '../config';
 
 import Rating from '../components/Rating';
 import ChefListing from '../components/ChefListing';
@@ -21,9 +25,36 @@ export default class SearchResultsScreen extends React.Component {
     },
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      chefs: [],
+      loading: true,
+    };
+  }
+
   componentWillMount() {
-    // make request with this.props.route.params.queryString
+    let context = this;
+    AsyncStorage.getItem('currentUser').then(function(id) {
+      fetch(`${serverURI}/chefs`, {
+        headers: {
+          'User-Id': id,
+        }
+      }).then(function(resp) {
+        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+          return resp.json();
+        } else {
+          return resp.text().then(function(message) {
+            throw new Error(message);
+          });
+        }
+      }).then(function(chefs) {
+        context.setState({chefs});
+      }).catch(function(err) {
+        alert(err);
+      });
     // show loading icon until respon arrives
+    });
   }
 
   render() {
@@ -32,6 +63,16 @@ export default class SearchResultsScreen extends React.Component {
         style={styles.container}
         contentContainerStyle={[this.props.route.getContentContainerStyle(), styles.scrollViewContainer]}>
         <View>
+          {this.state.chefs.map((chef, index) => (
+            <ChefListing
+              key={index}
+              img={`https://www.gravatar.com/avatar/${chef.md5}?s=256&d=mm&r=g`}
+              name={chef.name}
+              desc={chef.bio}
+              rating={chef.avgRating}
+              id={chef.id}
+            />
+          ))}
           <ChefListing
             img="http://lorempixel.com/192/192/people/1"
             name="Luv2Cook"

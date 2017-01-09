@@ -19,6 +19,8 @@ import Router from '../navigation/Router';
 import Colors from '../constants/Colors';
 import Rating from '../components/Rating';
 
+import { serverURI } from '../config';
+
 export default class ChefPageViewScreen extends React.Component {
   static route = {
     navigationBar: {
@@ -31,8 +33,27 @@ export default class ChefPageViewScreen extends React.Component {
     this.state = {
       quantity: 1,
       selected: {},
+      dishes: [],
     }
     //TODO make request for more data with details.id
+  }
+
+  componentWillMount() {
+    let context = this;
+    fetch(`${serverURI}/dishes/chefs/${this.props.details.id}`)
+      .then(function(resp) {
+        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+          return resp.json();
+        } else {
+          return resp.text().then(function(message) {
+            throw new Error(message);
+          });
+        }
+      }).then(function(dishes){
+        context.setState(dishes);
+      }).catch(function(err) {
+        alert(err);
+      });
   }
 
   formatNumber(text) {
