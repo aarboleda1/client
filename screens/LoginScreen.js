@@ -35,7 +35,7 @@ export default class LoginScreen extends React.Component {
   render() {
     return (
       <ScrollView
-        style={styles.container}
+        style={[styles.container, styles.textPadding]}
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
         <TextInput
           onChangeText={this.update.bind(this, 'email')}
@@ -78,9 +78,21 @@ export default class LoginScreen extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(loginData)
-    }).then(resp => resp.json())
+    }).then(function(resp) {
+      if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+        return resp.json();
+      } else {
+        return resp.text().then(function(message) {
+          throw new Error(message);
+        });
+      }
+    })
     .then(function(data) {
-      return AsyncStorage.setItem('AuthToken', data.AuthToken);
+      return AsyncStorage.multiSet([
+        ['AuthToken', data.AuthToken],
+        ['currentUser', data.id.toString()],
+        ['currentUserMD5', data.md5],
+        ]);
     }).then(function() {
       Alert.alert(
         'Logged In Successfully',
@@ -90,7 +102,7 @@ export default class LoginScreen extends React.Component {
         ]
       );
     }).catch(function(err) {
-      alert(err);
+      Alert.alert(err.message);
     });
 
     function finishAuth() {
@@ -107,5 +119,11 @@ const styles = StyleSheet.create({
   formInput: {
     flex: 1,
     height: 30,
-  }
+  },
+  textPadding: {
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 8,
+    paddingBottom: 8,
+  },
 });

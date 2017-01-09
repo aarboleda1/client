@@ -10,6 +10,8 @@ import {
 
 import Router from '../navigation/Router';
 
+import { serverURI } from '../config';
+
 export default class SignupScreen extends React.Component {
   static route = {
     navigationBar: {
@@ -36,7 +38,7 @@ export default class SignupScreen extends React.Component {
   render() {
     return (
       <ScrollView
-        style={styles.container}
+        style={[styles.container, styles.textPadding]}
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
         <TextInput
           onChangeText={this.update.bind(this, 'name')}
@@ -95,28 +97,40 @@ export default class SignupScreen extends React.Component {
         );
     } else {
       let signupData = {
-        name: this.state.name,
-        email: this.state.email,
-        password: this.state.password,
+        name: this.state.name.trim(),
+        email: this.state.email.trim(),
+        password: this.state.password.trim(),
       };
 
-      fetch('http://localhost:3000/signup/', {
+      fetch(`${serverURI}/signup`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(signupData)
-      }).then(resp => resp.json())
+      }).then(function(resp) {
+        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+          return resp.json();
+        } else {
+          return resp.text().then(function(message) {
+            throw new Error(message);
+          });
+        }
+      })
       .then(function (data) {
-        return AsyncStorage.setItem('AuthToken', data.AuthToken);
+        return AsyncStorage.multiSet([
+          ['AuthToken', data.AuthToken],
+          ['currentUser', data.id.toString()],
+          ['currentUserMD5', data.md5],
+        ]);
       }).then(function() {
         Alert.alert(
           'Registered successfully',
           '',
           [{text: 'Nice!', onPress: () => {finishAuth()}}])
       }).catch(function(err) {
-        alert(err);
+        Alert.alert(err.message);
       });
 
       function finishAuth() {
@@ -134,5 +148,11 @@ const styles = StyleSheet.create({
   formInput: {
     flex: 1,
     height: 30,
-  }
+  },
+  textPadding: {
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 8,
+    paddingBottom: 8,
+  },
 });

@@ -10,6 +10,8 @@ import {
   ExponentConfigView,
 } from '@exponent/samples';
 
+import { serverURI } from '../config';
+
 import Router from '../navigation/Router';
 
 export default class SettingsScreen extends React.Component {
@@ -21,7 +23,7 @@ export default class SettingsScreen extends React.Component {
 
   logout() {
     const rootNavigator = this.props.navigation.getNavigator('root');
-    fetch('http://localhost:3000/logout/')
+    fetch(`${serverURI}/logout`)
       .then(function(resp) {
         Alert.alert(
           `You've logged out`,
