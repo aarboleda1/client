@@ -77,7 +77,7 @@ export default class SearchResultsScreen extends React.Component {
             img="http://lorempixel.com/192/192/people/1"
             name="Luv2Cook"
             desc="I am the best~!"
-            rating="4"
+            rating="4.5"
           />
           <ChefListing
             img="http://lorempixel.com/192/192/people/2"
@@ -89,7 +89,7 @@ export default class SearchResultsScreen extends React.Component {
             img="http://lorempixel.com/192/192/people/3"
             name="Group"
             desc="*We* are the best~!"
-            rating="3"
+            rating="3.5"
           />
           <ChefListing
             img="http://lorempixel.com/192/192/people/4"
@@ -107,13 +107,13 @@ export default class SearchResultsScreen extends React.Component {
             img="http://lorempixel.com/192/192/people/6"
             name="Llama"
             desc="It can't cook"
-            rating="2"
+            rating="2.5"
           />
           <ChefListing
             img="http://lorempixel.com/192/192/people/7"
             name="Guy Fierri"
             desc="*I* can't cook"
-            rating="1"
+            rating="1.5"
           />
           <ChefListing
             img="http://lorempixel.com/192/192/people/8"
@@ -131,7 +131,7 @@ export default class SearchResultsScreen extends React.Component {
             img="http://lorempixel.com/192/192/technics"
             name="Spam Account"
             desc="Go to spam.web.site for free stuffs!"
-            rating="0"
+            rating="0.5"
           />
         </View>
       </ScrollView>
