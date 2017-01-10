@@ -30,7 +30,7 @@ export default class ConfirmEventScreen extends React.Component {
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
         >
-        {this.props.route.params.dishes.map((number, index) => (
+        {this.props.route.params.dishes.map((number, index) => ( !!!!!!!!!!!!!!!!!!!!!!!!!!!!
             <Text key={index}>Dish #{number}</Text>
         ))}
         <Text>Quantity of Each: {this.props.route.params.quantity}</Text>

@@ -18,6 +18,17 @@ import {
 import Router from './navigation/Router';
 import cacheAssetsAsync from './utilities/cacheAssetsAsync';
 
+// ############# Redux addition #############
+
+import {Provider} from 'react-redux';
+import 'babel-polyfill'; 
+import configureStore from './store/configureStore';
+
+// Create instance of store, can take in parameter of initial state
+const store = configureStore();
+
+// ############# Redux addition #############
+
 class AppContainer extends React.Component {
   state = {
     appIsReady: false,
@@ -49,17 +60,20 @@ class AppContainer extends React.Component {
     }
   }
 
+
   render() {
     if (this.state.appIsReady) {
       return (
-        <View style={styles.container}>
-          <NavigationProvider router={Router}>
-            <StackNavigation id="root" initialRoute={Router.getRoute('rootNavigation')} />
-          </NavigationProvider>
+        <Provider store={store}>
+          <View style={styles.container}>
+            <NavigationProvider router={Router}>
+              <StackNavigation id="root" initialRoute={Router.getRoute('rootNavigation')} />
+            </NavigationProvider>
 
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
-        </View>
+            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
+          </View>
+        </Provider>
       );
     } else {
       return (
