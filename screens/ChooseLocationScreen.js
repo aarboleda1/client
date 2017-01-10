@@ -1,5 +1,9 @@
 import React from 'react';
-import {Button, View} from 'react-native';
+
+import {
+  Button,
+  View,
+} from 'react-native';
 import { Components } from 'exponent';
 import Router from '../navigation/Router';
 import config from '../config';
@@ -13,13 +17,6 @@ export default class ChooseLocationScreen extends React.Component {
     },
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      latlng: {},
-    };
-  }
-
   render() {
     return (
       <GooglePlacesAutocomplete
@@ -28,6 +25,7 @@ export default class ChooseLocationScreen extends React.Component {
         autoFocus={false}
         listViewDisplayed='auto'    // true/false/undefined
         fetchDetails={true}
+        textInput={{underlineColorAndroid: 'rgba(0,0,0,0)'}}
 
         onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
           // console.log(data);
@@ -69,7 +67,6 @@ export default class ChooseLocationScreen extends React.Component {
           rankby: 'distance',
           types: 'food',
         }}
-
 
         filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
 

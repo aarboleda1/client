@@ -6,6 +6,7 @@ import {
   Text,
   Alert,
   TextInput,
+  AsyncStorage,
 } from 'react-native';
 
 import Router from '../navigation/Router';
@@ -20,70 +21,93 @@ export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
       email: '',
       password: '',
-      verifyPassword: '',
     }
+  }
+
+  update(key, value) {
+    let updateState = {};
+    updateState[key] = value;
+    this.setState(updateState);
   }
 
   render() {
     return (
       <ScrollView
-        style={styles.container}
+        style={[styles.container, styles.textPadding]}
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
-          <TextInput
-            style={styles.formInput}
-            underlineColorAndroid="rgba(0,0,0,0)"
-            maxLength={64}
-            autoCapitalize="words"
-            placeholder="Full Name"
-          />
-          <TextInput
-            style={styles.formInput}
-            underlineColorAndroid="rgba(0,0,0,0)"
-            maxLength={64}
-            autoCapitalize="none"
-            placeholder="E-Mail"
-            keyboardType="email-address"
-          />
-          <TextInput
-            style={styles.formInput}
-            underlineColorAndroid="rgba(0,0,0,0)"
-            maxLength={32}
-            autoCapitalize="none"
-            placeholder="Password"
-            secureTextEntry={true}
-          />
-          <TextInput
-            style={styles.formInput}
-            underlineColorAndroid="rgba(0,0,0,0)"
-            maxLength={32}
-            autoCapitalize="none"
-            placeholder="Verify Password"
-            secureTextEntry={true}
-          />
+        <TextInput
+          onChangeText={this.update.bind(this, 'email')}
+          style={styles.formInput}
+          underlineColorAndroid="rgba(0,0,0,0)"
+          maxLength={64}
+          autoCapitalize="none"
+          placeholder="E-Mail"
+          keyboardType="email-address"
+        />
+        <TextInput
+          onChangeText={this.update.bind(this, 'password')}
+          style={styles.formInput}
+          underlineColorAndroid="rgba(0,0,0,0)"
+          maxLength={32}
+          autoCapitalize="none"
+          placeholder="Password"
+          secureTextEntry={true}
+        />
         <Button
-          onPress={this._fakeLogin.bind(this)}
-          title="Fake Login!"
+          onPress={this._doLogin.bind(this)}
+          title="Login"
         />
       </ScrollView>
     );
   }
 
-  _fakeLogin() {
+  _doLogin() {
     const rootNavigator = this.props.navigation.getNavigator('root');
+
+    let loginData = {
+      email: this.state.email,
+      password: this.state.password,
+    }
+
+    fetch('http://localhost:3000/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(loginData)
+    }).then(function(resp) {
+      if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+        return resp.json();
+      } else {
+        return resp.text().then(function(message) {
+          throw new Error(message);
+        });
+      }
+    })
+    .then(function(data) {
+      return AsyncStorage.multiSet([
+        ['AuthToken', data.AuthToken],
+        ['currentUser', data.id.toString()],
+        ['currentUserMD5', data.md5],
+        ]);
+    }).then(function() {
+      Alert.alert(
+        'Logged In Successfully',
+        '',
+        [
+          {text: 'Nice!', onPress: () => {finishAuth()}},
+        ]
+      );
+    }).catch(function(err) {
+      Alert.alert(err.message);
+    });
+
     function finishAuth() {
       rootNavigator.immediatelyResetStack([Router.getRoute('rootNavigation', {authed: true})]);
     }
-
-    Alert.alert(
-      'You pretended to Log In!',
-      'Real user auth will be implemented soon!',
-      [
-        {text: 'Ok...', onPress: () => {finishAuth()}},
-      ]
-    );
   }
 }
 
@@ -95,5 +119,11 @@ const styles = StyleSheet.create({
   formInput: {
     flex: 1,
     height: 30,
-  }
+  },
+  textPadding: {
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 8,
+    paddingBottom: 8,
+  },
 });

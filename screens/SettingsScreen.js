@@ -4,10 +4,13 @@ import {
   StyleSheet,
   Button,
   Alert,
+  AsyncStorage,
 } from 'react-native';
 import {
   ExponentConfigView,
 } from '@exponent/samples';
+
+import { serverURI } from '../config';
 
 import Router from '../navigation/Router';
 
@@ -20,17 +23,24 @@ export default class SettingsScreen extends React.Component {
 
   logout() {
     const rootNavigator = this.props.navigation.getNavigator('root');
-    function finishAuth() {
-      rootNavigator.immediatelyResetStack([Router.getRoute('auth')]);
-    }
+    fetch(`${serverURI}/logout`)
+      .then(function(resp) {
+        Alert.alert(
+          `You've logged out`,
+          'We hope to see you back soon!',
+          [{text: 'For Sure!', onPress: () => {finishAuth()}}]
+        );
+      }).catch(function(err) {
+        alert(err);
+      });
 
-    Alert.alert(
-      'You pretended to Log Out!',
-      'Real user auth will be implemented soon!',
-      [
-        {text: 'Ok...', onPress: () => {finishAuth()}},
-      ]
-    );
+    function finishAuth() {
+      AsyncStorage.removeItem('AuthToken').then(function() {
+        rootNavigator.immediatelyResetStack([Router.getRoute('auth')]);
+      }).catch(function(err) {
+        alert(err);
+      });
+    }
   }
 
   render() {
