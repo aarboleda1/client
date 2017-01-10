@@ -11,6 +11,8 @@ import {
 
 import Router from '../navigation/Router';
 
+import { serverURI } from '../config';
+
 export default class LoginScreen extends React.Component {
   static route = {
     navigationBar: {
@@ -71,7 +73,7 @@ export default class LoginScreen extends React.Component {
       password: this.state.password,
     }
 
-    fetch('http://localhost:3000/login', {
+    fetch(`${serverURI}/login`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -106,7 +108,7 @@ export default class LoginScreen extends React.Component {
     });
 
     function finishAuth() {
-      rootNavigator.immediatelyResetStack([Router.getRoute('rootNavigation', {authed: true})]);
+      rootNavigator.immediatelyResetStack([Router.getRoute('rootNavigation')]);
     }
   }
 }

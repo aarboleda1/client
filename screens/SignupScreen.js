@@ -100,6 +100,7 @@ export default class SignupScreen extends React.Component {
         name: this.state.name.trim(),
         email: this.state.email.trim(),
         password: this.state.password.trim(),
+        bio: 'No description set.',
       };
 
       fetch(`${serverURI}/signup`, {

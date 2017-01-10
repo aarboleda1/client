@@ -43,11 +43,20 @@ export default class SettingsScreen extends React.Component {
     }
   }
 
+  chefOptions() {
+    this.props.navigator.push('profile', {isChef: true});
+  }
+
   render() {
     return (
       <ScrollView
         style={styles.container}
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
+
+        <Button
+          title="Chef Options"
+          onPress={this.chefOptions.bind(this)}
+        />
 
         <Button
           title="Logout"

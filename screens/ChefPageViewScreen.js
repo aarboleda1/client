@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
+  AsyncStorage,
 } from 'react-native';
 import {
   FontAwesome,
@@ -57,7 +58,7 @@ export default class ChefPageViewScreen extends React.Component {
           });
         }
       }).then(function(dishes){
-        context.setState(dishes);
+        context.setState({dishes});
       }).catch(function(err) {
         alert(err);
       });
@@ -84,7 +85,39 @@ export default class ChefPageViewScreen extends React.Component {
       }
     }
 
-    this.props.navigator.push(Router.getRoute('confirmEvent', eventDetails));
+    let context = this;
+
+    AsyncStorage.getItem('currentUser').then(function(currentUser) {
+      let eventData = {
+        name: 'Upcoming Event',
+        time: Date.now(),
+        location: 'San Francisco, CA, USA',
+        text: 'An upcoming event',
+        chefId: context.props.details.id,
+        userId: currentUser,
+        quantity: {},
+      }
+
+      let selected = context.state.selected;
+      for (let key in selected) {
+        if (selected[key] === true) {
+          eventData.quantity[key] = context.state.quantity;
+        }
+      }
+
+      return fetch(`${serverURI}/events`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(eventData)
+      })
+    }).then(function() {
+      context.props.navigator.push(Router.getRoute('confirmEvent', eventDetails));
+    }).catch(function(err){
+      alert(err);
+    });
   }
 
   changeQuantity(change) {
@@ -153,6 +186,8 @@ export default class ChefPageViewScreen extends React.Component {
       },
     });
 
+    let context = this;
+
     return (
       <View style={styles.flex}>
         <Text>Menu</Text>
@@ -161,7 +196,13 @@ export default class ChefPageViewScreen extends React.Component {
           contentContainerStyle={this.props.route.getContentContainerStyle()}>
           <Image style={styles.splashImage} source={{uri: `http://lorempixel.com/${Math.ceil(width)}/${Math.ceil(height * 0.35)}/food`}}/>
           <View style={styles.dishes}>
-            {[1,2,3,4,5,6,7,8,9,10].map(renderDish.bind(this))}
+            {this.state.dishes.map(function(dish, index) {
+              return (
+                <View key={index}>
+                  {renderDish(dish, context)}
+                </View>
+              );
+            })}
           </View>
           {/* TODO: Quantity will be moved to individual food modals */}
           <View style={styles.quantity}>
@@ -189,23 +230,25 @@ export default class ChefPageViewScreen extends React.Component {
       </View>
     );
 
-    function renderDish(dish) {
+    function renderDish(dish, context) {
 
       // TODO Change this to open a modal with details about the food,
       // a quantity field, & an add to event button
       function toggleCheck() {
         let stateUpdate = {
-          selected: this.state.selected,
+          selected: context.state.selected,
         };
-        stateUpdate.selected[dish] = !this.state.selected[dish];
-        this.setState(stateUpdate);
+        stateUpdate.selected[dish.id] = !context.state.selected[dish.id];
+        context.setState(stateUpdate);
       }
 
+      // return <Text>I'm a dish!</Text>
+
       return (
-        <TouchableOpacity key={dish} style={styles.dish} onPress={toggleCheck.bind(this)}>
+        <TouchableOpacity key={dish} style={styles.dish} onPress={toggleCheck.bind(context)}>
           <View style={styles.dish}>
-            <Image style={styles.dishImage} source={{ uri: `http://lorempixel.com/150/150/food/${dish}` }}/>
-            {this.state.selected[dish] ?
+            <Image style={styles.dishImage} source={{ uri: `http://lorempixel.com/150/150/food/${dish.id % 10}` }}/>
+            {context.state.selected[dish.id] ?
               <View style={styles.dishSelection}>
                 <FontAwesome
                   name="check"

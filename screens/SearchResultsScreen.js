@@ -51,6 +51,7 @@ export default class SearchResultsScreen extends React.Component {
       }).then(function(chefs) {
         context.setState({chefs});
       }).catch(function(err) {
+        debugger;
         alert(err);
       });
     // show loading icon until respon arrives

@@ -61,11 +61,7 @@ export default class SearchScreen extends React.Component {
   render() {
     const {height, width} = Dimensions.get('window'); //This must be in the render function to adjust to device rotation
 
-    const styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        paddingTop: 15,
-      },
+    const dynamicStyles = StyleSheet.create({
       restrictions: {
         width: width * 0.75,
         marginLeft: width * 0.25 / 2,
@@ -76,13 +72,6 @@ export default class SearchScreen extends React.Component {
         marginLeft: width * 0.25 / 2,
         marginBottom: 12,
       },
-      cuisine: {
-        marginBottom: 12,
-      },
-      location: {
-        fontSize: 16,
-        textAlign: 'center',
-      }
     });
 
     return (
@@ -121,6 +110,20 @@ export default class SearchScreen extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 15,
+  },
+  cuisine: {
+    marginBottom: 12,
+  },
+  location: {
+    fontSize: 16,
+    textAlign: 'center',
+  }
+})
 
 const pricing = [
   {
