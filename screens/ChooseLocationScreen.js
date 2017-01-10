@@ -20,7 +20,6 @@ export default class ChooseLocationScreen extends React.Component {
     };
   }
 
-
   render() {
     return (
       <GooglePlacesAutocomplete

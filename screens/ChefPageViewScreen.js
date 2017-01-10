@@ -14,8 +14,8 @@ import {
   FontAwesome,
 } from '@exponent/vector-icons';
 
+import {connect} from 'react-redux';
 import Router from '../navigation/Router';
-
 import Colors from '../constants/Colors';
 import Rating from '../components/Rating';
 
@@ -26,13 +26,21 @@ export default class ChefPageViewScreen extends React.Component {
     },
   }
 
+  /*!!!!!!!!!!!!!!!!! food selection and quantity*/
   constructor(props) {
     super(props);
     this.state = {
-      quantity: 1,
+      quantity: 1, 
       selected: {},
+      dishes: [],
     }
-    //TODO make request for more data with details.id
+
+
+    // this.state = store.getState();
+    // store.subscribe(() => {
+    //   this.setState(store.getState());
+    // })
+
   }
 
   formatNumber(text) {
@@ -166,3 +174,27 @@ export default class ChefPageViewScreen extends React.Component {
     }
   }
 }
+
+// function mapStateToProps(state, ownProps){
+//   // ******* #4 *******
+//   return(
+//     selection: state.selection
+//   )
+// }
+
+// // Generates a container component and connects it to the Redux store
+// export default connect(mapStateToProps)(ChefPageViewScreen);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
