@@ -8,11 +8,19 @@ import {
   AsyncStorage,
 } from 'react-native';
 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import {
+  setAuthToken,
+  setCurrentUser,
+} from '../actions/authActions';
+
 import Router from '../navigation/Router';
 
 import { serverURI } from '../config';
 
-export default class SignupScreen extends React.Component {
+class SignupScreen extends React.Component {
   static route = {
     navigationBar: {
       title: 'Signup',
@@ -100,7 +108,10 @@ export default class SignupScreen extends React.Component {
         name: this.state.name.trim(),
         email: this.state.email.trim(),
         password: this.state.password.trim(),
+        bio: 'No description set.',
       };
+
+      const context = this;
 
       fetch(`${serverURI}/signup`, {
         method: 'POST',
@@ -119,10 +130,12 @@ export default class SignupScreen extends React.Component {
         }
       })
       .then(function (data) {
+        context.props.dispatch(setAuthToken(data.AuthToken));
+        context.props.dispatch(setCurrentUser(data.id.toString()));
+
         return AsyncStorage.multiSet([
           ['AuthToken', data.AuthToken],
           ['currentUser', data.id.toString()],
-          ['currentUserMD5', data.md5],
         ]);
       }).then(function() {
         Alert.alert(
@@ -156,3 +169,10 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
 });
+
+// const mapDispatchToProps = dispatch =>  bindActionCreators({
+//   setAuthToken,
+//   setCurrentUser,
+// }, dispatch);
+
+export default connect(null)(SignupScreen);

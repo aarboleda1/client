@@ -12,18 +12,18 @@ import {
 
 import Colors from '../constants/Colors';
 
-export default class MultipleSelectionEntry extends React.Component {
+import { connect } from 'react-redux';
+
+import { toggleSearchPrice } from '../actions/searchActions';
+
+
+class PriceSelectionEntry extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selected: false
-    }
   }
 
   _toggleSelection() {
-    this.setState({
-      selected: !this.state.selected
-    });
+    this.props.dispatch(toggleSearchPrice(this.props.value));
   }
 
   render() {
@@ -32,7 +32,7 @@ export default class MultipleSelectionEntry extends React.Component {
         <View style={[styles.entry, this.props.style]}>
           <Text style={styles.entryText}>{this.props.name}</Text>
           <View style={styles.selected}>
-            {this.state.selected ?
+            {this.props.prices[this.props.value] ?
               <View style={styles.checkMark}>
                 <FontAwesome
                   name="check"
@@ -68,3 +68,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0)',
   }
 });
+
+function mapStateToProps(state) {
+  return {
+    prices: state.search.prices,
+  }
+}
+
+export default connect(mapStateToProps)(PriceSelectionEntry);

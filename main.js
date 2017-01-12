@@ -6,6 +6,8 @@ import {
   StatusBar,
   StyleSheet,
   View,
+  AsyncStorage,
+  Text,
 } from 'react-native';
 import {
   NavigationProvider,
@@ -18,11 +20,14 @@ import {
 import Router from './navigation/Router';
 import cacheAssetsAsync from './utilities/cacheAssetsAsync';
 
-// ############# Redux addition #############
-
+/* Redux */
 import {Provider} from 'react-redux';
 import 'babel-polyfill'; 
 import configureStore from './store/configureStore';
+import {
+  setAuthToken,
+  setCurrentUser,
+} from './actions/authActions';
 
 // Create instance of store, can take in parameter of initial state
 const store = configureStore();
@@ -56,10 +61,21 @@ class AppContainer extends React.Component {
       );
       console.log(e.message);
     } finally {
-      this.setState({appIsReady: true});
+      let context = this;
+      AsyncStorage.multiGet([
+        'AuthToken',
+        'currentUser',
+      ])
+      .then(function(data) {
+        store.dispatch(setAuthToken(data[0][1]));
+        store.dispatch(setCurrentUser(data[1][1]));
+        context.setState({appIsReady: true});
+      })
+      .catch(function(err) {
+        alert(err);
+      });
     }
   }
-
 
   render() {
     if (this.state.appIsReady) {

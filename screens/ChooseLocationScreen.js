@@ -28,13 +28,11 @@ export default class ChooseLocationScreen extends React.Component {
         textInput={{underlineColorAndroid: 'rgba(0,0,0,0)'}}
 
         onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-          // console.log(data);
-          // console.log(details.geometry.location);
           let location = {
             latitude: details.geometry.location.lat,
             longitude: details.geometry.location.lng,
           };
-          this.props.navigator.push(Router.getRoute('map', {location: location}))
+          this.props.navigator.push(Router.getRoute('map', { location: location, city: details.formatted_address }))
 
         }}
         getDefaultValue={() => {

@@ -3,10 +3,13 @@ import {
   ScrollView,
   StyleSheet,
   Button,
+  AsyncStorage,
 } from 'react-native';
 import {
   ExponentLinksView,
 } from '@exponent/samples';
+
+import { serverURI } from '../config';
 
 import EventListing from '../components/EventListing';
 
@@ -15,6 +18,30 @@ export default class UpcomingScreen extends React.Component {
     navigationBar: {
       title: 'Upcoming Events',
     },
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      events: [],
+    };
+  }
+
+  componentWillMount() {
+    let context = this;
+    AsyncStorage.getItem('currentUser').then(function(currentUser) {
+      return fetch(`${serverURI}/events/users/${currentUser}`)
+    }).then(function(resp) {
+        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+          return resp.json();
+        } else {
+          return resp.text();
+        }
+    }).then(function(events) {
+      context.setState({events})
+    }).catch(function(err) {
+      alert(err);
+    })
   }
 
   viewPastEvents() {
@@ -32,6 +59,14 @@ export default class UpcomingScreen extends React.Component {
           title="See past events"
           onPress={this.viewPastEvents.bind(this)}
         />
+        {this.state.events.map((event, index) => (
+          <EventListing
+            key={index}
+            name="You"
+            chef="Someone Else"
+            dateTime="The Future"
+          />
+        ))}
         <EventListing
           name="John Doe"
           chef="Guy Fierri"

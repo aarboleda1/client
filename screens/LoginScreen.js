@@ -9,9 +9,18 @@ import {
   AsyncStorage,
 } from 'react-native';
 
+import {
+  setAuthToken,
+  setCurrentUser,
+} from '../actions/authActions';
+
 import Router from '../navigation/Router';
 
-export default class LoginScreen extends React.Component {
+import { serverURI } from '../config';
+
+import { connect } from 'react-redux';
+
+class LoginScreen extends React.Component {
   static route = {
     navigationBar: {
       title: 'Login',
@@ -71,7 +80,9 @@ export default class LoginScreen extends React.Component {
       password: this.state.password,
     }
 
-    fetch('http://localhost:3000/login', {
+    let context = this;
+
+    fetch(`${serverURI}/login`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -88,11 +99,12 @@ export default class LoginScreen extends React.Component {
       }
     })
     .then(function(data) {
+      context.props.dispatch(setAuthToken(data.AuthToken));
+      context.props.dispatch(setCurrentUser(data.id.toString()));
       return AsyncStorage.multiSet([
         ['AuthToken', data.AuthToken],
         ['currentUser', data.id.toString()],
-        ['currentUserMD5', data.md5],
-        ]);
+      ]);
     }).then(function() {
       Alert.alert(
         'Logged In Successfully',
@@ -106,7 +118,7 @@ export default class LoginScreen extends React.Component {
     });
 
     function finishAuth() {
-      rootNavigator.immediatelyResetStack([Router.getRoute('rootNavigation', {authed: true})]);
+      rootNavigator.immediatelyResetStack([Router.getRoute('rootNavigation')]);
     }
   }
 }
@@ -127,3 +139,5 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
 });
+
+export default connect(null)(LoginScreen);
