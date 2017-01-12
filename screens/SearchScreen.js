@@ -14,16 +14,24 @@ import {
 } from '@exponent/vector-icons';
 
 import Router from '../navigation/Router';
-
 import Colors from '../constants/Colors';
-import MultipleSelection from '../components/MultipleSelection';
 
-export default class SearchScreen extends React.Component {
+import RestrictionSelectionEntry from '../components/RestrictionSelectionEntry';
+
+import { connect } from 'react-redux';
+
+import {
+  setSearchCuisine,
+  toggleSearchRestriction,
+} from '../actions/searchActions';
+
+import { serverURI } from '../config';
+
+class SearchScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cuisine: 'italian',
-      location: null
+      cuisine: 'italian'
     }
   }
 
@@ -55,7 +63,39 @@ export default class SearchScreen extends React.Component {
     store data in redux
     reroute to search results
     */
-    this.props.navigator.push('searchResults'); //add query string when implementing search
+    let dispatch = this.props.dispatch;
+    var searchParams = new URLSearchParams();
+    searchParams.append('cuisine', this.props.search.cuisine);
+    searchParams.append('location', this.props.search.location);
+
+    let restrictions = [];
+    let searchRestrictions = this.props.search.restrictions;
+    for(let key in searchRestrictions) {
+      if (searchRestrictions[key]) {
+        restrictions.push(key);
+      }
+    }
+    searchParams.append('restrictions', restrictions);
+
+    alert(`${serverURI}/chefs?${searchParams.toString()}`);
+
+    fetch(`${serverURI}/chefs?${searchParams.toString()}`)
+      .then(function(resp) {
+        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+          return resp.json();
+        } else {
+          return resp.text().then(function(message) {
+            throw new Error(message);
+          });
+        }
+      })
+      .then(function(listings) {
+        debugger;
+      }).catch(function(err) {
+        alert(err);
+      });
+
+    // this.props.navigator.push('searchResults', {listings: data}); //add query string when implementing search
   }
 
   render() {
@@ -74,27 +114,45 @@ export default class SearchScreen extends React.Component {
       },
     });
 
+    const context = this;
     return (
       <ScrollView
         style={styles.container}
-        contentContainerStyle={[this.props.route.getContentContainerStyle(), ]}>
+        contentContainerStyle={[this.props.route.getContentContainerStyle()]}>
 
         <Picker
-        selectedValue={this.state.cuisine}
-        onValueChange={(type) => this.setState({cuisine: type})}
-        style={styles.cuisine}>
+          selectedValue={this.state.cuisine}
+          onValueChange={(type) => {
+            this.setState({ cuisine: type });
+            return context.props.dispatch(setSearchCuisine(type));
+          }}
+          style={styles.cuisine}>
            <Picker.Item label="Italian" value="italian" />
            <Picker.Item label="Korean" value="korean" />
            <Picker.Item label="Pastry" value="pastry" />
         </Picker>
 
-        <MultipleSelection style={styles.restrictions} options={restrictions}/>
-        <MultipleSelection style={styles.pricing} options={pricing}/>
+        <RestrictionSelectionEntry name="Dairy" />
+        <RestrictionSelectionEntry name="Eggs" />
+        <RestrictionSelectionEntry name="Halal" />
+        <RestrictionSelectionEntry name="Kosher" />
+        <RestrictionSelectionEntry name="Tree Nuts" />
+        <RestrictionSelectionEntry name="Peanuts" />
+        <RestrictionSelectionEntry name="Wheat" />
+        <RestrictionSelectionEntry name="Soy" />
+        <RestrictionSelectionEntry name="Gluten" />
+        <RestrictionSelectionEntry name="Seafood" />
+        <RestrictionSelectionEntry name="Shellfish" />
+        <RestrictionSelectionEntry name="Vegan" />
+        <RestrictionSelectionEntry name="Vegetarian" />
 
         <Button
           onPress={this._chooseLocation.bind(this)}
           title="Set Location"
         />
+        <Text style={styles.location}>
+          {this.props.search.location || 'Location not set'}
+        </Text>
 
         {this.state.location ?
           <Text style={styles.location}>{this.state.location}</Text> : null}
@@ -123,43 +181,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   }
-})
+});
 
-const pricing = [
-  {
-    name: '$',
-    value: 'low'
-  },
-  {
-    name: '$$',
-    value: 'medium'
-  },
-  {
-    name: '$$$',
-    value: 'high'
-  },
-];
+function mapStateToProps(state, ownProps) {
+  return {
+    search: state.search,
+  }
+}
 
-const restrictions = [
-  {
-    name: 'Nut',
-    value: 'nut',
-  },
-  {
-    name: 'Dairy',
-    value: 'dairy',
-  },
-  {
-    name: 'Kosher',
-    value: 'kosher',
-  },
-  {
-    name: 'Vegetarian',
-    value: 'vegetarian',
-  },
-  {
-    name: 'Vegan',
-    value: 'vegan',
-  },
-];
-
+export default connect(mapStateToProps)(SearchScreen);

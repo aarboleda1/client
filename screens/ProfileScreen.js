@@ -11,11 +11,13 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
+import {connect} from 'react-redux';
+
 import { serverURI } from '../config';
 
 import Rating from '../components/Rating';
 
-export default class ProfileScreen extends React.Component {
+class ProfileScreen extends React.Component {
   static route = {
     navigationBar: {
       visible: false,
@@ -23,23 +25,22 @@ export default class ProfileScreen extends React.Component {
   }
 
   componentWillMount() {
-    let context = this;
-    AsyncStorage.getItem('currentUser')
-      .then(userId => fetch(`http://localhost:3000/users/${userId}`))
-      .then(function(resp) {
-        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
-          return resp.json();
-        } else {
-          return resp.text();
-        }
-      })
-      .then(function(userData) {
-        userData = userData[0];
-        context.setState({userData, loading: false})
-      })
-      .catch(function(err) {
-        alert(err);
-      });
+    let setState = this.setState.bind(this);
+    fetch(`http://localhost:3000/users/${this.props.currentUser}`)
+    .then(function(resp) {
+      if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+        return resp.json();
+      } else {
+        return resp.text();
+      }
+    })
+    .then(function(userData) {
+      userData = userData[0];
+      setState({userData, loading: false})
+    })
+    .catch(function(err) {
+      alert(err);
+    });
   }
 
   constructor(props) {
@@ -91,8 +92,15 @@ export default class ProfileScreen extends React.Component {
       </ScrollView>
     );
   }
-
 }
+
+function mapStateToProps(state, ownProps) {
+  return {
+    currentUser: state.currentUser,
+  };
+}
+
+export default connect(mapStateToProps)(ProfileScreen);
 
 const styles = StyleSheet.create({
   container: {

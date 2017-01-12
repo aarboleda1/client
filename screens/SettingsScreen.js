@@ -10,11 +10,18 @@ import {
   ExponentConfigView,
 } from '@exponent/samples';
 
+import {
+  clearAuthToken,
+  clearCurrentUser,
+} from '../actions/authActions';
+
 import { serverURI } from '../config';
 
 import Router from '../navigation/Router';
 
-export default class SettingsScreen extends React.Component {
+import { connect } from 'react-redux';
+
+class SettingsScreen extends React.Component {
   static route = {
     navigationBar: {
       title: 'Settings',
@@ -23,6 +30,7 @@ export default class SettingsScreen extends React.Component {
 
   logout() {
     const rootNavigator = this.props.navigation.getNavigator('root');
+    const context = this;
     fetch(`${serverURI}/logout`)
       .then(function(resp) {
         Alert.alert(
@@ -36,6 +44,8 @@ export default class SettingsScreen extends React.Component {
 
     function finishAuth() {
       AsyncStorage.removeItem('AuthToken').then(function() {
+        context.props.dispatch(clearAuthToken());
+        context.props.dispatch(clearCurrentUser());
         rootNavigator.immediatelyResetStack([Router.getRoute('auth')]);
       }).catch(function(err) {
         alert(err);
@@ -73,3 +83,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+export default connect(null)(SettingsScreen);

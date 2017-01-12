@@ -2,7 +2,11 @@ import React from 'react';
 import {Button, View} from 'react-native';
 import { Components } from 'exponent';
 
-export default class MapScreen extends React.Component {
+import { connect } from 'react-redux';
+
+import { setSearchLocation } from '../actions/searchActions';
+
+class MapScreen extends React.Component {
 	constructor(props) {
 		super(props);
 		let location = this.props.route.params.location;
@@ -20,7 +24,8 @@ export default class MapScreen extends React.Component {
 		this.setState({ region });
 	}
 
-	_goBack() {
+	_confirm() {
+		this.props.dispatch(setSearchLocation(this.props.route.params.city));
 		this.props.navigator.pop(2);
 	}
 	
@@ -39,11 +44,18 @@ export default class MapScreen extends React.Component {
 			  />
 			  <Button
 			  	title="Confirm Location"
-			  	onPress={this._goBack.bind(this)}
+			  	onPress={this._confirm.bind(this)}
 			  	style={{paddingTop: 15}}
 			  />
 			</Components.MapView>
 			);
-
 	}
 }
+
+function mapStateToProps(state) {
+	return {
+		location: state.location,
+	}
+}
+
+export default connect(mapStateToProps)(MapScreen);
