@@ -20,7 +20,7 @@ module.exports = {
   },
 
   clearSearchPrices: function() {
-    return { type: 'CLEAR_SERACH_PRICES' };
+    return { type: 'CLEAR_SEARCH_PRICES' };
   },
 
   toggleSearchRestriction: function(restriction) {
@@ -28,6 +28,6 @@ module.exports = {
   },
 
   clearSearchRestrictions: function() {
-    return { type: 'CLEAR_SERACH_RESTRICTIONS' };
+    return { type: 'CLEAR_SEARCH_RESTRICTIONS' };
   },
 }

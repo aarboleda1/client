@@ -8,6 +8,7 @@ import {
   Dimensions,
   Button,
   Text,
+  ActivityIndicator,
 } from 'react-native';
 import {
   FontAwesome,
@@ -77,25 +78,31 @@ class SearchScreen extends React.Component {
     }
     searchParams.append('restrictions', restrictions);
 
-    alert(`${serverURI}/chefs?${searchParams.toString()}`);
+    console.log(`GET to ${serverURI}/chefs?${searchParams.toString()}`);
 
-    fetch(`${serverURI}/chefs?${searchParams.toString()}`)
-      .then(function(resp) {
-        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
-          return resp.json();
-        } else {
-          return resp.text().then(function(message) {
-            throw new Error(message);
-          });
+    let context = this;
+    this.setState({loading: true}, function() {
+      fetch(`${serverURI}/chefs?${searchParams.toString()}`, {
+        headers: {
+          'User-Id': context.props.currentUser,
         }
       })
-      .then(function(listings) {
-        debugger;
-      }).catch(function(err) {
-        alert(err);
-      });
-
-    // this.props.navigator.push('searchResults', {listings: data}); //add query string when implementing search
+        .then(function(resp) {
+          if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+            return resp.json();
+          } else {
+            return resp.text().then(function(message) {
+              throw new Error(message);
+            });
+          }
+        })
+        .then(function(listings) {
+          context.props.navigator.push('searchResults', { listings }); //add query string when implementing search
+        })
+        .catch(function(err) {
+          alert(err);
+        });
+    });
   }
 
   render() {
@@ -116,7 +123,7 @@ class SearchScreen extends React.Component {
     // console.log(this.state.location);
 
     const context = this;
-    return (
+    return (this.state.loading ? <ActivityIndicator size="large" style={styles.loading}/> :
       <ScrollView
         style={styles.container}
         contentContainerStyle={[this.props.route.getContentContainerStyle()]}>
@@ -182,12 +189,16 @@ const styles = StyleSheet.create({
   location: {
     fontSize: 16,
     textAlign: 'center',
-  }
+  },
+  loading: {
+    flex: 1,
+  },
 });
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     search: state.search,
+    currentUser: state.currentUser,
   }
 }
 
