@@ -8,6 +8,7 @@ import {
   Dimensions,
   Button,
   Text,
+  TouchableHighlight,
 } from 'react-native';
 import {
   FontAwesome,
@@ -27,6 +28,54 @@ import {
 
 import { serverURI } from '../config';
 
+// ************ Begin Styling **************
+const WINDOW_WIDTH = Dimensions.get('window').width;
+const WINDOW_HEIGHT = Dimensions.get('window').height;
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#F7F7F7',
+    flex: 1,
+    // paddingTop: 540,
+    // justifyContent: 'flex-end',
+  },
+  button: {
+    borderColor: '#10b7c9',
+    borderWidth: 2,
+    backgroundColor: '#333',
+    margin: 20,
+    height: WINDOW_HEIGHT / 12,
+    width: WINDOW_WIDTH / 1.1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // flex: 1,
+    // flexDirection: 'column',
+  },
+  buttonText: {
+    color: '#FAFAFA',
+    // flex: 1,
+    fontSize: 21,
+    fontWeight: '500',
+    
+  },
+});
+// ************ End Styling ************
+
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     paddingTop: 15,
+//   },
+//   cuisine: {
+//     marginBottom: 12,
+//   },
+//   location: {
+//     fontSize: 16,
+//     textAlign: 'center',
+//   }
+// });
+
 class SearchScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -34,6 +83,8 @@ class SearchScreen extends React.Component {
       cuisine: 'italian'
     }
   }
+
+
 
   componentWillMount() {
 
@@ -148,10 +199,14 @@ class SearchScreen extends React.Component {
         <RestrictionSelectionEntry name="Vegan" />
         <RestrictionSelectionEntry name="Vegetarian" />
 
-        <Button
-          onPress={this._chooseLocation.bind(this)}
-          title="Set Location"
-        />
+        <TouchableHighlight
+          style={styles.button}
+          onPress={this._chooseLocation.bind(this)}>
+          <Text style={styles.buttonText}>
+            Set Location
+          </Text>
+        </TouchableHighlight>
+
         <Text style={styles.location}>
           {this.props.search.location || 'Location not set'}
         </Text>
@@ -171,19 +226,6 @@ class SearchScreen extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-  },
-  cuisine: {
-    marginBottom: 12,
-  },
-  location: {
-    fontSize: 16,
-    textAlign: 'center',
-  }
-});
 
 function mapStateToProps(state, ownProps) {
   return {
