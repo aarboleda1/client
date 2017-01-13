@@ -60,6 +60,11 @@ class MapScreen extends React.Component {
 		this.props.dispatch(setSearchLocation(this.props.route.params.city));
 		this.props.navigator.pop(2);
 	}
+
+  _confirm() {
+    this.props.dispatch(setSearchLocation(this.props.route.params.city));
+    this.props.navigator.pop(2);
+  }
 	
 	render() {
 		// const {height, width} = Dimensions.get('window');
@@ -77,7 +82,7 @@ class MapScreen extends React.Component {
 			  />
 		  	<TouchableHighlight
 					title="Confirm Location"
-					onPress={this._goBack.bind(this)}
+					onPress={this._confirm.bind(this)}
 					style={styles.button}>
 					<Text style={styles.buttonText}>
 						Confirm Location
