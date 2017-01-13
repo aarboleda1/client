@@ -38,12 +38,12 @@ class SearchScreen extends React.Component {
   componentWillMount() {
 
     //FIXME: Replace this after MobX/Redux is implemented
-    if (!this.props.route.params.viewed) {
-      this.props.navigator.push('searchResults');
-      this.props.navigator.updateCurrentRouteParams({
-        viewed: true,
-      });
-    }
+    // if (!this.props.route.params.viewed) {
+    //   this.props.navigator.push('searchResults');
+    //   this.props.navigator.updateCurrentRouteParams({
+    //     viewed: true,
+    //   });
+    // }
   }
 
   static route = {
@@ -113,6 +113,7 @@ class SearchScreen extends React.Component {
         marginBottom: 12,
       },
     });
+    // console.log(this.state.location);
 
     const context = this;
     return (
@@ -128,6 +129,7 @@ class SearchScreen extends React.Component {
           }}
           style={styles.cuisine}>
            <Picker.Item label="Italian" value="italian" />
+           <Picker.Item label="Asian" value="asian" />
            <Picker.Item label="Korean" value="korean" />
            <Picker.Item label="Pastry" value="pastry" />
         </Picker>
