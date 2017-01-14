@@ -32,23 +32,14 @@ import {
 
 import { serverURI } from '../config';
 
+import qs from 'qs';
+
 class SearchScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       cuisine: 'italian'
     }
-  }
-
-  componentWillMount() {
-
-    //FIXME: Replace this after MobX/Redux is implemented
-    // if (!this.props.route.params.viewed) {
-    //   this.props.navigator.push('searchResults');
-    //   this.props.navigator.updateCurrentRouteParams({
-    //     viewed: true,
-    //   });
-    // }
   }
 
   static route = {
@@ -63,31 +54,27 @@ class SearchScreen extends React.Component {
   }
 
   _search() {
-    /*
-    REDUX: GET request for results
-    display loading thing while waiting
-    store data in redux
-    reroute to search results
-    */
     let dispatch = this.props.dispatch;
-    var searchParams = new URLSearchParams();
-    searchParams.append('cuisine', this.props.search.cuisine);
-    searchParams.append('location', this.props.search.location);
+    let searchParams = {
+      cuisine: this.props.search.cuisine,
+      location: this.props.search.location,
+    };
 
-    let restrictions = [];
+    let queryRestrictions = [];
+
     let searchRestrictions = this.props.search.restrictions;
     for(let key in searchRestrictions) {
       if (searchRestrictions[key]) {
-        restrictions.push(key);
+        queryRestrictions.push(key);
       }
     }
-    searchParams.append('restrictions', restrictions);
+    searchParams.restrictions = queryRestrictions;
 
-    console.log(`GET to ${serverURI}/chefs?${searchParams.toString()}`);
+    console.log(`GET to ${serverURI}/chefs?${qs.stringify(searchParams)}`);
 
     let context = this;
     this.setState({loading: true}, function() {
-      fetch(`${serverURI}/chefs?${searchParams.toString()}`, {
+      fetch(`${serverURI}/chefs?${qs.stringify(searchParams)}`, {
         headers: {
           'User-Id': context.props.currentUser,
         }
@@ -102,7 +89,8 @@ class SearchScreen extends React.Component {
           }
         })
         .then(function(listings) {
-          context.props.navigator.push('searchResults', { listings }); //add query string when implementing search
+          context.props.navigator.push('searchResults', { listings });
+          context.setState({loading: false});
         })
         .catch(function(err) {
           alert(err);
