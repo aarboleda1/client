@@ -5,10 +5,12 @@ import { Components } from 'exponent';
 import { connect } from 'react-redux';
 
 import { setSearchLocation } from '../actions/searchActions';
+import { setChefLocation } from '../actions/chefActions';
 import { clearMapContext } from '../actions/mapContextActions';
 
 const contexts = {
 	'search': setSearchLocation,
+  'chefActions': setChefLocation,
 }
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
@@ -18,7 +20,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F7F7F7',
     flex: 1,
-    // paddingTop: 540,
     justifyContent: 'flex-end',
   },
   button: {
@@ -30,15 +31,11 @@ const styles = StyleSheet.create({
   	width: WINDOW_WIDTH / 1.1,
   	alignItems: 'center',
   	justifyContent: 'center',
-  	// flex: 1,
-  	// flexDirection: 'column',
   },
   buttonText: {
   	color: '#FAFAFA',
-  	// flex: 1,
   	fontSize: 21,
   	fontWeight: '500',
-  	
   },
 });
 
@@ -54,6 +51,7 @@ class MapScreen extends React.Component {
 	      latitudeDelta: 0.0922,
 	      longitudeDelta: 0.0421,
 	    },
+      context: this.props.mapContext,
 		};
 	}
 
@@ -62,7 +60,7 @@ class MapScreen extends React.Component {
 	}
 
 	_confirm() {
-		let action = contexts[this.props.mapContext];
+		let action = contexts[this.state.context];
 		this.props.dispatch(action.call(this, this.props.route.params.city));
 		this.props.dispatch(clearMapContext());
 		this.props.navigator.pop(2);
@@ -97,7 +95,6 @@ class MapScreen extends React.Component {
 
 function mapStateToProps(state) {
 	return {
-		location: state.location,
 		mapContext: state.mapContext,
 	}
 }
