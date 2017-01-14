@@ -13,6 +13,7 @@ import {
   TabNavigation,
   TabNavigationItem,
 } from '@exponent/ex-navigation';
+
 import {
   FontAwesome,
 } from '@exponent/vector-icons';
@@ -55,7 +56,7 @@ export default class RootNavigation extends React.Component {
 
   render() {
     return !this.state.authed ? (
-        <View style={styles.center}>
+        <View  style={styles.center}>
           <ActivityIndicator size="large"/>
         </View>
       ) : (

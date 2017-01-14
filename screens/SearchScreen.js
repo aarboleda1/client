@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {
   FontAwesome,
+
 } from '@exponent/vector-icons';
 
 import Router from '../navigation/Router';
@@ -21,12 +22,18 @@ import RestrictionSelectionEntry from '../components/RestrictionSelectionEntry';
 
 import { connect } from 'react-redux';
 
+
 import {
   setSearchCuisine,
   toggleSearchRestriction,
 } from '../actions/searchActions';
 
 import { serverURI } from '../config';
+import Collapsible from 'react-native-collapsible';
+
+// var BaseCollapse = require('pui-react-collapse').BaseCollapse;
+// var AltCollapse = require('pui-react-collapse').AltCollapse;
+// var Collapse = require('pui-react-collapse').Collapse;
 
 // ************ Begin Styling **************
 const WINDOW_WIDTH = Dimensions.get('window').width;
@@ -40,8 +47,8 @@ const styles = StyleSheet.create({
     // justifyContent: 'flex-end',
   },
   button: {
-    borderColor: '#10b7c9',
-    borderWidth: 2,
+    borderColor: '#05A5D1',
+    borderWidth: 4,
     backgroundColor: '#333',
     margin: 20,
     height: WINDOW_HEIGHT / 12,
@@ -56,8 +63,16 @@ const styles = StyleSheet.create({
     // flex: 1,
     fontSize: 21,
     fontWeight: '500',
-    
   },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  test: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-around'
+  }
 });
 // ************ End Styling ************
 
@@ -83,8 +98,6 @@ class SearchScreen extends React.Component {
       cuisine: 'italian'
     }
   }
-
-
 
   componentWillMount() {
 
@@ -168,9 +181,12 @@ class SearchScreen extends React.Component {
 
     const context = this;
     return (
+     
       <ScrollView
         style={styles.container}
         contentContainerStyle={[this.props.route.getContentContainerStyle()]}>
+
+        <Text style={styles.text}>Select Cuisine Type:</Text>
 
         <Picker
           selectedValue={this.state.cuisine}
@@ -184,8 +200,9 @@ class SearchScreen extends React.Component {
            <Picker.Item label="Korean" value="korean" />
            <Picker.Item label="Pastry" value="pastry" />
         </Picker>
+        <Text style={styles.text}>Select Restrictions:</Text>
 
-        <RestrictionSelectionEntry name="Dairy" />
+        <RestrictionSelectionEntry name="Dairy" style={styles.test} />
         <RestrictionSelectionEntry name="Eggs" />
         <RestrictionSelectionEntry name="Halal" />
         <RestrictionSelectionEntry name="Kosher" />
@@ -203,7 +220,7 @@ class SearchScreen extends React.Component {
           style={styles.button}
           onPress={this._chooseLocation.bind(this)}>
           <Text style={styles.buttonText}>
-            Set Location
+            Choose Location
           </Text>
         </TouchableHighlight>
 
@@ -222,6 +239,7 @@ class SearchScreen extends React.Component {
         </Button>
 
       </ScrollView>
+  
     );
   }
 }
