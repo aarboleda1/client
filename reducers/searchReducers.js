@@ -1,5 +1,5 @@
-export default function searchReducer(state = {}, action) {
-  switch(action.type) {
+export default function searchReducers(state = {}, action) {
+  switch (action.type) {
     case 'SET_SEARCH_CUISINE':
       return Object.assign({}, state, { cuisine: action.cuisine });
       break;

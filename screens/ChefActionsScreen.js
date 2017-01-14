@@ -11,9 +11,8 @@ import {
 
 import { serverURI } from '../config';
 
-import {
-  setMapContext,
-} from '../actions/mapContextActions';
+import { setMapContext } from '../actions/mapContextActions';
+import { clearChefLocation } from '../actions/chefActions';
 
 import { connect } from 'react-redux';
 
@@ -69,8 +68,17 @@ class ChefActionsScreen extends Component {
   }
 
   addLocation() {
+    this.toggleState('showLocationsModal');
     this.props.dispatch(setMapContext('chefActions'));
     this.props.navigator.push('chooseLocation');
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.chefLocation) {
+      let newLocations = this.state.locations.concat(this.props.chefLocation);
+      this.props.dispatch(clearChefLocation());
+      this.setState({ locations: newLocations });
+    }
   }
 
   render() {
@@ -124,7 +132,7 @@ class ChefActionsScreen extends Component {
         />
 
         <Modal
-          animationType={"slide"}
+          animationType="fade"
           transparent={false}
           visible={!!this.state.showLocationsModal}>
           <ScrollView style={[styles.textPadding, styles.modal]}>
@@ -144,7 +152,7 @@ class ChefActionsScreen extends Component {
         </Modal>
 
         <Modal
-          animationType={"slide"}
+          animationType="fade"
           transparent={false}
           visible={!!this.state.showRestrictionsModal}>
           <ScrollView style={[styles.textPadding, styles.modal]}>
@@ -160,7 +168,7 @@ class ChefActionsScreen extends Component {
         </Modal>
 
         <Modal
-          animationType={"slide"}
+          animationType="fade"
           transparent={false}
           visible={!!this.state.showDishesModal}>
           <ScrollView style={[styles.textPadding, styles.modal]}>
@@ -201,11 +209,13 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps({currentChef, currentUser}) {
+function mapStateToProps(state) {
   return {
-    currentChef,
-    currentUser,
-  }
+    currentChef: state.currentChef,
+    currentUser: state.currentUser,
+    chefLocation: state.chef.location,
+    state,
+  };
 }
 
 export default connect(mapStateToProps)(ChefActionsScreen);

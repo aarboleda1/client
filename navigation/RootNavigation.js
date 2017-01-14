@@ -69,11 +69,11 @@ export default class RootNavigation extends React.Component {
           <StackNavigation initialRoute="search" navigatorUID="search"/>
         </TabNavigationItem>
 
-        <TabNavigationItem
+{/*        <TabNavigationItem
           id="profile"
           renderIcon={isSelected => this._renderIcon('user', isSelected)}>
           <StackNavigation initialRoute="profile" />
-        </TabNavigationItem>
+        </TabNavigationItem>*/}
 
         <TabNavigationItem
           id="upcoming"
