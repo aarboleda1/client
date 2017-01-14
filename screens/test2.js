@@ -7,10 +7,10 @@ class Panel extends React.Component{
     constructor(props){
         super(props);
 
-        // this.icons = {
-        //     'up'    : require('./images/Arrowhead-01-128.png'),
-        //     'down'  : require('./images/Arrowhead-Down-01-128.png')
-        // };
+        this.icons = {
+            'up'    : require('../Images/Arrowhead-01-128.png'),
+            'down'  : require('../Images/Arrowhead-Down-01-128.png')
+        };
 
         this.state = {
             title       : props.title,
@@ -49,11 +49,11 @@ class Panel extends React.Component{
     }
 
     render(){
-        // let icon = this.icons['down'];
+        let icon = this.icons['down'];
 
-        // if(this.state.expanded){
-        //     icon = this.icons['up'];
-        // }
+        if(this.state.expanded){
+            icon = this.icons['up'];
+        }
 
         return (
             <Animated.View 
@@ -66,7 +66,7 @@ class Panel extends React.Component{
                         underlayColor="#f1f1f1">
                         <Image
                             style={styles.buttonImage}
-                            // source={icon}
+                            source={icon}
                         ></Image>
                     </TouchableHighlight>
                 </View>
