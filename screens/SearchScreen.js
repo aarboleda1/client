@@ -26,6 +26,10 @@ import {
   toggleSearchRestriction,
 } from '../actions/searchActions';
 
+import {
+  setMapContext,
+} from '../actions/mapContextActions';
+
 import { serverURI } from '../config';
 
 class SearchScreen extends React.Component {
@@ -54,6 +58,7 @@ class SearchScreen extends React.Component {
   }
 
   _chooseLocation() {
+    this.props.dispatch(setMapContext('search'));
     this.props.navigator.push('chooseLocation');
   }
 

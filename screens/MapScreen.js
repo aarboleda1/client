@@ -5,6 +5,11 @@ import { Components } from 'exponent';
 import { connect } from 'react-redux';
 
 import { setSearchLocation } from '../actions/searchActions';
+import { clearMapContext } from '../actions/mapContextActions';
+
+const contexts = {
+	'search': setSearchLocation,
+}
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const WINDOW_HEIGHT = Dimensions.get('window').height;
@@ -57,7 +62,9 @@ class MapScreen extends React.Component {
 	}
 
 	_confirm() {
-		this.props.dispatch(setSearchLocation(this.props.route.params.city));
+		let action = contexts[this.props.mapContext];
+		this.props.dispatch(action.call(this, this.props.route.params.city));
+		this.props.dispatch(clearMapContext());
 		this.props.navigator.pop(2);
 	}
 
@@ -96,6 +103,7 @@ class MapScreen extends React.Component {
 function mapStateToProps(state) {
 	return {
 		location: state.location,
+		mapContext: state.mapContext,
 	}
 }
 
