@@ -28,33 +28,9 @@ export default class SearchResultsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      chefs: [],
+      chefs: this.props.route.params.listings || [],
       loading: true,
     };
-  }
-
-  componentWillMount() {
-    let context = this;
-    AsyncStorage.getItem('currentUser').then(function(id) {
-      fetch(`${serverURI}/chefs`, {
-        headers: {
-          'User-Id': id,
-        }
-      }).then(function(resp) {
-        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
-          return resp.json();
-        } else {
-          return resp.text().then(function(message) {
-            throw new Error(message);
-          });
-        }
-      }).then(function(chefs) {
-        context.setState({chefs});
-      }).catch(function(err) {
-        alert(err);
-      });
-    // show loading icon until respon arrives
-    });
   }
 
   render() {
@@ -73,6 +49,7 @@ export default class SearchResultsScreen extends React.Component {
               id={chef.id}
             />
           ))}
+          {this.state.chefs.length ? null : <Text>There are currently no chefs that match your search</Text>}
           <ChefListing
             img="http://lorempixel.com/192/192/people/1"
             name="Luv2Cook"

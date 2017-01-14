@@ -8,10 +8,10 @@ module.exports = {
   },
 
   clearAuthToken: function() {
-    return { type: 'CLEAR_AUTHTOKEN', token: null };
+    return { type: 'CLEAR_AUTHTOKEN' };
   },
 
   clearCurrentUser: function() {
-    return { type: 'CLEAR_CURRENT_USER', id: null };
+    return { type: 'CLEAR_CURRENT_USER' };
   },
 };

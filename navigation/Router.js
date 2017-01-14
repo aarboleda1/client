@@ -8,33 +8,37 @@ import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 
 /* Tab Bar Screens */
-import SearchScreen from '../screens/SearchScreen';
-import UpcomingScreen from '../screens/UpcomingScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import SearchScreen from '../screens/SearchScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import UpcomingScreen from '../screens/UpcomingScreen';
 
 /* Other Screens */
-import ChooseLocationScreen from '../screens/ChooseLocationScreen';
+import ChefActionsScreen from '../screens/ChefActionsScreen';
 import ChefPageViewScreen from '../screens/ChefPageViewScreen';
+import ChooseLocationScreen from '../screens/ChooseLocationScreen';
 import ConfirmEventScreen from '../screens/ConfirmEventScreen';
 import EventDetailsScreen from '../screens/EventDetailsScreen';
-import SearchResultsScreen from '../screens/SearchResultsScreen';
 import MapScreen from '../screens/MapScreen';
 import RootNavigation from './RootNavigation';
+import SearchResultsScreen from '../screens/SearchResultsScreen';
 
 export default createRouter(() => ({
   auth: () => AuthScreen,
   login: () => LoginScreen,
   signup: () => SignupScreen,
-  search: () => SearchScreen,
-  searchResults: () => SearchResultsScreen,
-  map: () => MapScreen,
-  upcoming: () => UpcomingScreen,
+
   profile: () => ProfileScreen,
+  search: () => SearchScreen,
   settings: () => SettingsScreen,
-  chooseLocation: () => ChooseLocationScreen,
+  upcoming: () => UpcomingScreen,
+
+  chefActions: () => ChefActionsScreen,
   chefPageView: () => ChefPageViewScreen,
+  chooseLocation: () => ChooseLocationScreen,
   confirmEvent: () => ConfirmEventScreen,
   eventDetailsView: () => EventDetailsScreen,
+  map: () => MapScreen,
   rootNavigation: () => RootNavigation,
+  searchResults: () => SearchResultsScreen,
 }));
