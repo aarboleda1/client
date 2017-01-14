@@ -25,6 +25,7 @@ class ChefActionsScreen extends Component {
       loading: true,
       locations: [],
       restrictions: [],
+      dishes: [],
     };
   }
 
@@ -46,6 +47,7 @@ class ChefActionsScreen extends Component {
           imageURL: chefData.imageURL || context.state.imageURL,
           locations: chefData.locations || context.state.locations,
           restrictions: chefData.restrictions || context.state.restrictions,
+          dishes: chefData.dishes || context.state.dishes,
           loading: false,
         });
       })
@@ -71,7 +73,6 @@ class ChefActionsScreen extends Component {
           placeholder="Avatar Image URL (Optional)"
           defaultValue={this.state.imageURL}
         />
-
         {/* Implement some way for the user to edit locations */}
         <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Locations:</Text>
         {this.state.locations.map((location, index) =>
@@ -92,6 +93,18 @@ class ChefActionsScreen extends Component {
           onPress={()=>alert('Under Construction')}
         />
 
+        <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Dishes:</Text>
+        {this.state.dishes.map((dish, index) =>
+          <Text key={index}>{dish.name}</Text>
+        )}
+        <Button
+          title="Edit Dishes"
+          onPress={()=>alert('Under Construction')}
+        />
+        <Button
+          title="Save Chef Profile"
+          onPress={()=>alert('Under Construction')}
+        />
       </ScrollView>
     );
   }

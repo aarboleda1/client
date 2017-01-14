@@ -9,6 +9,7 @@ import {
 
 import {
   clearAuthToken,
+  clearCurrentChef,
   clearCurrentUser,
 } from '../actions/authActions';
 
@@ -42,6 +43,7 @@ class SettingsScreen extends React.Component {
     function finishAuth() {
       AsyncStorage.removeItem('AuthToken').then(function() {
         context.props.dispatch(clearAuthToken());
+        context.props.dispatch(clearCurrentChef());
         context.props.dispatch(clearCurrentUser());
         rootNavigator.immediatelyResetStack([Router.getRoute('auth')]);
       }).catch(function(err) {
