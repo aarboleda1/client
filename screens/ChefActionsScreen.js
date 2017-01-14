@@ -6,17 +6,22 @@ import {
   ActivityIndicator,
   TextInput,
   Button,
+  Modal,
 } from 'react-native';
 
 import { serverURI } from '../config';
+
+import {
+  setMapContext,
+} from '../actions/mapContextActions';
 
 import { connect } from 'react-redux';
 
 class ChefActionsScreen extends Component {
   static route = {
     navigationBar: {
-      title: 'Chef Actions'
-    }
+      title: 'Chef Actions',
+    },
   }
 
   constructor(props) {
@@ -29,12 +34,19 @@ class ChefActionsScreen extends Component {
     };
   }
 
+  toggleState(key) {
+    let update = {};
+    update[key] = !this.state[key];
+    this.setState(update);
+  }
+
   componentWillMount() {
     let context = this;
     console.log(`GET TO ${serverURI}/chefs/userId/${this.props.currentUser}`);
     fetch(`${serverURI}/chefs/userId/${this.props.currentUser}`)
       .then(function(resp) {
-        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+        let contentType = resp.headers.map['content-type'];
+        if(contentType && contentType === "application/json; charset=utf-8") {
           return resp.json();
         } else {
           return resp.text();
@@ -54,6 +66,11 @@ class ChefActionsScreen extends Component {
       .catch(function(err) {
         alert(err);
       });
+  }
+
+  addLocation() {
+    this.props.dispatch(setMapContext('chefActions'));
+    this.props.navigator.push('chooseLocation');
   }
 
   render() {
@@ -80,7 +97,7 @@ class ChefActionsScreen extends Component {
         )}
         <Button
           title="Edit Locations"
-          onPress={()=>alert('Under Construction')}
+          onPress={this.toggleState.bind(this, 'showLocationsModal')}
         />
 
         {/* Add buttons for toggling restrictions */}
@@ -90,7 +107,7 @@ class ChefActionsScreen extends Component {
         )}
         <Button
           title="Edit Restrictions"
-          onPress={()=>alert('Under Construction')}
+          onPress={this.toggleState.bind(this, 'showRestrictionsModal')}
         />
 
         <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Dishes:</Text>
@@ -99,12 +116,64 @@ class ChefActionsScreen extends Component {
         )}
         <Button
           title="Edit Dishes"
-          onPress={()=>alert('Under Construction')}
+          onPress={this.toggleState.bind(this, 'showDishesModal')}
         />
         <Button
           title="Save Chef Profile"
           onPress={()=>alert('Under Construction')}
         />
+
+        <Modal
+          animationType={"slide"}
+          transparent={false}
+          visible={!!this.state.showLocationsModal}>
+          <ScrollView style={[styles.textPadding, styles.modal]}>
+            <Text>Locations Modal</Text>
+            {this.state.locations.map((location, index) =>
+              <Text key={index}>{location}</Text>
+            )}
+            <Button
+              title="Add Location"
+              onPress={this.addLocation.bind(this)}
+              />
+            <Button
+              title="Close"
+              onPress={this.toggleState.bind(this, 'showLocationsModal')}
+              />
+          </ScrollView>
+        </Modal>
+
+        <Modal
+          animationType={"slide"}
+          transparent={false}
+          visible={!!this.state.showRestrictionsModal}>
+          <ScrollView style={[styles.textPadding, styles.modal]}>
+            <Text>Restrictions Modal</Text>
+            {this.state.restrictions.map((restriction, index) =>
+              <Text key={index}>{restriction}</Text>
+            )}
+            <Button
+              title="Close"
+              onPress={this.toggleState.bind(this, 'showRestrictionsModal')}
+              />
+          </ScrollView>
+        </Modal>
+
+        <Modal
+          animationType={"slide"}
+          transparent={false}
+          visible={!!this.state.showDishesModal}>
+          <ScrollView style={[styles.textPadding, styles.modal]}>
+            <Text>Dishes Modal</Text>
+            {this.state.dishes.map((dish, index) =>
+              <Text key={index}>{dish}</Text>
+            )}
+            <Button
+              title="Close"
+              onPress={this.toggleState.bind(this, 'showDishesModal')}
+              />
+          </ScrollView>
+        </Modal>
       </ScrollView>
     );
   }
@@ -127,10 +196,14 @@ const styles = StyleSheet.create({
   verticalMargins: {
     marginVertical: 8,
   },
+  modal: {
+    paddingTop: 15,
+  },
 });
 
-function mapStateToProps({currentUser}) {
+function mapStateToProps({currentChef, currentUser}) {
   return {
+    currentChef,
     currentUser,
   }
 }

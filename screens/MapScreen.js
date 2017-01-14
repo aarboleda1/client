@@ -67,11 +67,6 @@ class MapScreen extends React.Component {
 		this.props.dispatch(clearMapContext());
 		this.props.navigator.pop(2);
 	}
-
-  _confirm() {
-    this.props.dispatch(setSearchLocation(this.props.route.params.city));
-    this.props.navigator.pop(2);
-  }
 	
 	render() {
 		// const {height, width} = Dimensions.get('window');
