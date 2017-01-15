@@ -7,14 +7,18 @@ import {
   TextInput,
   Button,
   Modal,
+  View
 } from 'react-native';
 
 import CheckBox from 'react-native-checkbox';
+
 
 import { serverURI } from '../config';
 
 import { setMapContext } from '../actions/mapContextActions';
 import { clearChefLocation } from '../actions/chefActions';
+
+import DishViewEntry from '../components/DishViewEntry';
 
 import { connect } from 'react-redux';
 
@@ -32,7 +36,20 @@ class ChefActionsScreen extends Component {
       locations: [],
       restrictions: ['Eggs', 'Dairy', 'Peanuts', 'Tree Nuts', 'Seafood', 'Shellfish', 'Wheat', 'Soy',
         'Gluten', 'Vegetarian', 'Vegan', 'Halal', 'Kosher'],
-      dishes: [],
+      dishes: [{
+        name: 'Pasta',
+        text: 'Yummy pasta',
+        image: 'http://mymansbelly.com/wp-content/uploads/2009/12/Brown_Butter_Fall_Pasta_url.jpg',
+        restrictions: ['vegan', 'dairy'],
+        cuisines: ['Italian']
+      },
+      { name: 'Steak',
+        text: 'Deliciosuly cooked medium rare',
+        image: 'https://www.homewetbar.com/blog/wp-content/uploads/2014/04/how-to-grill-steak.jpg',
+        restrictions: null,
+        cuisines: ['American']
+      }
+      ],
       checkedRestrictions: []
     };
   }
@@ -42,6 +59,7 @@ class ChefActionsScreen extends Component {
     update[key] = !this.state[key];
     this.setState(update);
   }
+
 
   componentWillMount() {
     let context = this;
@@ -69,6 +87,7 @@ class ChefActionsScreen extends Component {
       .catch(function(err) {
         alert(err);
       });
+
   }
 
   addLocation() {
@@ -93,6 +112,18 @@ class ChefActionsScreen extends Component {
       this.state.checkedRestrictions.push(restriction);
     }
   }
+
+  // renderDishes() {
+  //   console.log(Array.isArray(JSON.parse(this.state.dishes)));
+  //   let dishArray = JSON.parse(this.state.dishes);
+  //   return dishArray.map((dish, index) => {
+  //     <View>
+  //     <DishViewEntry
+  //       dish={dish}
+  //     />
+  //     </View>
+  //   });
+  // }
 
   render() {
     return ( this.state.loading ? <ActivityIndicator size="large" style={styles.flex} /> :
@@ -132,9 +163,7 @@ class ChefActionsScreen extends Component {
         />
 
         <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Dishes:</Text>
-        {this.state.dishes.map((dish, index) =>
-          <Text key={index}>{dish.name}</Text>
-        )}
+    
         <Button
           title="Edit Dishes"
           onPress={this.toggleState.bind(this, 'showDishesModal')}
@@ -200,10 +229,16 @@ class ChefActionsScreen extends Component {
           transparent={false}
           visible={!!this.state.showDishesModal}>
           <ScrollView style={[styles.textPadding, styles.modal]}>
-            <Text>Dishes Modal</Text>
-            {this.state.dishes.map((dish, index) =>
-              <Text key={index}>{dish}</Text>
-            )}
+            <Text>Your Dishes</Text>
+            {this.state.dishes.map((dish, index) => {
+              return (
+                <View key={index}>
+                  <Text>
+                    {dish.name}
+                  </Text>
+                </View>
+              )
+            })}
             <Button
               title="Close"
               onPress={this.toggleState.bind(this, 'showDishesModal')}
