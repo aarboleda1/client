@@ -83,6 +83,7 @@ class ChefActionsScreen extends Component {
       this.props.dispatch(clearChefLocation());
       this.setState({ locations: newLocations });
     }
+
   };
 
   _addOrRemoveRestriction (restriction) {
@@ -122,6 +123,9 @@ class ChefActionsScreen extends Component {
 
         {/* Add buttons for toggling restrictions */}
         <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Restrictions:</Text>
+        {this.state.checkedRestrictions.map((restriction) => {
+          <Text key={restriction}>{restriction}</Text>
+        })}
         <Button
           title="Edit Restrictions"
           onPress={this.toggleState.bind(this, 'showRestrictionsModal')}
@@ -144,7 +148,7 @@ class ChefActionsScreen extends Component {
           animationType="fade"
           transparent={false}
           visible={!!this.state.showLocationsModal}>
-          <ScrollView style={[styles.textPadding, styles.modal]}>
+          <ScrollView>
             <Text>Locations Modal</Text>
             <TextInput
               onChangeText={(text) => this.setState({locations})}
@@ -168,13 +172,17 @@ class ChefActionsScreen extends Component {
           animationType="fade"
           transparent={false}
           visible={!!this.state.showRestrictionsModal}>
-          <ScrollView style={[styles.textPadding, styles.modal]}>
-            <Text style={styles.titleText}>Choose Your Dietary Cooking Restrictions</Text>
+          <ScrollView contentContainerStyle={styles.modalStyle}>
+            <Text style={styles.titleText}>Restrictions</Text>
             
             {this.state.restrictions.map((restriction) => 
               <CheckBox
+                style={{backgroundColor: 'blue'}}
+                checkboxStyle={styles.checkBox}
                 key={restriction}
                 label={restriction}
+                labelStyle={styles.labelText}
+                underlayColor={'#d3d3d3'}
                 onChange={() => 
                   this._addOrRemoveRestriction(restriction)}
               />
@@ -230,7 +238,26 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 20,
     fontWeight: 'bold',
+    paddingBottom: 10,
+    textDecorationLine: 'underline'
   },
+  labelText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#000'
+
+  },
+  modalStyle: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    marginLeft: 35,
+    marginTop: 30,
+  },
+  checkBox: {
+    backgroundColor: '#EDEDED'
+  }
 });
 
 function mapStateToProps(state) {
