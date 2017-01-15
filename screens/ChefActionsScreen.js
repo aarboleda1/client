@@ -9,6 +9,8 @@ import {
   Modal,
 } from 'react-native';
 
+import CheckBox from 'react-native-checkbox';
+
 import { serverURI } from '../config';
 
 import { setMapContext } from '../actions/mapContextActions';
@@ -28,8 +30,10 @@ class ChefActionsScreen extends Component {
     this.state = {
       loading: true,
       locations: [],
-      restrictions: [],
+      restrictions: ['Eggs', 'Dairy', 'Peanuts', 'Tree Nuts', 'Seafood', 'Shellfish', 'Wheat', 'Soy',
+        'Gluten', 'Vegetarian', 'Vegan', 'Halal', 'Kosher'],
       dishes: [],
+      checkedRestrictions: []
     };
   }
 
@@ -79,6 +83,14 @@ class ChefActionsScreen extends Component {
       this.props.dispatch(clearChefLocation());
       this.setState({ locations: newLocations });
     }
+  };
+
+  _addOrRemoveRestriction (restriction) {
+    if (this.state.checkedRestrictions.includes(restriction)) {
+      this.state.checkedRestrictions.splice(restriction, 1);
+    } else {
+      this.state.checkedRestrictions.push(restriction);
+    }
   }
 
   render() {
@@ -110,9 +122,6 @@ class ChefActionsScreen extends Component {
 
         {/* Add buttons for toggling restrictions */}
         <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Restrictions:</Text>
-        {this.state.restrictions.map((restriction, index) =>
-          <Text key={index}>{restriction}</Text>
-        )}
         <Button
           title="Edit Restrictions"
           onPress={this.toggleState.bind(this, 'showRestrictionsModal')}
@@ -137,6 +146,9 @@ class ChefActionsScreen extends Component {
           visible={!!this.state.showLocationsModal}>
           <ScrollView style={[styles.textPadding, styles.modal]}>
             <Text>Locations Modal</Text>
+            <TextInput
+              onChangeText={(text) => this.setState({locations})}
+            />
             {this.state.locations.map((location, index) =>
               <Text key={index}>{location}</Text>
             )}
@@ -151,15 +163,23 @@ class ChefActionsScreen extends Component {
           </ScrollView>
         </Modal>
 
+
         <Modal
           animationType="fade"
           transparent={false}
           visible={!!this.state.showRestrictionsModal}>
           <ScrollView style={[styles.textPadding, styles.modal]}>
-            <Text>Restrictions Modal</Text>
-            {this.state.restrictions.map((restriction, index) =>
-              <Text key={index}>{restriction}</Text>
-            )}
+            <Text style={styles.titleText}>Choose Your Dietary Cooking Restrictions</Text>
+            
+            {this.state.restrictions.map((restriction) => 
+              <CheckBox
+                key={restriction}
+                label={restriction}
+                onChange={() => 
+                  this._addOrRemoveRestriction(restriction)}
+              />
+            )}            
+
             <Button
               title="Close"
               onPress={this.toggleState.bind(this, 'showRestrictionsModal')}
@@ -206,6 +226,10 @@ const styles = StyleSheet.create({
   },
   modal: {
     paddingTop: 15,
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 
