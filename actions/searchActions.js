@@ -30,4 +30,4 @@ module.exports = {
   clearSearchPrices: function() {
     return { type: 'CLEAR_SEARCH_PRICES' };
   },
-}
+};

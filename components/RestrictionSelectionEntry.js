@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     restrictions: state.search.restrictions,
-  }
+  };
 }
 
 export default connect(mapStateToProps)(RestrictionSelectionEntry);

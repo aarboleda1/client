@@ -6,4 +6,4 @@ module.exports = {
   clearChefLocation: function() {
     return { type: 'CLEAR_CHEF_LOCATION' };
   },
-}
+};
