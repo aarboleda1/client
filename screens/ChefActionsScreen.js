@@ -7,18 +7,18 @@ import {
   TextInput,
   Button,
   Modal,
-  View
+  View,
 } from 'react-native';
 
 import CheckBox from 'react-native-checkbox';
-
-
 import { serverURI } from '../config';
 
 import { setMapContext } from '../actions/mapContextActions';
 import { clearChefLocation } from '../actions/chefActions';
 
 import DishViewEntry from '../components/DishViewEntry';
+import ListItem from '../components/ListItem';
+import ListItemSection from '../components/ListItemSection';
 
 import { connect } from 'react-redux';
 
@@ -37,14 +37,14 @@ class ChefActionsScreen extends Component {
       restrictions: ['Eggs', 'Dairy', 'Peanuts', 'Tree Nuts', 'Seafood', 'Shellfish', 'Wheat', 'Soy',
         'Gluten', 'Vegetarian', 'Vegan', 'Halal', 'Kosher'],
       dishes: [{
-        name: 'Pasta',
-        text: 'Yummy pasta',
+        name: 'Pasta Carbonara',
+        text: 'Rich, delicious, creamy pasta',
         image: 'http://mymansbelly.com/wp-content/uploads/2009/12/Brown_Butter_Fall_Pasta_url.jpg',
         restrictions: ['vegan', 'dairy'],
         cuisines: ['Italian']
       },
-      { name: 'Steak',
-        text: 'Deliciosuly cooked medium rare',
+      { name: 'Filet Mignon with Rich Balsamic Glaze',
+        text: `This is a great Valentine’s Day meal. The red wine and balsamic glaze may be the best sauce you've ever tasted! Try these tender steaks with asparagus and baby red potatoes.`,
         image: 'https://www.homewetbar.com/blog/wp-content/uploads/2014/04/how-to-grill-steak.jpg',
         restrictions: null,
         cuisines: ['American']
@@ -113,17 +113,17 @@ class ChefActionsScreen extends Component {
     }
   }
 
-  // renderDishes() {
-  //   console.log(Array.isArray(JSON.parse(this.state.dishes)));
-  //   let dishArray = JSON.parse(this.state.dishes);
-  //   return dishArray.map((dish, index) => {
-  //     <View>
-  //     <DishViewEntry
-  //       dish={dish}
-  //     />
-  //     </View>
-  //   });
-  // }
+  renderDishes() {
+    return this.state.dishes.map((dish, index) => {
+      return (
+      <View key={index}>
+        <DishViewEntry
+        dish={dish}
+        />
+      </View>
+      )
+    });
+  }
 
   render() {
     return ( this.state.loading ? <ActivityIndicator size="large" style={styles.flex} /> :
@@ -196,7 +196,6 @@ class ChefActionsScreen extends Component {
           </ScrollView>
         </Modal>
 
-
         <Modal
           animationType="fade"
           transparent={false}
@@ -229,16 +228,16 @@ class ChefActionsScreen extends Component {
           transparent={false}
           visible={!!this.state.showDishesModal}>
           <ScrollView style={[styles.textPadding, styles.modal]}>
-            <Text>Your Dishes</Text>
-            {this.state.dishes.map((dish, index) => {
-              return (
-                <View key={index}>
-                  <Text>
-                    {dish.name}
-                  </Text>
-                </View>
-              )
-            })}
+            <Text style={styles.titleText}>Your Dishes</Text>
+              {this.renderDishes()}
+            {/*Add Button, which takes the user to new screen
+              to create a new dish
+            */}
+          <ListItem>
+            <ListItemSection>
+              <Text>{'+ Add New Dish'}</Text>
+            </ListItemSection>
+          </ListItem>
             <Button
               title="Close"
               onPress={this.toggleState.bind(this, 'showDishesModal')}
@@ -274,7 +273,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     paddingBottom: 10,
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
+    justifyContent: 'center'
   },
   labelText: {
     fontSize: 16,
