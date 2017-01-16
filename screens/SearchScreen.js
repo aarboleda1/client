@@ -1,19 +1,16 @@
 import React from 'react';
 import {
+  Button,
+  Dimensions,
+  Picker,
   ScrollView,
   StyleSheet,
   TextInput,
-  View,
-  Picker,
-  Dimensions,
-  Button,
   Text,
   TouchableHighlight,
+  View,
 } from 'react-native';
-import {
-  FontAwesome,
-
-} from '@exponent/vector-icons';
+import { FontAwesome } from '@exponent/vector-icons';
 
 import Router from '../navigation/Router';
 import Colors from '../constants/Colors';
@@ -22,74 +19,18 @@ import RestrictionSelectionEntry from '../components/RestrictionSelectionEntry';
 
 import { connect } from 'react-redux';
 
-
 import {
   setSearchCuisine,
   toggleSearchRestriction,
 } from '../actions/searchActions';
 
 import { serverURI } from '../config';
-import Collapsible from 'react-native-collapsible';
-
-// var BaseCollapse = require('pui-react-collapse').BaseCollapse;
-// var AltCollapse = require('pui-react-collapse').AltCollapse;
-// var Collapse = require('pui-react-collapse').Collapse;
+import Panel from '../components/Panel';
+import SquareSelection from '../components/SquareRestrictions';
 
 // ************ Begin Styling **************
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const WINDOW_HEIGHT = Dimensions.get('window').height;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#F7F7F7',
-    flex: 1,
-    // paddingTop: 540,
-    // justifyContent: 'flex-end',
-  },
-  button: {
-    borderColor: '#05A5D1',
-    borderWidth: 4,
-    backgroundColor: '#333',
-    margin: 20,
-    height: WINDOW_HEIGHT / 12,
-    width: WINDOW_WIDTH / 1.1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    // flex: 1,
-    // flexDirection: 'column',
-  },
-  buttonText: {
-    color: '#FAFAFA',
-    // flex: 1,
-    fontSize: 21,
-    fontWeight: '500',
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  test: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-around'
-  }
-});
-// ************ End Styling ************
-
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     paddingTop: 15,
-//   },
-//   cuisine: {
-//     marginBottom: 12,
-//   },
-//   location: {
-//     fontSize: 16,
-//     textAlign: 'center',
-//   }
-// });
 
 class SearchScreen extends React.Component {
   constructor(props) {
@@ -154,7 +95,6 @@ class SearchScreen extends React.Component {
         }
       })
       .then(function(listings) {
-        debugger;
       }).catch(function(err) {
         alert(err);
       });
@@ -163,86 +103,123 @@ class SearchScreen extends React.Component {
   }
 
   render() {
-    const {height, width} = Dimensions.get('window'); //This must be in the render function to adjust to device rotation
-
-    const dynamicStyles = StyleSheet.create({
-      restrictions: {
-        width: width * 0.75,
-        marginLeft: width * 0.25 / 2,
-        marginBottom: 12,
-      },
-      pricing: {
-        width: width * 0.75,
-        marginLeft: width * 0.25 / 2,
-        marginBottom: 12,
-      },
-    });
-    // console.log(this.state.location);
-
     const context = this;
     return (
-     
       <ScrollView
         style={styles.container}
         contentContainerStyle={[this.props.route.getContentContainerStyle()]}>
+        <Text style={styles.text}>Order Specification </Text>
 
-        <Text style={styles.text}>Select Cuisine Type:</Text>
-
-        <Picker
+        <Panel title="Select Cuisine Type"
           selectedValue={this.state.cuisine}
           onValueChange={(type) => {
             this.setState({ cuisine: type });
             return context.props.dispatch(setSearchCuisine(type));
-          }}
-          style={styles.cuisine}>
-           <Picker.Item label="Italian" value="italian" />
-           <Picker.Item label="Asian" value="asian" />
-           <Picker.Item label="Korean" value="korean" />
-           <Picker.Item label="Pastry" value="pastry" />
-        </Picker>
-        <Text style={styles.text}>Select Restrictions:</Text>
+          }}>
+            <RestrictionSelectionEntry name="Asian" />
+            <RestrictionSelectionEntry name="Italian" />
+            <RestrictionSelectionEntry name="Spanish" />
+            <RestrictionSelectionEntry name="Mediterranean" />
+            <RestrictionSelectionEntry name="Pastry" />
+        </Panel>
 
-        <RestrictionSelectionEntry name="Dairy" />
-        <RestrictionSelectionEntry name="Eggs" />
-        <RestrictionSelectionEntry name="Halal" />
-        <RestrictionSelectionEntry name="Kosher" />
-        <RestrictionSelectionEntry name="Tree Nuts" />
-        <RestrictionSelectionEntry name="Peanuts" />
-        <RestrictionSelectionEntry name="Wheat" />
-        <RestrictionSelectionEntry name="Soy" />
-        <RestrictionSelectionEntry name="Gluten" />
-        <RestrictionSelectionEntry name="Seafood" />
-        <RestrictionSelectionEntry name="Shellfish" />
-        <RestrictionSelectionEntry name="Vegan" />
-        <RestrictionSelectionEntry name="Vegetarian" />
+        <Panel title="Select Restrictions">
+          <Text style={{fontSize : 20}}>Allergens</Text>
+            <View style={styles.square}>
+              <SquareSelection name="Dairy"  />
+              <SquareSelection name="Eggs" />
+              <SquareSelection name="Peanuts" />
+              <SquareSelection name="Tree Nuts" />
+              <SquareSelection name="Gluten" />
+              <SquareSelection name="Soy" />
+              <SquareSelection name="Seafood" />
+              <SquareSelection name="Shellfish" />
+            </View>
+          <Text style={{fontSize : 20, paddingTop: 10}}>Food</Text>
+            <View style={styles.square}>
+              <SquareSelection name="Halal" />
+              <SquareSelection name="Kosher" />
+              <SquareSelection name="Vegetarian" />
+              <SquareSelection name="Vegan" />
+            </View>
+        </Panel>
 
-        <TouchableHighlight
-          style={styles.button}
-          onPress={this._chooseLocation.bind(this)}>
-          <Text style={styles.buttonText}>
-            Choose Location
+        <Text style={styles.location}>
+          Location: {this.props.search.location || 'not currently set'}
+        </Text>
+         
+         <TouchableHighlight
+         style={styles.touchHighlight}
+         onPress={this._chooseLocation.bind(this)}
+         >
+          <Text style={styles.touchHighlightText}>
+            Set Location
           </Text>
         </TouchableHighlight>
 
-        <Text style={styles.location}>
-          {this.props.search.location || 'Location not set'}
-        </Text>
+
 
         {this.state.location ?
           <Text style={styles.location}>{this.state.location}</Text> : null}
 
         <Button
           onPress={this._search.bind(this)}
+          // style={{color: 'black'}}}
           title="Search"
         >
-          <FontAwesome name='search' size={16} color='#FFF' comment='This does not render'/>
         </Button>
-
       </ScrollView>
-  
     );
   }
 }
+
+var styles = StyleSheet.create({
+  container: {
+    flex            : 1,
+    backgroundColor : '#e7e7e6',
+    paddingTop      : 30,
+
+  },
+  text: {
+    fontSize: 25,
+    paddingLeft: 13,
+    color: 'black',
+    fontWeight: '600',
+  },
+  touchHighlight: {
+    borderColor: 'black',
+    borderWidth: 4,
+    backgroundColor: '#4b3832',
+    margin: 20,
+    height: WINDOW_HEIGHT / 12,
+    width: WINDOW_WIDTH / 1.1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // flex: 1,
+    // flexDirection: 'column',
+  },
+  touchHighlightText: {
+    color: '#FAFAFA',
+    // flex: 1,
+    fontSize: 21,
+    fontWeight: '500',
+  },
+  square: {
+    flex: 1,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    margin: 1,
+  },
+  location: {
+    fontSize: 20,
+    alignSelf: 'center'
+  },
+  button: {
+    fontSize: 30, 
+    color: 'black'
+  }
+});
 
 
 function mapStateToProps(state, ownProps) {

@@ -11,7 +11,7 @@ import {
 import RestrictionSelectionEntry from '../components/RestrictionSelectionEntry';
 import SquareSelection from '../components/SquareRestrictions';
 
-import Panel from './test2';  // Step 1
+import Panel from '../components/Panel';  // Step 1
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const WINDOW_HEIGHT = Dimensions.get('window').height;
@@ -58,8 +58,9 @@ class Panels extends React.Component {
 
         </Panel>
 
-        <TouchableHighlight style={styles.button}>
-          
+        <TouchableHighlight
+         style={styles.button}
+         >
           <Text style={styles.buttonText}>
             Set Location
           </Text>

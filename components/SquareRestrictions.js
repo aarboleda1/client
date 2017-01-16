@@ -28,15 +28,20 @@ const styles = StyleSheet.create({
   },
 });
 
-
 class SquareRestrictions extends React.Component {
   constructor(props) {
       super(props);
   }
 
+  _testClick(){
+  }
+
   render(){
     return (
-      <TouchableHighlight title={this.props.name} style={styles.a} >
+      <TouchableHighlight 
+      title={this.props.name} 
+      style={styles.a}
+      onPress={this._testClick.bind(this)} >
           <Text style={styles.buttonText}>{this.props.name}</Text>
       </TouchableHighlight>
     )

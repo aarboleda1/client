@@ -9,7 +9,6 @@ class Panel extends React.Component{
             'up'    : require('../Images/Arrowhead-01-128.png'),
             'down'  : require('../Images/Arrowhead-Down-01-128.png')
         };
-
         this.state = {
             title       : props.title,
             expanded    : true,
@@ -18,24 +17,22 @@ class Panel extends React.Component{
     }
 
     toggle(){
-        //Step 1
     let initialValue = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight;
     let finalValue = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
 
     this.setState({
-        expanded : !this.state.expanded  //Step 2
+        expanded : !this.state.expanded  
     });
 
-    this.state.animation.setValue(initialValue);  //Step 3
+    this.state.animation.setValue(initialValue);  
     Animated.spring(
         this.state.animation,
         {
             toValue: finalValue
         }
-    ).start();  //Step 5
+    ).start();  
         
     }
-
 
      _setMaxHeight(event){
         this.setState({

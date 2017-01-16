@@ -8,7 +8,7 @@ import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 
 /* Tab Bar Screens */
-import SearchScreen from '../screens/testScreen';
+import SearchScreen from '../screens/SearchScreen';
 import UpcomingScreen from '../screens/UpcomingScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
