@@ -113,7 +113,7 @@ class ChefActionsScreen extends Component {
   }
 
   renderDishes() {
-    return this.state.dishes.map((dish, index) => {
+    return this.props.dishes.dishList.map((dish, index) => {
       return (
       <View key={index}>
         <DishViewEntry
