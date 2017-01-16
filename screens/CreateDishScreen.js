@@ -129,6 +129,7 @@ class CreateDishScreen extends Component {
           visible={!!this.state.setCuisinesModal}> 
           <Button
             title="Save"
+            style={{flexDirection: 'column', justifyContent: 'flex-end'}}
             onPress={this.toggleState.bind(this, 'setCuisinesModal')}
           />
         </Modal>
