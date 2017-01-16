@@ -202,7 +202,7 @@ class SearchScreen extends React.Component {
         </Picker>
         <Text style={styles.text}>Select Restrictions:</Text>
 
-        <RestrictionSelectionEntry name="Dairy" style={styles.test} />
+        <RestrictionSelectionEntry name="Dairy" />
         <RestrictionSelectionEntry name="Eggs" />
         <RestrictionSelectionEntry name="Halal" />
         <RestrictionSelectionEntry name="Kosher" />
