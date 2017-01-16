@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   button: {
-  	borderColor: '#05A5D1',
+    borderColor: '#05A5D1',
   	borderWidth: 2,
   	backgroundColor: '#333',
   	margin: 20,
