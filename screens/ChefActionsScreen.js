@@ -15,6 +15,7 @@ import { serverURI } from '../config';
 
 import { setMapContext } from '../actions/mapContextActions';
 import { clearChefLocation } from '../actions/chefActions';
+import dishActions from '../actions/dishActions';
 
 import DishViewEntry from '../components/DishViewEntry';
 import ListItem from '../components/ListItem';
@@ -36,20 +37,6 @@ class ChefActionsScreen extends Component {
       locations: [],
       restrictions: ['Eggs', 'Dairy', 'Peanuts', 'Tree Nuts', 'Seafood', 'Shellfish', 'Wheat', 'Soy',
         'Gluten', 'Vegetarian', 'Vegan', 'Halal', 'Kosher'],
-      dishes: [{
-        name: 'Pasta Carbonara',
-        text: 'Rich, delicious, creamy pasta',
-        image: 'http://mymansbelly.com/wp-content/uploads/2009/12/Brown_Butter_Fall_Pasta_url.jpg',
-        restrictions: ['vegan', 'dairy'],
-        cuisines: ['Italian']
-      },
-      { name: 'Filet Mignon with Rich Balsamic Glaze',
-        text: `This is a great Valentine’s Day meal. The red wine and balsamic glaze may be the best sauce you've ever tasted! Try these tender steaks with asparagus and baby red potatoes.`,
-        image: 'https://www.homewetbar.com/blog/wp-content/uploads/2014/04/how-to-grill-steak.jpg',
-        restrictions: null,
-        cuisines: ['American']
-      }
-      ],
       checkedRestrictions: []
     };
   }
@@ -110,6 +97,11 @@ class ChefActionsScreen extends Component {
     } else {
       this.state.checkedRestrictions.push(restriction);
     }
+  }
+
+  _handleCreateDishPress () {
+    this.toggleState('showDishesModal');
+    this.props.navigator.push('createDishView');
   }
 
   renderDishes() {
@@ -236,7 +228,7 @@ class ChefActionsScreen extends Component {
             <ListItemSection>
             <Button 
               title="+Add New Dish"
-              onPress={() => console.log('Add new dish')}
+              onPress={ this._handleCreateDishPress.bind(this) }
             />
             </ListItemSection>
           </ListItem>

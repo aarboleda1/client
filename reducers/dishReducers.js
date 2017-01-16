@@ -16,15 +16,33 @@ export default function dishReducers(state = {
   dish: {}
 }, action) {
   switch (action.type) {
-    case 'UPDATE_DISH':
-      return Object.assign({}, state, { dish: action.dish });
-      break;
-    case 'UPDATE_DISH_LIST':
-      return Object.assign({}, state, {dishList: action.dishList});
-    default:
-      return state;
+  case 'UPDATE_NAME':
+    return Object.assign({}, state, { name: action.name });
+    break;
+  case 'UPDATE_TEXT':
+    return Object.assign({}, state, { text: action.text });
+    break;
+  case 'UPDATE_PRICE':
+    return Object.assign({}, state, {price: action.price});
+    break;
+  case 'UPDATE_RESTRICTIONS':
+    return Object.assign({}, state, { restrictions: action.restrictions });
+    break;
+  case 'UPDATE_CUISINE':
+    return Object.assign({}, state, { cuisine: action.cuisine });
+    break;
+  case 'UPDATE_DISH':
+    return Object.assign({}, state, { dish: action.dish });
+    break;
+  case 'ADD_TO_DISH_LIST':
+    return Object.assign({}, state, {dishList: action.dishList});
+    break;
+  case 'REMOVE_FROM_DISHLIST':
+    return Object.assign({}, state, {dishList: action.dishList});
+  default:
+    return state;
   }
 }
-// should control state of dish lits
+// should control state of dish list
 //should also control state of individual dishes
 //update actions such as update name, title, 
