@@ -8,7 +8,7 @@ export default function searchReducers(state = {}, action) {
       break;
     case 'TOGGLE_SEARCH_RESTRICTION':
       {
-        let update = {}
+        let update = {};
         update[action.restriction] = !state.restrictions[action.restriction];
         let newRestrictions = Object.assign({}, state.restrictions, update);
         return Object.assign({}, state, {restrictions: newRestrictions});
@@ -16,7 +16,7 @@ export default function searchReducers(state = {}, action) {
       break;
     case 'TOGGLE_SEARCH_PRICE':
       {
-        let update = {}
+        let update = {};
         update[action.price] = !state.prices[action.price];
 
         let newPrices = Object.assign({}, state.prices, update);
