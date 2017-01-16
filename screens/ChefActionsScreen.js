@@ -100,6 +100,7 @@ class ChefActionsScreen extends Component {
   }
 
   _handleCreateDishPress () {
+    // Needs some touching up, has a weird glitch where you see chefAction Screen
     this.toggleState('showDishesModal');
     this.props.navigator.push('createDishView');
   }
@@ -221,9 +222,6 @@ class ChefActionsScreen extends Component {
           <ScrollView style={[styles.textPadding, styles.modal]}>
             <Text style={styles.titleText}>Your Dishes</Text>
               {this.renderDishes()}
-            {/*Add Button, which takes the user to new screen
-              to create a new dish
-            */}
           <ListItem>
             <ListItemSection>
             <Button 
