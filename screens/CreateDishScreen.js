@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import ListItem from '../components/ListItem';
 import ListItemSection from '../components/ListItemSection';
 
-
+//this.props.route..params
 class CreateDishScreen extends Component {
   constructor (props) {
     super(props);
