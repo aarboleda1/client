@@ -6,7 +6,7 @@ import { View } from 'react-native';
 
 const ListItemSection = (props) => {
   return (
-    <View style={styles.containerStyle}>
+    <View style={ styles.containerStyle }>
       {props.children}
     </View>
   );
