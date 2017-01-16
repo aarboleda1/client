@@ -16,22 +16,22 @@ export default function dishReducers(state = {
   dish: {}
 }, action) {
   switch (action.type) {
-  case 'UPDATE_NAME':
+  case 'UPDATE_DISH_NAME':
     return Object.assign({}, state, { name: action.name });
     break;
-  case 'UPDATE_TEXT':
+  case 'UPDATE_DISH_TEXT':
     return Object.assign({}, state, { text: action.text });
     break;
-  case 'UPDATE_PRICE':
+  case 'UPDATE_DISH_PRICE':
     return Object.assign({}, state, {price: action.price});
     break;
-  case 'UPDATE_RESTRICTIONS':
+  case 'UPDATE_DISH_RESTRICTIONS':
     return Object.assign({}, state, { restrictions: action.restrictions });
     break;
-  case 'UPDATE_CUISINE':
+  case 'UPDATE_DISH_CUISINES':
     return Object.assign({}, state, { cuisine: action.cuisine });
     break;
-  case 'UPDATE_DISH':
+  case 'UPDATE_ENTIRE_DISH':
     return Object.assign({}, state, { dish: action.dish });
     break;
   case 'ADD_TO_DISH_LIST':
