@@ -39,7 +39,7 @@ class Panel extends React.Component{
 
      _setMaxHeight(event){
         this.setState({
-            maxHeight   : 330
+            maxHeight   : 250
         });
     }
 
@@ -81,9 +81,10 @@ class Panel extends React.Component{
     }
 }
 
+// panel properties
 var styles = StyleSheet.create({
     container   : {
-        backgroundColor: 'white',
+        backgroundColor: '#fafbf8',
         margin:10,
         overflow:'hidden',
     },

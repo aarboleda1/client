@@ -41,7 +41,6 @@ class Panels extends React.Component {
             <SquareSelection name="Peanuts" />
             <SquareSelection name="Tree Nuts" />
             <SquareSelection name="Gluten" />
-            <SquareSelection name="Wheat" />
             <SquareSelection name="Soy" />
             <SquareSelection name="Seafood" />
             <SquareSelection name="Shellfish" />
@@ -74,7 +73,7 @@ class Panels extends React.Component {
 var styles = StyleSheet.create({
   container: {
     flex            : 1,
-    backgroundColor : '#eae9e8',
+    backgroundColor : '#e7e7e6',
     paddingTop      : 30,
 
   },
@@ -85,9 +84,9 @@ var styles = StyleSheet.create({
     fontWeight: '600',
   },
   button: {
-    borderColor: '#211408',
+    borderColor: 'black',
     borderWidth: 4,
-    backgroundColor: '#333',
+    backgroundColor: '#4b3832',
     margin: 20,
     height: WINDOW_HEIGHT / 12,
     width: WINDOW_WIDTH / 1.1,
@@ -104,10 +103,11 @@ var styles = StyleSheet.create({
   },
   square: {
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     flexDirection: 'row',
     flexWrap: 'wrap',
     margin: 1,
+
   },
 });
 

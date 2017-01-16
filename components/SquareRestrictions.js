@@ -8,8 +8,8 @@ const WINDOW_HEIGHT = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   a: {
     borderColor: 'black',
-    borderWidth: 2,
-    backgroundColor: '#333',
+    borderWidth: 3,
+    backgroundColor: '#2d2d2c',
     // overflow: 'hidden',
     margin: 1,
     padding: 2,
@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
 
   },
   buttonText: {
-    color: '#FAFAFA',
+    color: 'white',
     fontSize: 17,
-    // fontWeight: '500',
+    fontWeight: '300',
   },
 });
 
