@@ -157,14 +157,13 @@ class SearchScreen extends React.Component {
           </Text>
         </TouchableHighlight>
 
-
-
         {this.state.location ?
           <Text style={styles.location}>{this.state.location}</Text> : null}
 
         <Button
+          style={styles.button}
+          // color='red'
           onPress={this._search.bind(this)}
-          // style={{color: 'black'}}}
           title="Search"
         >
         </Button>
@@ -216,8 +215,6 @@ var styles = StyleSheet.create({
     alignSelf: 'center'
   },
   button: {
-    fontSize: 30, 
-    color: 'black'
   }
 });
 
