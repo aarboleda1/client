@@ -5,9 +5,9 @@ import {
   Text,
   ActivityIndicator,
   TextInput,
-  Button,
   Modal,
   View,
+  Button
 } from 'react-native';
 
 import CheckBox from 'react-native-checkbox';
@@ -102,7 +102,6 @@ class ChefActionsScreen extends Component {
       this.props.dispatch(clearChefLocation());
       this.setState({ locations: newLocations });
     }
-
   };
 
   _addOrRemoveRestriction (restriction) {
@@ -118,7 +117,7 @@ class ChefActionsScreen extends Component {
       return (
       <View key={index}>
         <DishViewEntry
-        dish={dish}
+          dish={dish}
         />
       </View>
       )
@@ -235,7 +234,10 @@ class ChefActionsScreen extends Component {
             */}
           <ListItem>
             <ListItemSection>
-              <Text>{'+ Add New Dish'}</Text>
+            <Button 
+              title="+Add New Dish"
+              onPress={() => console.log('Add new dish')}
+            />
             </ListItemSection>
           </ListItem>
             <Button
@@ -295,11 +297,13 @@ const styles = StyleSheet.create({
   }
 });
 
+//this.props.dish is now availabale in the app
 function mapStateToProps(state) {
   return {
     currentChef: state.currentChef,
     currentUser: state.currentUser,
     chefLocation: state.chef.location,
+    dishes: state.dishes,
     state,
   };
 }
