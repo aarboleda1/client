@@ -27,11 +27,11 @@ class CreateDishScreen extends Component {
     this.state = {
     };
   }
-  static route = {
-    navigationBar: {
-      title: 'Create New Dish',
-    },
-  }
+    static route = {
+      navigationBar: {
+        title: 'Create New Dish',
+      },
+    }
 
   toggleState(key) {
     let update = {};
@@ -41,6 +41,7 @@ class CreateDishScreen extends Component {
   render () {
     return (
       <ScrollView style={styles.flex}>
+      {/*Buttons in CreateDishScreen which take user to each Modal*/}
         <ListItemSection>
           <Image 
             source={{uri: "http://i0.wp.com/wrbbradio.org/wp-content/uploads/2016/10/grey-background-07.jpg?zoom=2&fit=2560%2C1544"}}
@@ -78,30 +79,58 @@ class CreateDishScreen extends Component {
             onPress={this.toggleState.bind(this, 'setCuisinesModal')}
           />
         </ListItem>
+
+      {/*Modals to create dishes*/}
         <Modal
           animationType={"fade"}
           transparent={false}
           visible={!!this.state.showAddTitleModal}> 
+          <TextInput
+            placeholder="Full Name"
+            underlineColorAndroid="rgba(0,0,0,0)"
+            onChangeText={(text)=> console.log(text)}
+          />
+          <Button
+            style={{marginBottom: 'auto'}}
+            title="Save"
+            onPress={this.toggleState.bind(this, 'showAddTitleModal')}
+          />          
         </Modal>
         <Modal
           animationType={"fade"}
           transparent={false}
           visible={!!this.state.describeDishModal}> 
+         <Button
+            title="Save"
+            onPress={this.toggleState.bind(this, 'describeDishModal')}
+          />          
         </Modal>
         <Modal
           animationType={"fade"}
           transparent={false}
           visible={!!this.state.setDietaryRestrictionsModal}> 
+         <Button
+            title="Save"
+            onPress={this.toggleState.bind(this, 'setDietaryRestrictionsModal')}
+          />          
         </Modal>
         <Modal
           animationType={"fade"}
           transparent={false}
           visible={!!this.state.setPriceModal}> 
+          <Button
+            title="Save"
+            onPress={this.toggleState.bind(this, 'setPriceModal')}
+          />          
         </Modal>        
         <Modal
           animationType={"fade"}
           transparent={false}
           visible={!!this.state.setCuisinesModal}> 
+          <Button
+            title="Save"
+            onPress={this.toggleState.bind(this, 'setCuisinesModal')}
+          />
         </Modal>
       </ScrollView>
     ) 
