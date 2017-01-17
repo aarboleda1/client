@@ -105,11 +105,14 @@ class ChefActionsScreen extends Component {
     this.props.navigator.push('createDishView');
   }
 
+
+
   renderDishes() {
     return this.props.dishes.dishList.map((dish, index) => {
       return (
       <View key={index}>
         <DishViewEntry
+          toggleState={this.toggleState.bind(this, 'showDishesModal')}
           dish={dish}
         />
       </View>

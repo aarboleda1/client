@@ -7,27 +7,48 @@ import {
   Image,
   TouchableHighlight
 } from 'react-native';
+import Router from '../navigation/Router';
+import { withNavigation } from '@exponent/ex-navigation';
 
-const DishViewEntry = (props) => {
-  const {headerTextStyle, headerContentStyle, imageStyle, imageContainerStyle} = styles;
-  const {name, text, image} = props.dish;
 
-  return (
-      <ListItem>
-        <ListItemSection>
-        <View style={imageContainerStyle}>
-          <Image 
-          style={imageStyle}
-          source={{uri: image}}
-          />
-        </View>
-          <View style={headerContentStyle}>
-            <Text style={headerTextStyle}> {name} </Text>
+@withNavigation
+class DishViewEntry extends Component {
+  constructor (props) {
+    super (props) 
+    const {headerTextStyle, headerContentStyle, imageStyle, imageContainerStyle} = styles;
+    const {name, text, image} = this.props.dish;
+  }
+
+  _handleNavigationPress () {
+    this.props.toggleState();
+    this.props.navigator.push(Router.getRoute('dishPreviewOnlyView', {dish: this.props.dish} ));
+  };
+
+  render () {
+    return (
+      <TouchableHighlight
+        onPress={this._handleNavigationPress.bind(this)}
+        underLayColor={'blue'}
+      >
+        <ListItem>
+          <ListItemSection>
+          <View style={styles.imageContainerStyle}>
+            <Image 
+            style={styles.imageStyle}
+            source={{uri: this.props.dish.image}}
+            />
           </View>
-        </ListItemSection>
-      </ListItem>
-  ); 
+            <View style={styles.headerContentStyle}>
+              <Text style={styles.headerTextStyle}> {this.props.dish.name} </Text>
+            </View>
+          </ListItemSection>
+        </ListItem>
+      </TouchableHighlight>
+    );
+  } 
 };
+
+
 
 const styles = {
   headerContentStyle: {
@@ -47,5 +68,6 @@ const styles = {
     alignItems: 'center'
   },
 };
+
 export default DishViewEntry;
 
