@@ -20,35 +20,41 @@ export default class EventDetailsScreen extends Component {
   }
 
   render() {
+    // console.log('props.chef is ', this.props.details.chef);
     return (
       <ScrollView
         style={styles.dishes}
         contentContainerStyle={styles.dishesContainer}>
         <View style={[styles.flex, styles.textPadding]}>
-          <Text style={styles.textCenter}>944 Market Street, San Francisco, CA</Text>
-          <Text style={styles.textCenter}>6:00PM January 6, 2016</Text>
+          <Text style={styles.textCenter}>{this.props.details.name}</Text>
+          <Text style={styles.textCenter}>{this.props.details.location}</Text>
+          <Text style={styles.textCenter}>{this.props.details.dateTime}</Text>
           <View style={[styles.flex, styles.row]}>
             <Image
-            source={{ uri: 'https://www.gravatar.com/avatar/b886567f499306efc3ab3f5ed19e77a2?s=256&d=mm&r=g'}}
+            source={{ uri: this.props.details.chef.image}}
             style={styles.chef}
             />
             <View style={[styles.flex, styles.textPadding, {}]}>
-              <Text style={styles.textCenter}>Naval Bomber</Text>
-              <Text>I like long flights over the beach and staying under the radar.</Text>
+              <Text style={styles.textCenter}>{this.props.details.chef.name}</Text>
+              <Text>{this.props.details.chef.bio}</Text>
             </View>
           </View>
         </View>
-        {this._showDishes([
-          {id: 1, name: 'Meat', quantity: 4, price: 4.75},
-          {id: 2, name: 'Cotton Candy', quantity: 1, cost: 5},
-          {id: 3, name: 'Actual Angel Hair', quantity: 15, cost: 2.25},
-          {id: 4, name: 'Honeycrisp Apple Pie', quantity: 10, cost: 3.66},
-          {id: 5, name: 'Unicorn Soup', quantity: 5, cost: 7.00},
-          {id: 6, name: 'Pixie Dust Chips', quantity: 20, cost: 1.50},
-          {id: 7, name: 'Manatee', quantity: 5, cost: 4.50},
-          ])}
+        {this._showDishes(this._getDishes())}
       </ScrollView>
     );
+  }
+
+  _getDishes() {
+    return [
+          {id: 1, name: 'Meat', quantity: 4, price: 4.75},
+          {id: 2, name: 'Cotton Candy', quantity: 1, price: 5},
+          {id: 3, name: 'Actual Angel Hair', quantity: 15, price: 2.25},
+          {id: 4, name: 'Honeycrisp Apple Pie', quantity: 10, price: 3.66},
+          {id: 5, name: 'Unicorn Soup', quantity: 5, price: 7.00},
+          {id: 6, name: 'Pixie Dust Chips', quantity: 20, price: 1.50},
+          {id: 7, name: 'Manatee', quantity: 5, price: 4.50},
+          ];
   }
 
   _showDishes(dishes) {
