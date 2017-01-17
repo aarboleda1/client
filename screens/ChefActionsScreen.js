@@ -36,9 +36,7 @@ class ChefActionsScreen extends Component {
     super(props);
     this.state = {
       loading: true,
-      locations: [],
-      restrictions: ['Eggs', 'Dairy', 'Peanuts', 'Tree Nuts', 'Seafood', 'Shellfish', 'Wheat', 'Soy',
-        'Gluten', 'Vegetarian', 'Vegan', 'Halal', 'Kosher'],
+      locations: [],      
       checkedRestrictions: [],
       restrictions: [
         'Eggs',
@@ -89,6 +87,8 @@ class ChefActionsScreen extends Component {
         }
       })
       .then(function(chefData) {
+        chefData.cuisines = chefData.cuisines || [];
+        chefData.restrictions = chefData.restrictions || [];
         //Remove when route changed to return object rather than [obj]
         let cuisines = context.state.checkedCuisines;
         if (cuisines.length > 0) { 
