@@ -4,6 +4,8 @@ import {
   StyleSheet,
   Button,
   AsyncStorage,
+  Text,
+  View,
 } from 'react-native';
 import {
   ExponentLinksView,
@@ -12,6 +14,10 @@ import {
 import { serverURI } from '../config';
 
 import EventListing from '../components/EventListing';
+
+import {
+  FontAwesome,
+} from '@exponent/vector-icons';
 
 export default class UpcomingScreen extends React.Component {
   static route = {
@@ -55,10 +61,27 @@ export default class UpcomingScreen extends React.Component {
       <ScrollView
         style={styles.container}
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
-        <Button
-          title="See past events"
-          onPress={this.viewPastEvents.bind(this)}
-        />
+        
+        <View
+        style={styles.icon}>
+
+        <FontAwesome
+        name={'cutlery'}
+        size={20} >
+          <Text style={styles.subText}> = As Host </Text>
+        </FontAwesome>
+
+
+        <FontAwesome
+        name={'fire'}
+        size={20} >
+          <Text style={styles.subText}> = As Chef </Text>
+        </FontAwesome>
+
+        </View>
+
+
+
         {this.state.events.map((event, index) => (
           <EventListing
             key={index}
@@ -68,25 +91,36 @@ export default class UpcomingScreen extends React.Component {
           />
         ))}
         <EventListing
-          name="John Doe"
-          chef="Guy Fierri"
-          dateTime="12/31/2016 4:15PM"
+          chef="Guy Fieri"
         />
         <EventListing
-          name="Big Bird"
           chef="Papa John"
-          dateTime="1/7/2016 1:00AM"
           isChef={true}
         />
       </ScrollView>
     );
   }
-
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 4,
+    // flex: 1,
+    backgroundColor: '#e7e7e6',
+    // alignItems: 'flex-start'
+    // paddingTop: 4,
   },
+  text: {
+    fontSize: 23,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  subText: {
+    fontSize: 15,
+  },
+  icon: {
+    alignSelf: 'flex-end',
+    paddingBottom: 3,
+    paddingTop: 5,
+  },
+
 });
