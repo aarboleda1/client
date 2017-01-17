@@ -2,13 +2,26 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
-const ListItem = (props) => {
-  return (
-    <View style={ styles.containerStyle }>
-      {props.children}
+class ListItem extends Component {
+  constructor (props) {
+    super(props);
+  }
+  setNativeProps(nativeProps) {
+    this._root.setNativeProps(nativeProps);
+  }
+
+  render () {
+    return (
+    <View 
+      style={ styles.containerStyle }
+      ref={component => this._root = component} {...this.props}
+    >
+      {this.props.children}
     </View>
-  ); 
-};
+    ); 
+  }
+}
+
 
 const styles = {
   containerStyle: {

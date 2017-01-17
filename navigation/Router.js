@@ -47,6 +47,6 @@ export default createRouter(() => ({
   searchResults: () => SearchResultsScreen,
   
   createDishView: () => CreateDishScreen,
-  dishPreviewOnlyScreen: () => DishPreviewOnlyScreen,
+  dishPreviewOnlyView: () => DishPreviewOnlyScreen,
 
 }));

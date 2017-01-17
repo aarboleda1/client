@@ -16,20 +16,31 @@ import ListItemSection from '../components/ListItemSection';
 class DishPreviewOnlyScreen extends Component {
   constructor (props) {
     super(props)
-    const name = this.props.dishes.dishList[0].name;
   };
   static route = {
     navigationBar: {
-      title: 'Insert Dish Name Here',
+      title: 'Preview',
     },
   }
   render () {
+    let { name, image } = this.props.route.params.dish
+    let { headerTextStyle, headerContentStyle, imageStyle} = styles;
     return (
-      <ListItem>
-        <ListItemSection>
-          <Text>{this.name}</Text>
-        </ListItemSection>
-      </ListItem>
+    <ListItem>
+      <ListItemSection>
+        <View style={headerContentStyle}>
+          <Text style={headerTextStyle}>{ name }</Text>
+        </View>
+      </ListItemSection>
+      <ListItemSection>
+        <View>
+          <Image
+            source={{uri: image}}
+            style={{height: 300, flex: 1, width: null}}
+          />
+        </View>
+      </ListItemSection>
+    </ListItem>
     ) 
   }
 };
@@ -50,10 +61,6 @@ const styles = {
   },
   headerTextStyle: {
     fontSize: 18
-  },
-  thumbnailStyle: {
-    height: 50,
-    width: 50
   },
   thumbnailContainerStyle: {
     justifyContent: 'center',
