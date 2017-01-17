@@ -56,16 +56,16 @@ class SettingsScreen extends React.Component {
     this.props.navigator.push('chefActions');
   }
 
+        // <Button
+        //   title="Chef Actions"
+        //   onPress={this.chefActions.bind(this)}
+        // />
+
   render() {
     return (
       <ScrollView
         style={styles.container}
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
-
-        <Button
-          title="Chef Actions"
-          onPress={this.chefActions.bind(this)}
-        />
 
         <Button
           title="Logout"
