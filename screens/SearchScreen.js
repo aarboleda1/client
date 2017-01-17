@@ -17,7 +17,7 @@ import {
 import Router from '../navigation/Router';
 import Colors from '../constants/Colors';
 
-import RestrictionSelectionEntry from '../components/RestrictionSelectionEntry';
+import RestrictionSelectionEntryList from '../components/RestrictionSelectionEntryList';
 
 import { connect } from 'react-redux';
 
@@ -133,19 +133,7 @@ class SearchScreen extends React.Component {
            <Picker.Item label="Pastry" value="pastry" />
         </Picker>
 
-        <RestrictionSelectionEntry name="Dairy" />
-        <RestrictionSelectionEntry name="Eggs" />
-        <RestrictionSelectionEntry name="Halal" />
-        <RestrictionSelectionEntry name="Kosher" />
-        <RestrictionSelectionEntry name="Tree Nuts" />
-        <RestrictionSelectionEntry name="Peanuts" />
-        <RestrictionSelectionEntry name="Wheat" />
-        <RestrictionSelectionEntry name="Soy" />
-        <RestrictionSelectionEntry name="Gluten" />
-        <RestrictionSelectionEntry name="Seafood" />
-        <RestrictionSelectionEntry name="Shellfish" />
-        <RestrictionSelectionEntry name="Vegan" />
-        <RestrictionSelectionEntry name="Vegetarian" />
+        <RestrictionSelectionEntryList />
 
         <Button
           onPress={this._chooseLocation.bind(this)}

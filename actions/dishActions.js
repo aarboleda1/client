@@ -22,5 +22,12 @@ module.exports = {
   },
   addToDishList: function (dishList) {
     return {type: 'DISH_LIST', dishList};
+  },
+  ///CHECK IF THIS WORKS
+  requestDishInfo: function (dishList) {
+    return {type: 'REQUEST_DISH_INFO', dishList}; 
+  },
+  receiveDishInfo: function (dishList) {
+    return {type: 'RECEIVE_DISH_INFO', };
   }
 };

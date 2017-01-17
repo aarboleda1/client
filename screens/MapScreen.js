@@ -9,7 +9,7 @@ import { setChefLocation } from '../actions/chefActions';
 import { clearMapContext } from '../actions/mapContextActions';
 
 const contexts = {
-	'search': setSearchLocation,
+  'search': setSearchLocation,
   'chefActions': setChefLocation,
 };
 
@@ -24,9 +24,9 @@ const styles = StyleSheet.create({
   },
   button: {
     borderColor: '#05A5D1',
-  	borderWidth: 2,
-  	backgroundColor: '#333',
-  	margin: 20,
+    borderWidth: 2,
+    backgroundColor: '#333',
+    margin: 20,
   	height: WINDOW_HEIGHT / 7.5,
   	width: WINDOW_WIDTH / 1.1,
   	alignItems: 'center',
