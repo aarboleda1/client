@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import { FontAwesome } from '@exponent/vector-icons';
 import Router from '../navigation/Router';
 import Colors from '../constants/Colors';
-import RestrictionSelectionEntry from '../components/RestrictionSelectionEntry';
+import CuisineSelectionEntry from '../components/CuisineSelectionEntry';
 import {
   setSearchCuisine,
   toggleSearchRestriction,
@@ -73,7 +73,7 @@ class SearchScreen extends React.Component {
     searchParams.restrictions = queryRestrictions;
 
     console.log(`GET to ${serverURI}/chefs?${qs.stringify(searchParams)}`);
-
+    
     let context = this;
     this.setState({loading: true}, function() {
       fetch(`${serverURI}/chefs?${qs.stringify(searchParams)}`, {
@@ -114,18 +114,13 @@ class SearchScreen extends React.Component {
             this.setState({ cuisine: type });
             return context.props.dispatch(setSearchCuisine(type));
           }}>
-//            <Picker.Item label="American" value="american" />
-//            <Picker.Item label="Chinese" value="chinese" />
-//            <Picker.Item label="French" value="french" />
-//            <Picker.Item label="Italian" value="italian" />
-//            <Picker.Item label="Japanese" value="japanese" />
-//            <Picker.Item label="Korean" value="korean" />
-//            <Picker.Item label="Mexican" value="mexican" />
-            <RestrictionSelectionEntry name="Asian" />
-            <RestrictionSelectionEntry name="Italian" />
-            <RestrictionSelectionEntry name="Spanish" />
-            <RestrictionSelectionEntry name="Mediterranean" />
-            <RestrictionSelectionEntry name="Pastry" />
+            <CuisineSelectionEntry name="American" />
+            <CuisineSelectionEntry name="Chinese" />
+            <CuisineSelectionEntry name="French" />
+            <CuisineSelectionEntry name="Italian" />
+            <CuisineSelectionEntry name="Japanese" />
+            <CuisineSelectionEntry name="Korean" />
+            <CuisineSelectionEntry name="Mexican" />
         </Panel>
 
         <Panel title="Select Restrictions">
@@ -149,13 +144,8 @@ class SearchScreen extends React.Component {
             </View>
         </Panel>
 
-        <Button
-          onPress={this._chooseLocation.bind(this)}
-          title="Set Location"
-        />
-
         <Text style={styles.location}>
-          Location: {this.props.search.location || 'Need to set City/State'}
+          Location: {this.props.search.location || 'not set'}
         </Text>
          
          <TouchableHighlight

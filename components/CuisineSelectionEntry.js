@@ -14,16 +14,16 @@ import Colors from '../constants/Colors';
 
 import { connect } from 'react-redux';
 
-import { toggleSearchRestriction } from '../actions/searchActions';
+import { setSearchCuisine } from '../actions/searchActions';
 
 
-class RestrictionSelectionEntry extends React.Component {
+class CuisineSelectionEntry extends React.Component {
   constructor(props) {
     super(props);
   }
 
   _toggleSelection() {
-    this.props.dispatch(toggleSearchRestriction(this.props.name));
+    this.props.dispatch(setSearchCuisine(this.props.name));
   }
 
   render() {
@@ -32,7 +32,7 @@ class RestrictionSelectionEntry extends React.Component {
         <View style={[styles.entry, this.props.style]}>
           <Text style={styles.entryText}>{this.props.name}</Text>
           <View style={styles.selected}>
-            {this.props.restrictions[this.props.name] ?
+            {this.props.selected === this.props.name ?
               <View style={styles.checkMark}>
                 <FontAwesome
                   name="check"
@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     height: 50,
     padding: 10,
-    // justifyContent: 'flex-end'
   },
   entryText: {
     textAlign: 'center',
@@ -75,8 +74,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    restrictions: state.search.restrictions,
-  }
+    selected: state.search.cuisine,
+  };
 }
 
-export default connect(mapStateToProps)(RestrictionSelectionEntry);
+export default connect(mapStateToProps)(CuisineSelectionEntry);
