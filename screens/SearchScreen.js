@@ -39,8 +39,8 @@ class SearchScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cuisine: 'italian', 
-      title: 'Set Location'
+      title: 'Set Location',
+      cuisine: 'american',
     }
   }
 
@@ -114,6 +114,13 @@ class SearchScreen extends React.Component {
             this.setState({ cuisine: type });
             return context.props.dispatch(setSearchCuisine(type));
           }}>
+//            <Picker.Item label="American" value="american" />
+//            <Picker.Item label="Chinese" value="chinese" />
+//            <Picker.Item label="French" value="french" />
+//            <Picker.Item label="Italian" value="italian" />
+//            <Picker.Item label="Japanese" value="japanese" />
+//            <Picker.Item label="Korean" value="korean" />
+//            <Picker.Item label="Mexican" value="mexican" />
             <RestrictionSelectionEntry name="Asian" />
             <RestrictionSelectionEntry name="Italian" />
             <RestrictionSelectionEntry name="Spanish" />
@@ -141,6 +148,11 @@ class SearchScreen extends React.Component {
               <SquareSelection name="Vegan" />
             </View>
         </Panel>
+
+        <Button
+          onPress={this._chooseLocation.bind(this)}
+          title="Set Location"
+        />
 
         <Text style={styles.location}>
           Location: {this.props.search.location || 'Need to set City/State'}
@@ -196,12 +208,9 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 15,
-    // flex: 1,
-    // flexDirection: 'column',
   },
   touchHighlightText: {
     color: '#FAFAFA',
-    // flex: 1,
     fontSize: 21,
     fontWeight: '500',
   },
