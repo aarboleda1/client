@@ -15,16 +15,20 @@
     "@exponent/samples": "~1.0.2",
     "@exponent/vector-icons": "~2.0.3",
     "exponent": "~12.0.3",
+    "pui-react-collapse": "^7.3.1",
     "qs": "^6.3.0",
     "react": "~15.3.2",
     "react-native": "git+https://github.com/exponentjs/react-native#sdk-12.0.0",
     "react-native-checkbox": "^1.1.0",
+    "react-native-collapsible": "^0.7.0",
     "react-native-google-places-autocomplete": "^1.2.6",
     "react-redux": "^5.0.1"
   },
   "devDependencies": {
+    "babel-loader": "^6.2.10",
     "babel-polyfill": "^6.20.0",
     "jest-exponent": "~0.1.4",
-    "redux-immutable-state-invariant": "^1.2.4"
+    "redux-immutable-state-invariant": "^1.2.4",
+    "svg-react-loader": "^0.3.7"
   }
 }
