@@ -78,12 +78,14 @@ class UpcomingScreen extends React.Component {
         }>
           {this.state.events.map((event, index) =>
             <EventListing
-              key={event.id}
+              key={index}
+              id={event.id}
               name={event.name}
               time={event.time}
               location={event.location}
               description={event.text}
               chef={event.chefInfo}
+              currentUser= {this.props.currentUser}
             />
           )}
         </ScrollView>

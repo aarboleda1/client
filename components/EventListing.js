@@ -24,13 +24,14 @@ export default class EventListing extends Component {
 
   viewEvent() {
     let details = {
-      id: this.props.key,
+      id: this.props.id,
       name: this.props.name,
       dateTime: this.props.time,
       location: this.props.location,
       description: this.props.description,
       isChef: this.props.isChef,
       chef: this.props.chef,
+      currentUser: this.props.currentUser
     };
     this.props.navigator.push(Router.getRoute('eventDetailsView', { details }));
   }
