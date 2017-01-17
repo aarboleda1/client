@@ -1,6 +1,16 @@
 import React from 'react';
-import {Button, View, StyleSheet, Text, TouchableHighlight, Dimensions } from 'react-native';
-import { Components } from 'exponent';
+import {
+  Button,
+  View,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  Dimensions,
+} from 'react-native';
+
+import { connect } from 'react-redux';
+
+import { toggleSearchRestriction } from '../actions/searchActions';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const WINDOW_HEIGHT = Dimensions.get('window').height;
@@ -10,7 +20,6 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 3,
     backgroundColor: '#2d2d2c',
-    // overflow: 'hidden',
     margin: 1,
     padding: 2,
     height: WINDOW_HEIGHT / 11,
@@ -19,7 +28,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     flexDirection: 'row',
-
   },
   buttonText: {
     color: 'white',
@@ -33,18 +41,26 @@ class SquareRestrictions extends React.Component {
       super(props);
   }
 
-  _testClick(){
+  _toggleRestriction() {
+    this.props.dispatch(toggleSearchRestriction(this.props.name));
   }
 
   render(){
     return (
       <TouchableHighlight 
       title={this.props.name} 
-      style={styles.a}
-      onPress={this._testClick.bind(this)} >
+      style={[styles.a, this.props.restrictions[this.props.name] ? {backgroundColor: '#D62D20'} : null]}
+      onPress={this._toggleRestriction.bind(this)} >
           <Text style={styles.buttonText}>{this.props.name}</Text>
       </TouchableHighlight>
     )
   }
 }
-export default SquareRestrictions;
+
+function mapStateToProps(state) {
+  return {
+    restrictions: state.search.restrictions,
+  };
+}
+
+export default connect(mapStateToProps)(SquareRestrictions);
