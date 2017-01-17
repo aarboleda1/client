@@ -8,9 +8,15 @@ import {
   ScrollView,
 } from 'react-native';
 
+import { serverURI } from '../config';
+
 export default class EventDetailsScreen extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      dishes: []
+    }
   }
 
   static route = {
@@ -20,7 +26,6 @@ export default class EventDetailsScreen extends Component {
   }
 
   render() {
-    // console.log('props.chef is ', this.props.details.chef);
     return (
       <ScrollView
         style={styles.dishes}
@@ -40,21 +45,30 @@ export default class EventDetailsScreen extends Component {
             </View>
           </View>
         </View>
-        {this._showDishes(this._getDishes())}
+        {this._showDishes(this.state.dishes)}
       </ScrollView>
     );
   }
 
-  _getDishes() {
-    return [
-          {id: 1, name: 'Meat', quantity: 4, price: 4.75},
-          {id: 2, name: 'Cotton Candy', quantity: 1, price: 5},
-          {id: 3, name: 'Actual Angel Hair', quantity: 15, price: 2.25},
-          {id: 4, name: 'Honeycrisp Apple Pie', quantity: 10, price: 3.66},
-          {id: 5, name: 'Unicorn Soup', quantity: 5, price: 7.00},
-          {id: 6, name: 'Pixie Dust Chips', quantity: 20, price: 1.50},
-          {id: 7, name: 'Manatee', quantity: 5, price: 4.50},
-          ];
+  componentWillMount() {
+    this._fetchDishes();
+  }
+
+  _fetchDishes() {
+    let context = this;
+    fetch(`${serverURI}/events/${this.props.details.id}/dishes`)
+      .then(function(resp) {
+        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+          return resp.json();
+        } else {
+          return resp.text();
+        }
+    }).then(function(dishes) {
+      context.setState({ dishes });
+      console.log(dishes);
+    }).catch(function(err) {
+      alert(err);
+    });
   }
 
   _showDishes(dishes) {
@@ -72,7 +86,7 @@ export default class EventDetailsScreen extends Component {
           <Text style={[styles.flex, styles.textRight]}>
             {
               formatCash(dishes.reduce((total, dish) => {
-                return total + (dish.price * dish.quantity)
+                return total + (dish.price * dish.quantities)
               }, 0))
             }
           </Text>
@@ -94,14 +108,14 @@ export default class EventDetailsScreen extends Component {
     return (
       <View style={styles.menuItem}>
         <Image
-          source={{ uri: `http://lorempixel.com/150/150/food/${dish.id}`}}
+          source={{ uri: dish.image}}
           style={dynamicStyles.dishImage}
         />
         <View style={[styles.flex, styles.textPadding]}>
           <Text style={[styles.flex, styles.textCenter]}>{dish.name}</Text>
           <View style={styles.row}>
-            <Text style={styles.flex}>{`${formatCash(dish.price)} x ${dish.quantity}`}</Text>
-            <Text style={[styles.flex, styles.textRight]}>{formatCash(dish.price * dish.quantity)}</Text>
+            <Text style={styles.flex}>{`${formatCash(dish.price)} x ${dish.quantities}`}</Text>
+            <Text style={[styles.flex, styles.textRight]}>{formatCash(dish.price * dish.quantities)}</Text>
           </View>
         </View>
       </View>
