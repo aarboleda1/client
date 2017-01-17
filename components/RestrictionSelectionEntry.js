@@ -36,7 +36,7 @@ class RestrictionSelectionEntry extends React.Component {
               <View style={styles.checkMark}>
                 <FontAwesome
                   name="check"
-                  size={16}
+                  size={30}
                   color={Colors.checkMark}
                 />
               </View>
@@ -50,13 +50,17 @@ class RestrictionSelectionEntry extends React.Component {
 
 const styles = StyleSheet.create({
   entry: {
-    flex: 0.99,
-    borderWidth: 1,
+    flex: 1,
+    borderBottomWidth: 1,
     borderColor: '#000',
     borderRadius: 4,
+    height: 50,
+    padding: 10,
+    // justifyContent: 'flex-end'
   },
   entryText: {
     textAlign: 'center',
+    fontSize: 20,
   },
   selected: {
     flex: 0.01,
