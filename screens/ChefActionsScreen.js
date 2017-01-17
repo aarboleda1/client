@@ -39,7 +39,7 @@ class ChefActionsScreen extends Component {
       locations: [],
       restrictions: ['Eggs', 'Dairy', 'Peanuts', 'Tree Nuts', 'Seafood', 'Shellfish', 'Wheat', 'Soy',
         'Gluten', 'Vegetarian', 'Vegan', 'Halal', 'Kosher'],
-      checkedRestrictions: []
+      checkedRestrictions: [],
       restrictions: [
         'Eggs',
         'Dairy',
@@ -91,14 +91,17 @@ class ChefActionsScreen extends Component {
       .then(function(chefData) {
         //Remove when route changed to return object rather than [obj]
         let cuisines = context.state.checkedCuisines;
-        chefData.cuisines.forEach(function(cuisine) {
-          cuisines[cuisine] = true;
-        });
-
+        if (cuisines.length > 0) { 
+          chefData.cuisines.forEach(function(cuisine) {
+            cuisines[cuisine] = true;
+          });
+        }
         let restrictions = context.state.checkedRestrictions;
-        chefData.restrictions.forEach(function(restriction) {
-          restrictions[restriction] = true;
-        });
+        if (restrictions.length > 0) {
+          chefData.restrictions.forEach(function(restriction) {
+            restrictions[restriction] = true;
+          });          
+        }
         context.setState({
           name: chefData.name || context.state.name,
           imageURL: chefData.imageURL || context.state.imageURL,
@@ -113,7 +116,6 @@ class ChefActionsScreen extends Component {
       .catch(function(err) {
         alert(err);
       });
-
   }
 
   addLocation() {
