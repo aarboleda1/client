@@ -81,6 +81,8 @@ class ChefActionsScreen extends Component {
         }
       })
       .then(function(chefData) {
+        chefData.cuisines = chefData.cuisines || [];
+        chefData.restrictions = chefData.restrictions || [];
         //Remove when route changed to return object rather than [obj]
         let cuisines = context.state.checkedCuisines;
         chefData.cuisines.forEach(function(cuisine) {
