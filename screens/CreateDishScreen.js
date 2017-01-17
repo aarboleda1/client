@@ -13,6 +13,8 @@ import {
   ActivityIndicator
 
 } from 'react-native';
+import Router from '../navigation/Router';
+import { withNavigation } from '@exponent/ex-navigation';
 
 
 import { connect } from 'react-redux';
@@ -24,10 +26,16 @@ import RestrictionSelectionEntryList from '../components/RestrictionSelectionEnt
 
 
 //this.props.route..params
+@withNavigation
 class CreateDishScreen extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      name: '',
+      text: '',
+      price: '',
+      restrictions: [],
+      cuisines: []
     };
   }
     static route = {
@@ -44,13 +52,42 @@ class CreateDishScreen extends Component {
 
   _saveTitle () {
     this.toggleState.apply(this, 'showAddTitleModal');
-    this.props.dispatch(setMapContext('chefActions'));
+    // this.props.dispatch(setMapContext('chefActions'));
   };
 
+  _goToPreviewDishScreen () {
+    //get the current dish in redux store
+    // this.props.navigator.push(Router.getRoute('dishPreviewOnlyView'));
+    // this.props.navigator.push('chefPageView');
+    this.props.navigator.push('dishPreviewOnlyView');
 
+  }
+
+  _saveDishName (dishName) {
+    this.setState({name: dishName});
+    this.props.dispatch(updateDishName(dishName));
+  };
+
+  _saveDishDescription (dishDescriptionText) {
+    this.setState({text: dishDescriptionText})
+    this.props.dispatch(updateDishText(dishDescriptionText));
+  };
+
+  _saveDishPrice () {
+
+  };
+
+  _saveDishRestrictions () {
+
+  };
+
+  _saveDishCuisines () {
+
+  };
+  
   render () {
     return (
-      <ScrollView style={styles.flex}>
+      <ScrollView style={styles.flex}>      
       {/*Buttons in CreateDishScreen which take user to each Modal*/}
         <ListItemSection>
           <Image 
@@ -97,7 +134,7 @@ class CreateDishScreen extends Component {
           visible={!!this.state.showAddTitleModal}> 
           <ScrollView style={styles.textPadding}>
             <DishTextInput
-              onChangeText={()=>{{/*FILL IN HERE SETTING STATE OF DISHTEXT*/}}}
+              onChangeText={(text)=>{ this._saveDishName.bind(this, text) }}
               style={styles.formInput}
               placeholder="Enter descriptive title of dish here!"
               defaultValue={this.props.dishes.dish.title}
@@ -118,7 +155,7 @@ class CreateDishScreen extends Component {
           visible={!!this.state.describeDishModal}> 
         <ScrollView style={styles.textPadding}>
           <DishTextInput
-            onChangeText={()=>{{/*SEND THIS STATE TO THE REDUX STORE FOR DISHES OF DISHTEXT*/}}}
+            onChangeText={(descriptionText)=>{ this._saveDishDescription.bind(this, descriptionText)}}
             style={styles.formInput}
             placeholder="Give a create description your dish here!"
             defaultValue={this.props.dishes.dish.text}
@@ -150,6 +187,13 @@ class CreateDishScreen extends Component {
           transparent={false}
           visible={!!this.state.setPriceModal}>
           <ScrollView>
+          <DishTextInput
+            onChangeText={(priceText)=>{ this._saveDishPrice.bind(this, priceText)}}
+            style={styles.formInput}
+            placeholder="Enter a price for dish here!"
+            defaultValue={this.props.dishes.dish.price}
+            numberOfLines={4}
+          />           
           <Button
             title="Save"
             onPress={this.toggleState.bind(this, 'setPriceModal')}
@@ -166,6 +210,11 @@ class CreateDishScreen extends Component {
             onPress={this.toggleState.bind(this, 'setCuisinesModal')}
           />
         </Modal>
+        <Button
+          title="Preview Dish"
+          style={{flexDirection: 'column', justifyContent: 'flex-end'}}
+          onPress={this._goToPreviewDishScreen.bind(this)}
+        />
       </ScrollView>
     ) 
   };
