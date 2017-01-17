@@ -20,7 +20,6 @@ export default class EventDetailsScreen extends Component {
   }
 
   render() {
-    // TODO: Change to scrollView
     return (
       <ScrollView
         style={styles.dishes}

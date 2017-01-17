@@ -17,8 +17,11 @@ import {
 
 import { connect } from 'react-redux';
 
+import DishTextInput from '../components/DishTextInput';
 import ListItem from '../components/ListItem';
 import ListItemSection from '../components/ListItemSection';
+import RestrictionSelectionEntryList from '../components/RestrictionSelectionEntryList';
+
 
 //this.props.route..params
 class CreateDishScreen extends Component {
@@ -85,43 +88,67 @@ class CreateDishScreen extends Component {
           animationType={"fade"}
           transparent={false}
           visible={!!this.state.showAddTitleModal}> 
-          <TextInput
-            placeholder="Full Name"
-            underlineColorAndroid="rgba(0,0,0,0)"
-            onChangeText={(text)=> console.log(text)}
-          />
+          <ScrollView style={styles.textPadding}>
+            <DishTextInput
+              onChangeText={()=>{{/*FILL IN HERE SETTING STATE OF DISHTEXT*/}}}
+              style={styles.formInput}
+              placeholder="Enter descriptive title of dish here!"
+              defaultValue={this.props.dishes.dish.title}
+              numberOfLines={4}
+            />
           <Button
             style={{marginBottom: 'auto'}}
             title="Save"
             onPress={this.toggleState.bind(this, 'showAddTitleModal')}
           />          
+          </ScrollView>
         </Modal>
+
+      {/*Describing a Dish*/}
         <Modal
           animationType={"fade"}
           transparent={false}
           visible={!!this.state.describeDishModal}> 
+        <ScrollView style={styles.textPadding}>
+          <DishTextInput
+            onChangeText={()=>{{/*SEND THIS STATE TO THE REDUX STORE FOR DISHES OF DISHTEXT*/}}}
+            style={styles.formInput}
+            placeholder="Give a create description your dish here!"
+            defaultValue={this.props.dishes.dish.text}
+            numberOfLines={4}
+          />        
          <Button
             title="Save"
             onPress={this.toggleState.bind(this, 'describeDishModal')}
-          />          
+          />     
+        </ScrollView>      
         </Modal>
         <Modal
           animationType={"fade"}
           transparent={false}
-          visible={!!this.state.setDietaryRestrictionsModal}> 
-         <Button
+          visible={!!this.state.setDietaryRestrictionsModal}>
+          <ScrollView
+            style={styles.container}
+            contentContainerStyle={[this.props.route.getContentContainerStyle()]}
+          >
+
+          <RestrictionSelectionEntryList/> 
+          <Button
             title="Save"
             onPress={this.toggleState.bind(this, 'setDietaryRestrictionsModal')}
-          />          
+          />
+          </ScrollView>          
         </Modal>
         <Modal
           animationType={"fade"}
           transparent={false}
-          visible={!!this.state.setPriceModal}> 
+          visible={!!this.state.setPriceModal}>
+          <ScrollView>
           <Button
             title="Save"
             onPress={this.toggleState.bind(this, 'setPriceModal')}
           />          
+          </ScrollView> 
         </Modal>        
         <Modal
           animationType={"fade"}
@@ -141,6 +168,10 @@ class CreateDishScreen extends Component {
 const styles = {
   flex: {
     flex: 1,
+  },
+  container: {
+    flex: 1,
+    paddingTop: 15
   },
   headerContentStyle: {
     flexDirection: 'column',
@@ -162,7 +193,17 @@ const styles = {
   formInput: {
     flex: 1,
     height: 30,
+    borderBottomColor: 'gray',
+    borderBottomWidth: 2
   },
+  textPadding: {
+    padding: 20,
+  },
+  dishModalOptionView: {
+    borderBottomColor: '#000000',
+    borderBottomWidth: 1,
+    paddingTop: 20
+  }
 };
 
 //this.props.dish is now available in here thru redux store

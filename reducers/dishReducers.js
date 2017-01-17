@@ -13,7 +13,10 @@ export default function dishReducers(state = {
     restrictions: null,
     cuisines: ['American']
   }],
-  dish: {}
+  dish: {
+    title: '',
+    text: '',
+  }
 }, action) {
   switch (action.type) {
   case 'UPDATE_DISH_NAME':
@@ -23,7 +26,7 @@ export default function dishReducers(state = {
     return Object.assign({}, state, { text: action.text });
     break;
   case 'UPDATE_DISH_PRICE':
-    return Object.assign({}, state, {price: action.price});
+    return Object.assign({}, state, { price: action.price });
     break;
   case 'UPDATE_DISH_RESTRICTIONS':
     return Object.assign({}, state, { restrictions: action.restrictions });
@@ -35,10 +38,10 @@ export default function dishReducers(state = {
     return Object.assign({}, state, { dish: action.dish });
     break;
   case 'ADD_TO_DISH_LIST':
-    return Object.assign({}, state, {dishList: action.dishList});
+    return Object.assign({}, state, { dishList: action.dishList });
     break;
   case 'REMOVE_FROM_DISHLIST':
-    return Object.assign({}, state, {dishList: action.dishList});
+    return Object.assign({}, state, { dishList: action.dishList });
   default:
     return state;
   }

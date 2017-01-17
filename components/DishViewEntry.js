@@ -4,27 +4,28 @@ import ListItemSection from './ListItemSection';
 import {
   View,
   Text,
-  Image
+  Image,
+  TouchableHighlight
 } from 'react-native';
 
 const DishViewEntry = (props) => {
   const {headerTextStyle, headerContentStyle, imageStyle, imageContainerStyle} = styles;
   const {name, text, image} = props.dish;
-  
+
   return (
-    <ListItem>
-      <ListItemSection>
-      <View style={imageContainerStyle}>
-        <Image 
-        style={imageStyle}
-        source={{uri: image}}
-        />
-      </View>
-        <View style={headerContentStyle}>
-          <Text style={headerTextStyle}> {name} </Text>
+      <ListItem>
+        <ListItemSection>
+        <View style={imageContainerStyle}>
+          <Image 
+          style={imageStyle}
+          source={{uri: image}}
+          />
         </View>
-      </ListItemSection>
-    </ListItem>
+          <View style={headerContentStyle}>
+            <Text style={headerTextStyle}> {name} </Text>
+          </View>
+        </ListItemSection>
+      </ListItem>
   ); 
 };
 
