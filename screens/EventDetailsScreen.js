@@ -65,7 +65,6 @@ export default class EventDetailsScreen extends Component {
         }
     }).then(function(dishes) {
       context.setState({ dishes });
-      console.log(dishes);
     }).catch(function(err) {
       alert(err);
     });
