@@ -20,7 +20,6 @@ export default class EventDetailsScreen extends Component {
   }
 
   render() {
-    // TODO: Change to scrollView
     return (
       <ScrollView
         style={styles.dishes}
@@ -40,7 +39,7 @@ export default class EventDetailsScreen extends Component {
           </View>
         </View>
         {this._showDishes([
-          {id: 1, name: 'Meat', quantity: 4, cost: 4.75},
+          {id: 1, name: 'Meat', quantity: 4, price: 4.75},
           {id: 2, name: 'Cotton Candy', quantity: 1, cost: 5},
           {id: 3, name: 'Actual Angel Hair', quantity: 15, cost: 2.25},
           {id: 4, name: 'Honeycrisp Apple Pie', quantity: 10, cost: 3.66},
@@ -67,7 +66,7 @@ export default class EventDetailsScreen extends Component {
           <Text style={[styles.flex, styles.textRight]}>
             {
               formatCash(dishes.reduce((total, dish) => {
-                return total + (dish.cost * dish.quantity)
+                return total + (dish.price * dish.quantity)
               }, 0))
             }
           </Text>
@@ -95,8 +94,8 @@ export default class EventDetailsScreen extends Component {
         <View style={[styles.flex, styles.textPadding]}>
           <Text style={[styles.flex, styles.textCenter]}>{dish.name}</Text>
           <View style={styles.row}>
-            <Text style={styles.flex}>{`${formatCash(dish.cost)} x ${dish.quantity}`}</Text>
-            <Text style={[styles.flex, styles.textRight]}>{formatCash(dish.cost * dish.quantity)}</Text>
+            <Text style={styles.flex}>{`${formatCash(dish.price)} x ${dish.quantity}`}</Text>
+            <Text style={[styles.flex, styles.textRight]}>{formatCash(dish.price * dish.quantity)}</Text>
           </View>
         </View>
       </View>
