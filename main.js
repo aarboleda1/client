@@ -26,6 +26,7 @@ import 'babel-polyfill';
 import configureStore from './store/configureStore';
 import {
   setAuthToken,
+  setCurrentChef,
   setCurrentUser,
 } from './actions/authActions';
 
@@ -64,11 +65,13 @@ class AppContainer extends React.Component {
       let context = this;
       AsyncStorage.multiGet([
         'AuthToken',
+        'currentChef',
         'currentUser',
       ])
       .then(function(data) {
         store.dispatch(setAuthToken(data[0][1]));
-        store.dispatch(setCurrentUser(data[1][1]));
+        store.dispatch(setCurrentChef(JSON.parse(data[1][1])));
+        store.dispatch(setCurrentUser(data[2][1]));
         context.setState({appIsReady: true});
       })
       .catch(function(err) {

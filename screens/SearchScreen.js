@@ -9,6 +9,7 @@ import {
   Text,
   TouchableHighlight,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { FontAwesome } from '@exponent/vector-icons';
@@ -19,12 +20,20 @@ import {
   setSearchCuisine,
   toggleSearchRestriction,
 } from '../actions/searchActions';
+
+import {
+  setMapContext,
+} from '../actions/mapContextActions';
+
+
 import { serverURI } from '../config';
 import Panel from '../components/Panel';
 import SquareSelection from '../components/SquareRestrictions';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const WINDOW_HEIGHT = Dimensions.get('window').height;
+
+import qs from 'qs';
 
 class SearchScreen extends React.Component {
   constructor(props) {
@@ -35,17 +44,6 @@ class SearchScreen extends React.Component {
     }
   }
 
-  componentWillMount() {
-
-    //FIXME: Replace this after MobX/Redux is implemented
-    // if (!this.props.route.params.viewed) {
-    //   this.props.navigator.push('searchResults');
-    //   this.props.navigator.updateCurrentRouteParams({
-    //     viewed: true,
-    //   });
-    // }
-  }
-
   static route = {
     navigationBar: {
       title: 'Search',
@@ -53,53 +51,58 @@ class SearchScreen extends React.Component {
   }
 
   _chooseLocation() {
+    this.props.dispatch(setMapContext('search'));
     this.props.navigator.push('chooseLocation');
   }
 
   _search() {
-    /*
-    REDUX: GET request for results
-    display loading thing while waiting
-    store data in redux
-    reroute to search results
-    */
     let dispatch = this.props.dispatch;
-    var searchParams = new URLSearchParams();
-    searchParams.append('cuisine', this.props.search.cuisine);
-    searchParams.append('location', this.props.search.location);
+    let searchParams = {
+      cuisine: this.props.search.cuisine,
+      location: this.props.search.location,
+    };
 
-    let restrictions = [];
+    let queryRestrictions = [];
+
     let searchRestrictions = this.props.search.restrictions;
     for(let key in searchRestrictions) {
       if (searchRestrictions[key]) {
-        restrictions.push(key);
+        queryRestrictions.push(key);
       }
     }
-    searchParams.append('restrictions', restrictions);
+    searchParams.restrictions = queryRestrictions;
 
-    alert(`${serverURI}/chefs?${searchParams.toString()}`);
+    console.log(`GET to ${serverURI}/chefs?${qs.stringify(searchParams)}`);
 
-    fetch(`${serverURI}/chefs?${searchParams.toString()}`)
-      .then(function(resp) {
-        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
-          return resp.json();
-        } else {
-          return resp.text().then(function(message) {
-            throw new Error(message);
-          });
+    let context = this;
+    this.setState({loading: true}, function() {
+      fetch(`${serverURI}/chefs?${qs.stringify(searchParams)}`, {
+        headers: {
+          'User-Id': context.props.currentUser,
         }
       })
-      .then(function(listings) {
-      }).catch(function(err) {
-        alert(err);
-      });
-
-    // this.props.navigator.push('searchResults', {listings: data}); //add query string when implementing search
+        .then(function(resp) {
+          if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+            return resp.json();
+          } else {
+            return resp.text().then(function(message) {
+              throw new Error(message);
+            });
+          }
+        })
+        .then(function(listings) {
+          context.props.navigator.push('searchResults', { listings });
+          context.setState({loading: false});
+        })
+        .catch(function(err) {
+          alert(err);
+        });
+    });
   }
 
   render() {
     const context = this;
-    return (
+    return (this.state.loading ? <ActivityIndicator size="large" style={styles.loading}/> :
       <ScrollView
         style={styles.container}
         contentContainerStyle={[this.props.route.getContentContainerStyle()]}>
@@ -226,9 +229,10 @@ var styles = StyleSheet.create({
   }
 });
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     search: state.search,
+    currentUser: state.currentUser,
   }
 }
 

@@ -26,7 +26,7 @@ class ProfileScreen extends React.Component {
 
   componentWillMount() {
     let setState = this.setState.bind(this);
-    fetch(`http://localhost:3000/users/${this.props.currentUser}`)
+    fetch(`${serverURI}/users/${this.props.currentUser}`)
     .then(function(resp) {
       if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
         return resp.json();
@@ -63,9 +63,9 @@ class ProfileScreen extends React.Component {
 
     return (
       this.state.loading ?
-      <ActivityIndicator style={styles.center} /> :
+      <ActivityIndicator size="large" style={styles.flex} /> :
       <ScrollView
-        style={styles.container}
+        style={styles.flex}
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
         <Image
           source={{ uri: `https://www.gravatar.com/avatar/${this.state.userData.md5}?s=256&d=mm&r=g` }}
@@ -94,7 +94,7 @@ class ProfileScreen extends React.Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
   };
@@ -103,7 +103,7 @@ function mapStateToProps(state, ownProps) {
 export default connect(mapStateToProps)(ProfileScreen);
 
 const styles = StyleSheet.create({
-  container: {
+  flex: {
     flex: 1,
   },
   fullName: {

@@ -6,12 +6,10 @@ import {
   Alert,
   AsyncStorage,
 } from 'react-native';
-import {
-  ExponentConfigView,
-} from '@exponent/samples';
 
 import {
   clearAuthToken,
+  clearCurrentChef,
   clearCurrentUser,
 } from '../actions/authActions';
 
@@ -45,6 +43,7 @@ class SettingsScreen extends React.Component {
     function finishAuth() {
       AsyncStorage.removeItem('AuthToken').then(function() {
         context.props.dispatch(clearAuthToken());
+        context.props.dispatch(clearCurrentChef());
         context.props.dispatch(clearCurrentUser());
         rootNavigator.immediatelyResetStack([Router.getRoute('auth')]);
       }).catch(function(err) {
@@ -53,8 +52,8 @@ class SettingsScreen extends React.Component {
     }
   }
 
-  chefOptions() {
-    this.props.navigator.push('profile', {isChef: true});
+  chefActions() {
+    this.props.navigator.push('chefActions');
   }
 
   render() {
@@ -64,8 +63,8 @@ class SettingsScreen extends React.Component {
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
 
         <Button
-          title="Chef Options"
-          onPress={this.chefOptions.bind(this)}
+          title="Chef Actions"
+          onPress={this.chefActions.bind(this)}
         />
 
         <Button
