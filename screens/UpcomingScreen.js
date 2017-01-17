@@ -3,7 +3,9 @@ import {
   ScrollView,
   StyleSheet,
   Button,
-  AsyncStorage,
+  ActivityIndicator,
+  View,
+  RefreshControl,
 } from 'react-native';
 import {
   ExponentLinksView,
@@ -13,7 +15,9 @@ import { serverURI } from '../config';
 
 import EventListing from '../components/EventListing';
 
-export default class UpcomingScreen extends React.Component {
+import { connect } from 'react-redux';
+
+class UpcomingScreen extends React.Component {
   static route = {
     navigationBar: {
       title: 'Upcoming Events',
@@ -24,69 +28,82 @@ export default class UpcomingScreen extends React.Component {
     super(props);
     this.state = {
       events: [],
+      loading: true,
+      refreshing: false,
     };
   }
 
   componentWillMount() {
-    let context = this;
-    AsyncStorage.getItem('currentUser').then(function(currentUser) {
-      return fetch(`${serverURI}/events/users/${currentUser}`)
-    }).then(function(resp) {
-        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
-          return resp.json();
-        } else {
-          return resp.text();
-        }
-    }).then(function(events) {
-      context.setState({events})
-    }).catch(function(err) {
-      alert(err);
-    })
+    this.fetchUpcoming.call(this);
   }
 
-  viewPastEvents() {
-    alert('Not implement bby!');
-    // redux things
-    // this.props.navigator.push('pastEvents');
+  fetchUpcoming() {
+    let context = this;
+    this.setState({refreshing: true}, function() {
+      fetch(`${serverURI}/events/users/${this.props.currentUser}`)
+        .then(function(resp) {
+          if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+            return resp.json();
+          } else {
+            return resp.text();
+          }
+      }).then(function(events) {
+        context.setState({loading: false, refreshing: false, events})
+      }).catch(function(err) {
+        alert(err);
+      });
+    });
   }
 
   render() {
     return (
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={this.props.route.getContentContainerStyle()}>
-        <Button
-          title="See past events"
-          onPress={this.viewPastEvents.bind(this)}
-        />
-        {this.state.events.map((event, index) => (
-          <EventListing
-            key={index}
-            name="You"
-            chef="Someone Else"
-            dateTime="The Future"
+      this.state.loading ?
+        <View style={styles.center}>
+          <ActivityIndicator size="large"/>
+        </View> :
+
+        <ScrollView
+        style={[styles.container]}
+        contentContainerStyle={this.props.route.getContentContainerStyle()}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this.fetchUpcoming.bind(this)}
+            tintColor="#ccc"
+            title=" "
+            titleColor="#000000"
+            colors={['#ccc', '#ccc', '#ccc']}
+            progressBackgroundColor="#ffff00"
           />
-        ))}
-        <EventListing
-          name="John Doe"
-          chef="Guy Fierri"
-          dateTime="12/31/2016 4:15PM"
-        />
-        <EventListing
-          name="Big Bird"
-          chef="Papa John"
-          dateTime="1/7/2016 1:00AM"
-          isChef={true}
-        />
-      </ScrollView>
+        }>
+          {this.state.events.map((event, index) =>
+            <EventListing
+              key={index}
+              name="You"
+              chef="Someone Else"
+              dateTime=""
+            />
+          )}
+        </ScrollView>
     );
   }
-
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 4,
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
+
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser,
+  };
+}
+
+export default connect(mapStateToProps)(UpcomingScreen);
