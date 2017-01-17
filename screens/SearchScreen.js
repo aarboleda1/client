@@ -10,25 +10,19 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { FontAwesome } from '@exponent/vector-icons';
-
 import Router from '../navigation/Router';
 import Colors from '../constants/Colors';
-
 import RestrictionSelectionEntry from '../components/RestrictionSelectionEntry';
-
-import { connect } from 'react-redux';
-
 import {
   setSearchCuisine,
   toggleSearchRestriction,
 } from '../actions/searchActions';
-
 import { serverURI } from '../config';
 import Panel from '../components/Panel';
 import SquareSelection from '../components/SquareRestrictions';
 
-// ************ Begin Styling **************
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
@@ -36,7 +30,8 @@ class SearchScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cuisine: 'italian'
+      cuisine: 'italian', 
+      title: 'Set Location'
     }
   }
 
@@ -145,7 +140,7 @@ class SearchScreen extends React.Component {
         </Panel>
 
         <Text style={styles.location}>
-          Location: {this.props.search.location || 'not currently set'}
+          Location: {this.props.search.location || 'Need to set City/State'}
         </Text>
          
          <TouchableHighlight
@@ -159,14 +154,18 @@ class SearchScreen extends React.Component {
 
         {this.state.location ?
           <Text style={styles.location}>{this.state.location}</Text> : null}
+        
+         {this.props.search.location ?  
+        <TouchableHighlight
+         style={styles.button}
+         onPress={this._search.bind(this)}
+         >
+          <Text style={styles.touchHighlightText}>
+            Search
+          </Text>
+        </TouchableHighlight>
+        : null}
 
-        <Button
-          style={styles.button}
-          // color='red'
-          onPress={this._search.bind(this)}
-          title="Search"
-        >
-        </Button>
       </ScrollView>
     );
   }
@@ -177,7 +176,6 @@ var styles = StyleSheet.create({
     flex            : 1,
     backgroundColor : '#e7e7e6',
     paddingTop      : 30,
-
   },
   text: {
     fontSize: 25,
@@ -189,11 +187,12 @@ var styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 4,
     backgroundColor: '#4b3832',
-    margin: 20,
+    margin: 10,
     height: WINDOW_HEIGHT / 12,
     width: WINDOW_WIDTH / 1.1,
     alignItems: 'center',
     justifyContent: 'center',
+    marginLeft: 15,
     // flex: 1,
     // flexDirection: 'column',
   },
@@ -215,9 +214,17 @@ var styles = StyleSheet.create({
     alignSelf: 'center'
   },
   button: {
+    borderColor: 'black',
+    borderWidth: 4,
+    backgroundColor: '#201d3e',
+    margin: 10,
+    marginLeft: 15,
+    height: WINDOW_HEIGHT / 12,
+    width: WINDOW_WIDTH / 1.1,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 });
-
 
 function mapStateToProps(state, ownProps) {
   return {

@@ -56,7 +56,6 @@ class Panel extends React.Component{
         return (
              <Animated.View style={[styles.container,{height: this.state.animation}]} >
                 <View style={styles.titleContainer} onLayout={this._setMinHeight.bind(this)}>
-                    {console.log (this.state.minHeight, this.state.maxHeight)}
                     <Text style={styles.title}>{this.state.title}</Text>
                     <TouchableHighlight 
                         style={styles.button} 
