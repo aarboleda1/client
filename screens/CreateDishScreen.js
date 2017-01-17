@@ -41,6 +41,13 @@ class CreateDishScreen extends Component {
     update[key] = !this.state[key];
     this.setState(update);
   }
+
+  _saveTitle () {
+    this.toggleState.apply(this, 'showAddTitleModal');
+    this.props.dispatch(setMapContext('chefActions'));
+  };
+
+
   render () {
     return (
       <ScrollView style={styles.flex}>
@@ -119,7 +126,7 @@ class CreateDishScreen extends Component {
           />        
          <Button
             title="Save"
-            onPress={this.toggleState.bind(this, 'describeDishModal')}
+            onPress={this._saveTitle.bind(this)}
           />     
         </ScrollView>      
         </Modal>
@@ -131,7 +138,6 @@ class CreateDishScreen extends Component {
             style={styles.container}
             contentContainerStyle={[this.props.route.getContentContainerStyle()]}
           >
-
           <RestrictionSelectionEntryList/> 
           <Button
             title="Save"
