@@ -38,7 +38,7 @@ class SearchScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cuisine: 'italian'
+      cuisine: 'american'
     }
   }
 
@@ -128,10 +128,13 @@ class SearchScreen extends React.Component {
             return context.props.dispatch(setSearchCuisine(type));
           }}
           style={styles.cuisine}>
+           <Picker.Item label="American" value="american" />
+           <Picker.Item label="Chinese" value="chinese" />
+           <Picker.Item label="French" value="french" />
            <Picker.Item label="Italian" value="italian" />
-           <Picker.Item label="Asian" value="asian" />
+           <Picker.Item label="Japanese" value="japanese" />
            <Picker.Item label="Korean" value="korean" />
-           <Picker.Item label="Pastry" value="pastry" />
+           <Picker.Item label="Mexican" value="mexican" />
         </Picker>
 
         <RestrictionSelectionEntry name="Dairy" />
