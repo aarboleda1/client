@@ -21,6 +21,8 @@ import { setCurrentChef } from '../actions/authActions';
 
 import { connect } from 'react-redux';
 
+import getTruthyKeys from '../utilities/getTruthyKeys';
+
 class ChefActionsScreen extends Component {
   static route = {
     navigationBar: {
@@ -58,8 +60,8 @@ class ChefActionsScreen extends Component {
         'Mexican',
       ],
       dishes: [],
-      checkedCuisines: [],
-      checkedRestrictions: [],
+      checkedCuisines: {},
+      checkedRestrictions: {},
     };
   }
 
@@ -125,23 +127,13 @@ class ChefActionsScreen extends Component {
 
   _addOrRemoveRestriction(restriction) {
     let update = this.state.checkedRestrictions;
-
-    if (this.state.checkedRestrictions[restriction]) {
-      delete update[restriction];
-    } else {
-      update[restriction] = true;
-    }
+    update[restriction] = !update[restriction];
     this.setState({checkedRestrictions: update});
   }
 
   _addOrRemoveCuisine(cuisine) {
     let update = this.state.checkedCuisines;
-
-    if (this.state.checkedCuisines[cuisine]) {
-      delete update[cuisine];
-    } else {
-      update[cuisine] = true;
-    }
+    update[cuisine] = !update[cuisine];
     this.setState({checkedCuisines: update});
   }
 
@@ -149,8 +141,8 @@ class ChefActionsScreen extends Component {
     let chefData = {
       name: this.state.name,
       locations: this.state.locations,
-      restrictions: Object.keys(this.state.checkedRestrictions),
-      cuisines: Object.keys(this.state.checkedCuisines),
+      restrictions: getTruthyKeys(this.state.checkedRestrictions),
+      cuisines: getTruthyKeys(this.state.checkedCuisines),
       iamge: this.state.avatarURL,
     }
 
@@ -229,7 +221,7 @@ class ChefActionsScreen extends Component {
         />
 
         <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Restrictions:</Text>
-          {Object.keys(this.state.checkedRestrictions).map((restriction, index) =>
+          {getTruthyKeys(this.state.checkedRestrictions).map((restriction, index) =>
             <Text key={index}>{restriction}</Text>
           )}
         <Button
@@ -238,7 +230,7 @@ class ChefActionsScreen extends Component {
         />
 
         <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Cuisines:</Text>
-          {Object.keys(this.state.checkedCuisines).map((cuisine, index) =>
+          {getTruthyKeys(this.state.checkedCuisines).map((cuisine, index) =>
             <Text key={index}>{cuisine}</Text>
           )}
         <Button
