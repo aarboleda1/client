@@ -72,8 +72,8 @@ export default class RootNavigation extends React.Component {
 
         <TabNavigationItem
           id="profile"
-          renderIcon={isSelected => this._renderIcon('user', isSelected)}>
-          <StackNavigation initialRoute="profile" />
+          renderIcon={isSelected => this._renderIcon('fire', isSelected)}>
+          <StackNavigation initialRoute="chefActions" />
         </TabNavigationItem>
 
         <TabNavigationItem

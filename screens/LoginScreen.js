@@ -11,6 +11,7 @@ import {
 
 import {
   setAuthToken,
+  setCurrentChef,
   setCurrentUser,
 } from '../actions/authActions';
 
@@ -99,11 +100,18 @@ class LoginScreen extends React.Component {
       }
     })
     .then(function(data) {
+      let chefId = null
+      if (data.chefId !== null) {
+        chefId = data.chefId.toString();
+      }
+
       context.props.dispatch(setAuthToken(data.AuthToken));
       context.props.dispatch(setCurrentUser(data.id.toString()));
+      context.props.dispatch(setCurrentChef(chefId));
       return AsyncStorage.multiSet([
         ['AuthToken', data.AuthToken],
         ['currentUser', data.id.toString()],
+        ['currentChef', JSON.stringify(chefId)],
       ]);
     }).then(function() {
       Alert.alert(
