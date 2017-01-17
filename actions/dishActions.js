@@ -1,23 +1,23 @@
 module.exports = {
-  updateName: function (name) {
+  updateDishName: function (name) {
     return {type: 'UPDATE_DISH_NAME', name};
   },
-  updateText: function (text) {
+  updateDishText: function (text) {
     return {type: 'UPDATE_DISH_TEXT', text};
   },
-  updatePrice: function (price) {
+  updateDishPrice: function (price) {
     return {type: 'UPDATE_DISH_PRICE', price};
   },
-  updateRestrictions: function (restrictions) {
+  updateDishRestrictions: function (restrictions) {
     return {type: 'UPDATE_DISH_RESTRICTIONS', restrictions};
   },
-  updateCuisine: function (cuisines) {
+  updateDishCuisine: function (cuisines) {
     return {type: 'UPDATE_DISH_CUISINES', cuisines};
   },
-  updateDish: function (dish) {
+  updateEntireDish: function (dish) {
     return {type: 'UPDATE_ENTIRE_DISH', dish};
   },
-  deleteDish: function () {
+  deleteEntireDish: function () {
     return {type: 'REMOVE_DISH'};
   },
   addToDishList: function (dishList) {
