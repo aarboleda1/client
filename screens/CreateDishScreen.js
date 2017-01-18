@@ -15,18 +15,18 @@ import { withNavigation } from '@exponent/ex-navigation';
 
 import { addToDishList } from '../actions/dishActions';
 
-import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 
 import DishTextInput from '../components/DishTextInput';
 import ListItem from '../components/ListItem';
 import ListItemSection from '../components/ListItemSection';
 import RestrictionSelectionEntryList from '../components/RestrictionSelectionEntryList';
-import SampleButton from '../components/SampleButton';
 
 import CheckBox from 'react-native-checkbox';
 
+import { postDishToDB } from '../helpers/dishHelpers';
 
+//this.props.currentUser '1' 1
 //this.props.route..params
 @withNavigation
 class CreateDishScreen extends Component {
@@ -89,7 +89,6 @@ class CreateDishScreen extends Component {
       cuisines: checkedCuisines
     }
     this.props.navigator.push(Router.getRoute('dishPreviewOnlyView', {dish: newlyCreatedDish}));
-
   }
 
   _saveDishName (dishName) {
@@ -118,7 +117,6 @@ class CreateDishScreen extends Component {
     } else {
       this.state.checkedRestrictions.push(restriction);
     }
-    console.log(this.state.checkedRestrictions, 'CHECKED RESTRICTION');
   }
   _addOrRemoveCuisine(cuisine) {
     if (this.state.checkedCuisines.includes(cuisine)) {
@@ -147,9 +145,14 @@ class CreateDishScreen extends Component {
       cuisines: checkedCuisines
     };
 
+    // Create a copy, otherwise a weird type error occurs when trying
+    // to push to the currentDishList in stateA  c
     var newDishArray = this.props.dishes.dishList.slice(0);    
     var newDishList = newDishArray.push(newlyCreatedDish);    
     this.props.dispatch(addToDishList(newDishArray));
+    let chefId = parseInt(this.props.currentChef)
+    console.log(chefId, 'is the chefId!!');
+    postDishToDB(newlyCreatedDish, chefId);
   };
 
   render () {
@@ -416,13 +419,7 @@ function mapStateToProps(state) {
   return {
     dishList: state.dishList,
     dishes: state.dishes,
-    state,
+    currentUser: state.currentUser,
   };
-}
-// import from redux 
-function matchDispatchToProps() {
-  return bindActionCreators ({
-    // method that will be this.props.insertFunctionhere
-  }); 
 }
 export default connect(mapStateToProps)(CreateDishScreen);

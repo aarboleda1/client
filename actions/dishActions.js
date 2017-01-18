@@ -25,7 +25,6 @@ module.exports = {
 
 
   addToDishList: function (dishList) {
-    console.log(dishList, 'INSIDE dishAction');
     return {type: 'ADD_TO_DISH_LIST', payload: dishList};
   },
 
