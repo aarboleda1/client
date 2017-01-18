@@ -44,13 +44,10 @@ export default function dishReducers(state = {
 
 
   case 'ADD_TO_DISH_LIST':
-    console.log(action.payload, 'ACTIONPAYLOADREDUCER in reducer');
     return Object.assign({}, state, { 
       dishList: action.payload
     });
     break;
-
-
 
 
   case 'REMOVE_FROM_DISHLIST':
