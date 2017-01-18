@@ -1,9 +1,12 @@
 import React from 'react';
 import {
+  ActivityIndicator,
+  AsyncStorage,
+  Button,
+  Dimensions,
   ScrollView,
   StyleSheet,
-  Button,
-  ActivityIndicator,
+  Text,
   View,
   RefreshControl,
 } from 'react-native';
@@ -16,6 +19,10 @@ import { serverURI } from '../config';
 import EventListing from '../components/EventListing';
 
 import { connect } from 'react-redux';
+
+import {
+  FontAwesome,
+} from '@exponent/vector-icons';
 
 class UpcomingScreen extends React.Component {
   static route = {
@@ -62,8 +69,8 @@ class UpcomingScreen extends React.Component {
           <ActivityIndicator size="large"/>
         </View> :
 
-        <ScrollView
-        style={[styles.container]}
+      <ScrollView
+        style={styles.container}
         contentContainerStyle={this.props.route.getContentContainerStyle()}
         refreshControl={
           <RefreshControl
@@ -76,25 +83,35 @@ class UpcomingScreen extends React.Component {
             progressBackgroundColor="#ffff00"
           />
         }>
-          {this.state.events.map((event, index) =>
-            <EventListing
-              key={index}
-              id={event.id}
-              name={event.name}
-              time={event.time}
-              location={event.location}
-              description={event.text}
-              chef={event.chefInfo}
-              currentUser= {this.props.currentUser}
-            />
-          )}
-        </ScrollView>
+
+        <Text style={styles.chefText}> Events as Host </Text>
+
+        {this.props.currentChef ? (
+        <View>
+          <Text style={styles.chefText}> Events as Chef </Text>
+
+        </View>
+        ) : null}
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#e7e7e6',
+  },
+  text: {
+    fontSize: 23,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  subText: {
+    fontSize: 17,
+  },
+  icon: {
+    alignSelf: 'flex-end',
+    padding: 5,
     flex: 1,
   },
   center: {
@@ -102,12 +119,40 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  chefText: {
+    paddingTop: 20,
+    fontSize: 20,
+    fontWeight: '500'
+  },
+
 });
 
 function mapStateToProps(state) {
   return {
+    currentChef: state.currentChef,
     currentUser: state.currentUser,
   };
 }
 
 export default connect(mapStateToProps)(UpcomingScreen);
+
+
+// Code for icons, please leave for now
+// {<View
+//   style={styles.icon}>
+
+//   <FontAwesome
+//   name={'cutlery'}
+//   size={22} >
+//     <Text style={styles.subText}> = As Host </Text>
+//   </FontAwesome>
+
+
+//   <FontAwesome
+//   name={'fire'}
+//   size={22} >
+//     <Text style={styles.subText}> = As Chef </Text>
+//   </FontAwesome>
+
+// </View>}
+
