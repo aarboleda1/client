@@ -49,7 +49,7 @@ export default class AuthScreen extends React.Component {
       <View style={styles.container}>
         <Text style={styles.title}>Black Ocean</Text>
         <Image
-          source={{ uri: 'http://i.imgur.com/rO1zTc5.png'}}
+          source={require('../Images/Logo_v2_transparent.png')}
           style={styles.logo}
         />
         <View style={styles.buttonJustifier}>

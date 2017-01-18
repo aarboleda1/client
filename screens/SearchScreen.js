@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import { FontAwesome } from '@exponent/vector-icons';
 import Router from '../navigation/Router';
 import Colors from '../constants/Colors';
-import RestrictionSelectionEntry from '../components/RestrictionSelectionEntry';
+import CuisineSelectionEntry from '../components/CuisineSelectionEntry';
 import {
   setSearchCuisine,
   toggleSearchRestriction,
@@ -39,8 +39,8 @@ class SearchScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cuisine: 'italian', 
-      title: 'Set Location'
+      title: 'Set Location',
+      cuisine: 'american',
     }
   }
 
@@ -73,7 +73,7 @@ class SearchScreen extends React.Component {
     searchParams.restrictions = queryRestrictions;
 
     console.log(`GET to ${serverURI}/chefs?${qs.stringify(searchParams)}`);
-
+    
     let context = this;
     this.setState({loading: true}, function() {
       fetch(`${serverURI}/chefs?${qs.stringify(searchParams)}`, {
@@ -114,11 +114,13 @@ class SearchScreen extends React.Component {
             this.setState({ cuisine: type });
             return context.props.dispatch(setSearchCuisine(type));
           }}>
-            <RestrictionSelectionEntry name="Asian" />
-            <RestrictionSelectionEntry name="Italian" />
-            <RestrictionSelectionEntry name="Spanish" />
-            <RestrictionSelectionEntry name="Mediterranean" />
-            <RestrictionSelectionEntry name="Pastry" />
+            <CuisineSelectionEntry name="American" />
+            <CuisineSelectionEntry name="Chinese" />
+            <CuisineSelectionEntry name="French" />
+            <CuisineSelectionEntry name="Italian" />
+            <CuisineSelectionEntry name="Japanese" />
+            <CuisineSelectionEntry name="Korean" />
+            <CuisineSelectionEntry name="Mexican" />
         </Panel>
 
         <Panel title="Select Restrictions">
@@ -143,7 +145,7 @@ class SearchScreen extends React.Component {
         </Panel>
 
         <Text style={styles.location}>
-          Location: {this.props.search.location || 'Need to set City/State'}
+          Location: {this.props.search.location || 'not set'}
         </Text>
          
          <TouchableHighlight
@@ -196,12 +198,9 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 15,
-    // flex: 1,
-    // flexDirection: 'column',
   },
   touchHighlightText: {
     color: '#FAFAFA',
-    // flex: 1,
     fontSize: 21,
     fontWeight: '500',
   },

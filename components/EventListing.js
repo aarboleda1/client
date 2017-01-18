@@ -25,10 +25,14 @@ export default class EventListing extends Component {
 
   viewEvent() {
     let details = {
-      chef: this.props.chef,
+      id: this.props.id,
       name: this.props.name,
-      // dateTime: this.props.dateTime,
+      dateTime: this.props.time,
+      location: this.props.location,
+      description: this.props.description,
       isChef: this.props.isChef,
+      chef: this.props.chef,
+      currentUser: this.props.currentUser
     };
     this.props.navigator.push(Router.getRoute('eventDetailsView', { details }));
   }
@@ -80,7 +84,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
-    // margin: 5,
   },
   text: {
     fontSize: 20,
