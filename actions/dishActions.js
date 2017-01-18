@@ -20,9 +20,18 @@ module.exports = {
   deleteEntireDish: function () {
     return {type: 'REMOVE_DISH'};
   },
+
+
+
+
   addToDishList: function (dishList) {
-    return {type: 'DISH_LIST', dishList};
+    console.log(dishList, 'INSIDE dishAction');
+    return {type: 'ADD_TO_DISH_LIST', payload: dishList};
   },
+
+
+
+
   ///CHECK IF THIS WORKS
   requestDishInfo: function (dishList) {
     return {type: 'REQUEST_DISH_INFO', dishList}; 

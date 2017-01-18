@@ -13,13 +13,16 @@ import {
 import Router from '../navigation/Router';
 import { withNavigation } from '@exponent/ex-navigation';
 
+import { addToDishList } from '../actions/dishActions';
 
+import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 
 import DishTextInput from '../components/DishTextInput';
 import ListItem from '../components/ListItem';
 import ListItemSection from '../components/ListItemSection';
 import RestrictionSelectionEntryList from '../components/RestrictionSelectionEntryList';
+import SampleButton from '../components/SampleButton';
 
 import CheckBox from 'react-native-checkbox';
 
@@ -58,7 +61,7 @@ class CreateDishScreen extends Component {
         'Korean',
         'Mexican',
       ],
-      cuisinesSelected: ['Asian', 'American'],
+      cuisinesSelected: [],
       checkedRestrictions: [],
       checkedCuisines: []
     };
@@ -79,7 +82,7 @@ class CreateDishScreen extends Component {
     let { cuisinesSelected, dishName, dishDescription, image, price, checkedRestrictions, checkedCuisines, cuisines } = this.state;
     var newlyCreatedDish = {
       name: dishName,
-      text: cuisinesSelected,
+      text: dishDescription,
       image: 'image',
       price: price,
       restrictions: checkedRestrictions,
@@ -133,6 +136,22 @@ class CreateDishScreen extends Component {
     // this.setState({checkedCuisines: update});
   }
 
+  _saveToMenuList () {
+    let { dishName, dishDescription, image, price, checkedRestrictions, checkedCuisines } = this.state;
+    var newlyCreatedDish = {
+      name: dishName,
+      text: dishDescription,
+      image: 'image',
+      price: price,
+      restrictions: checkedRestrictions,
+      cuisines: checkedCuisines
+    };
+
+    var newDishArray = this.props.dishes.dishList.slice(0);    
+    var newDishList = newDishArray.push(newlyCreatedDish);    
+    this.props.dispatch(addToDishList(newDishArray));
+  };
+
   render () {
     return (
       <ScrollView style={styles.flex}>      
@@ -174,6 +193,21 @@ class CreateDishScreen extends Component {
             onPress={this.toggleState.bind(this, 'setCuisinesModal')}
           />
         </ListItem>
+        <ListItem>
+        <Button
+          title="Preview Dish"
+          style={{flexDirection: 'column', justifyContent: 'flex-end'}}
+          onPress={this._goToPreviewDishScreen.bind(this)}
+        />
+        </ListItem>
+        <ListItem>
+        <Button
+          title="Save To Menu"
+          style={{flexDirection: 'column', justifyContent: 'flex-end'}}
+          onPress={this._saveToMenuList.bind(this)}
+        />
+        </ListItem>
+
 
       {/*Modals to create dishes*/}
         <Modal
@@ -307,12 +341,6 @@ class CreateDishScreen extends Component {
           </ScrollView>
         </Modal>
 
-
-        <Button
-          title="Preview Dish"
-          style={{flexDirection: 'column', justifyContent: 'flex-end'}}
-          onPress={this._goToPreviewDishScreen.bind(this)}
-        />
       </ScrollView>
     )   
   };
@@ -391,5 +419,10 @@ function mapStateToProps(state) {
     state,
   };
 }
-
+// import from redux 
+function matchDispatchToProps() {
+  return bindActionCreators ({
+    // method that will be this.props.insertFunctionhere
+  }); 
+}
 export default connect(mapStateToProps)(CreateDishScreen);
