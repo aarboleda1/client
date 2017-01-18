@@ -15,7 +15,6 @@ import { connect } from 'react-redux';
 import { FontAwesome } from '@exponent/vector-icons';
 import Router from '../navigation/Router';
 import Colors from '../constants/Colors';
-
 import CuisineSelectionEntry from '../components/CuisineSelectionEntry';
 import {
   setSearchCuisine,
@@ -113,7 +112,6 @@ class SearchScreen extends React.Component {
           onValueChange={(type) => {
             this.setState({ cuisine: type });
             return context.props.dispatch(setSearchCuisine(type));
-
           }}>
             <CuisineSelectionEntry name="American" />
             <CuisineSelectionEntry name="Chinese" />
