@@ -1,9 +1,10 @@
 import React from 'react';
 import {
+  AsyncStorage,
+  Button,
+  Dimensions,
   ScrollView,
   StyleSheet,
-  Button,
-  AsyncStorage,
   Text,
   View,
 } from 'react-native';
@@ -15,11 +16,13 @@ import { serverURI } from '../config';
 
 import EventListing from '../components/EventListing';
 
+import { connect } from 'react-redux';
+
 import {
   FontAwesome,
 } from '@exponent/vector-icons';
 
-export default class UpcomingScreen extends React.Component {
+class UpcomingScreen extends React.Component {
   static route = {
     navigationBar: {
       title: 'Upcoming Events',
@@ -50,38 +53,11 @@ export default class UpcomingScreen extends React.Component {
     })
   }
 
-  viewPastEvents() {
-    alert('Not implement bby!');
-    // redux things
-    // this.props.navigator.push('pastEvents');
-  }
-
   render() {
     return (
       <ScrollView
         style={styles.container}
         contentContainerStyle={this.props.route.getContentContainerStyle()}>
-        
-        <View
-        style={styles.icon}>
-
-        <FontAwesome
-        name={'cutlery'}
-        size={20} >
-          <Text style={styles.subText}> = As Host </Text>
-        </FontAwesome>
-
-
-        <FontAwesome
-        name={'fire'}
-        size={20} >
-          <Text style={styles.subText}> = As Chef </Text>
-        </FontAwesome>
-
-        </View>
-
-
-
         {this.state.events.map((event, index) => (
           <EventListing
             key={index}
@@ -90,13 +66,21 @@ export default class UpcomingScreen extends React.Component {
             dateTime="The Future"
           />
         ))}
+
+        <Text style={styles.chefText}> Events as Host </Text>
         <EventListing
           chef="Guy Fieri"
         />
-        <EventListing
-          chef="Papa John"
-          isChef={true}
-        />
+        {this.props.currentChef ? (
+        <View>
+          <Text style={styles.chefText}> Events as Chef </Text>
+
+          <EventListing
+            chef="Papa John"
+            isChef={true}
+          />
+        </View>
+        ) : null}
       </ScrollView>
     );
   }
@@ -104,10 +88,7 @@ export default class UpcomingScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     backgroundColor: '#e7e7e6',
-    // alignItems: 'flex-start'
-    // paddingTop: 4,
   },
   text: {
     fontSize: 23,
@@ -115,12 +96,44 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   subText: {
-    fontSize: 15,
+    fontSize: 17,
   },
   icon: {
     alignSelf: 'flex-end',
-    paddingBottom: 3,
-    paddingTop: 5,
+    padding: 5,
+  },
+  chefText: {
+    paddingTop: 20,
+    fontSize: 20,
+    fontWeight: '500'
   },
 
 });
+
+function mapStateToProps(state) {
+  return {
+    currentChef: state.currentChef,
+  };
+}
+
+export default connect(mapStateToProps)(UpcomingScreen);
+
+// Code for icons, please leave for now
+// {<View
+//   style={styles.icon}>
+
+//   <FontAwesome
+//   name={'cutlery'}
+//   size={22} >
+//     <Text style={styles.subText}> = As Host </Text>
+//   </FontAwesome>
+
+
+//   <FontAwesome
+//   name={'fire'}
+//   size={22} >
+//     <Text style={styles.subText}> = As Chef </Text>
+//   </FontAwesome>
+
+// </View>}
+
