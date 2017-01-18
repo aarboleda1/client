@@ -4,14 +4,11 @@ import {
   View,
   StyleSheet,
   Button,
-  Alert,
   AsyncStorage,
   Text,
   TextInput,
   Image,
-  Modal,
-  ActivityIndicator
-
+  Modal
 } from 'react-native';
 import Router from '../navigation/Router';
 import { withNavigation } from '@exponent/ex-navigation';
@@ -35,6 +32,7 @@ class CreateDishScreen extends Component {
     this.state = {
       dishName: '',
       dishDescription: '',
+      image: '',
       price: '',
       restrictions: [
         'Eggs',
@@ -60,6 +58,7 @@ class CreateDishScreen extends Component {
         'Korean',
         'Mexican',
       ],
+      cuisinesSelected: ['Asian', 'American'],
       checkedRestrictions: [],
       checkedCuisines: []
     };
@@ -76,8 +75,18 @@ class CreateDishScreen extends Component {
     this.setState(update);
   }
   _goToPreviewDishScreen () {
-    this.props.navigator.push(Router.getRoute('dishPreviewOnlyView', this.state));
-    //also send this.the new dish to the store 
+    //also send this.the new dish1 to the store
+    let { cuisinesSelected, dishName, dishDescription, image, price, checkedRestrictions, checkedCuisines, cuisines } = this.state;
+    var newlyCreatedDish = {
+      name: dishName,
+      text: cuisinesSelected,
+      image: 'image',
+      price: price,
+      restrictions: checkedRestrictions,
+      cuisines: checkedCuisines
+    }
+    this.props.navigator.push(Router.getRoute('dishPreviewOnlyView', {dish: newlyCreatedDish}));
+
   }
 
   _saveDishName (dishName) {
@@ -94,27 +103,35 @@ class CreateDishScreen extends Component {
 
   _addOrRemoveRestriction(restriction) {
     let update = this.state.checkedRestrictions;
-
-    if (this.state.checkedRestrictions[restriction]) {
-      delete update[restriction];
+  {/*RUN BY ZACK*/}
+    // if (this.state.checkedRestrictions[restriction]) {
+    //   delete update[restriction];
+    // } else {
+    //   update[restriction] = true;
+    // }
+    // this.setState({checkedRestrictions: update});
+    if (this.state.checkedRestrictions.includes(restriction)) {
+      this.state.checkedRestrictions.splice(restriction, 1)
     } else {
-      update[restriction] = true;
+      this.state.checkedRestrictions.push(restriction);
     }
-    this.setState({checkedRestrictions: update});
+    console.log(this.state.checkedRestrictions, 'CHECKED RESTRICTION');
   }
-  _addOrRemoveRestriction(cuisine) {
+  _addOrRemoveCuisine(cuisine) {
+    if (this.state.checkedCuisines.includes(cuisine)) {
+      this.state.checkedRestrictions.splice(cuisine, 1);
+    } else {
+      this.state.checkedRestrictions.push(cuisine);
+    }
     let update = this.state.checkedCuisines;
 
-    if (this.state.checkedCuisines[cuisines]) {
-      delete update[cuisines];
-    } else {
-      update[cuisines] = true;
-    }
-    this.setState({checkedCuisines: update});
+    // if (this.state.checkedCuisines[cuisine]) {
+    //   delete update[cuisine];
+    // } else {
+    //   update[cuisine] = true;
+    // }
+    // this.setState({checkedCuisines: update});
   }
-
-
-
 
   render () {
     return (
@@ -188,6 +205,8 @@ class CreateDishScreen extends Component {
           animationType={"fade"}
           transparent={false}
           visible={!!this.state.describeDishModal}> 
+        <ScrollView style={styles.textPadding}>
+
           <TextInput
             editable = {true}
             underlineColorAndroid="rgba(0,0,0,0)"
@@ -195,13 +214,15 @@ class CreateDishScreen extends Component {
             maxLength={60}
             editable={true}
             onChangeText={(text) => this._saveDishDescription.call(this, text) }
-            placeholder="Enter description of dish here!" 
+            placeholder="Enter description of dish here!"
+            multiline={true} 
             numberOfLines={4}
           />       
          <Button
             title="Save"
             onPress={this.toggleState.bind(this, 'describeDishModal')}
-          />     
+          />
+        </ScrollView>
         </Modal>
         
         <Modal
@@ -213,6 +234,8 @@ class CreateDishScreen extends Component {
             style={styles.container}
             contentContainerStyle={[this.props.route.getContentContainerStyle()]}
           >            
+          <Text style={styles.titleText}>Restrictions</Text>
+
           {this.state.restrictions.map((restriction) => 
             <CheckBox
               style={{backgroundColor: 'blue'}}
@@ -232,12 +255,12 @@ class CreateDishScreen extends Component {
           />
           </ScrollView>          
         </Modal>
-
+      {/*PRICE MODAL*/}
         <Modal
           animationType={"fade"}
           transparent={false}
           visible={!!this.state.setPriceModal}>
-          <ScrollView>
+          <ScrollView style={styles.textPadding}>
           <DishTextInput
             onChangeText={(priceText)=>{ this._saveDishPrice.call(this, priceText)}}
             style={styles.formInput}
@@ -251,30 +274,39 @@ class CreateDishScreen extends Component {
           />          
           </ScrollView> 
         </Modal>
-
+      {/*CUISINES MODAL*/}
         <Modal
           animationType={"fade"}
           transparent={false}
           visible={!!this.state.setCuisinesModal}>
+          <ScrollView
+            contentContainerStyle={styles.modalStyle}
+            style={styles.container}
+            contentContainerStyle={[this.props.route.getContentContainerStyle()]}
+          >
+          <Text style={styles.titleText}>Cuisines</Text>
+
           {this.state.cuisines.map((cuisine) => 
             <CheckBox
               style={{backgroundColor: 'blue'}}
-              checkboxStyle={styles.checkBox}
-              key={restriction}
-              label={restriction}
+              checkboxStyle={styles.checkBox}            
+              key={cuisine}
+              label={cuisine}
               labelStyle={styles.labelText}
-              underlayColor={'#d3d3d3'}
-              checked={this.state.checkedCuisine[cuisine]}
+              underlayColor={'#d3d3d3'}                          
+              checked={this.state.checkedCuisines[cuisine]}
               onChange={() => 
-                this._addOrRemoveCuisine(restriction)}
+                this._addOrRemoveCuisine(cuisine)}              
             />
-          )}            
+          )}     
           <Button
             title="Save"
             style={{flexDirection: 'column', justifyContent: 'flex-end'}}
             onPress={this.toggleState.bind(this, 'setCuisinesModal')}
           />
+          </ScrollView>
         </Modal>
+
 
         <Button
           title="Preview Dish"
@@ -282,7 +314,7 @@ class CreateDishScreen extends Component {
           onPress={this._goToPreviewDishScreen.bind(this)}
         />
       </ScrollView>
-    ) 
+    )   
   };
 }
 
@@ -341,7 +373,14 @@ const styles = {
     justifyContent: 'space-between',
     marginLeft: 35,
     marginTop: 30,
-  },  
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingBottom: 10,
+    textDecorationLine: 'underline',
+    justifyContent: 'center'
+  }  
 };
 
 //this.props.dish is now available in here thru redux store
