@@ -8,9 +8,15 @@ import {
   ScrollView,
 } from 'react-native';
 
+import { serverURI } from '../config';
+
 export default class EventDetailsScreen extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      dishes: []
+    }
   }
 
   static route = {
@@ -25,30 +31,43 @@ export default class EventDetailsScreen extends Component {
         style={styles.dishes}
         contentContainerStyle={styles.dishesContainer}>
         <View style={[styles.flex, styles.textPadding]}>
-          <Text style={styles.textCenter}>944 Market Street, San Francisco, CA</Text>
-          <Text style={styles.textCenter}>6:00PM January 6, 2016</Text>
+          <Text style={styles.textCenter}>{this.props.details.name}</Text>
+          <Text style={styles.textCenter}>{this.props.details.location}</Text>
+          <Text style={styles.textCenter}>{this.props.details.dateTime}</Text>
           <View style={[styles.flex, styles.row]}>
             <Image
-            source={{ uri: 'https://www.gravatar.com/avatar/b886567f499306efc3ab3f5ed19e77a2?s=256&d=mm&r=g'}}
+            source={{ uri: this.props.details.chef.image}}
             style={styles.chef}
             />
             <View style={[styles.flex, styles.textPadding, {}]}>
-              <Text style={styles.textCenter}>Naval Bomber</Text>
-              <Text>I like long flights over the beach and staying under the radar.</Text>
+              <Text style={styles.textCenter}>{this.props.details.chef.name}</Text>
+              <Text>{this.props.details.chef.bio}</Text>
             </View>
           </View>
         </View>
-        {this._showDishes([
-          {id: 1, name: 'Meat', quantity: 4, cost: 4.75},
-          {id: 2, name: 'Cotton Candy', quantity: 1, cost: 5},
-          {id: 3, name: 'Actual Angel Hair', quantity: 15, cost: 2.25},
-          {id: 4, name: 'Honeycrisp Apple Pie', quantity: 10, cost: 3.66},
-          {id: 5, name: 'Unicorn Soup', quantity: 5, cost: 7.00},
-          {id: 6, name: 'Pixie Dust Chips', quantity: 20, cost: 1.50},
-          {id: 7, name: 'Manatee', quantity: 5, cost: 4.50},
-          ])}
+        {this._showDishes(this.state.dishes)}
       </ScrollView>
     );
+  }
+
+  componentWillMount() {
+    this._fetchDishes();
+  }
+
+  _fetchDishes() {
+    let context = this;
+    fetch(`${serverURI}/events/${this.props.details.id}/dishes`)
+      .then(function(resp) {
+        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+          return resp.json();
+        } else {
+          return resp.text();
+        }
+    }).then(function(dishes) {
+      context.setState({ dishes });
+    }).catch(function(err) {
+      alert(err);
+    });
   }
 
   _showDishes(dishes) {
@@ -66,7 +85,7 @@ export default class EventDetailsScreen extends Component {
           <Text style={[styles.flex, styles.textRight]}>
             {
               formatCash(dishes.reduce((total, dish) => {
-                return total + (dish.cost * dish.quantity)
+                return total + (dish.price * dish.quantities)
               }, 0))
             }
           </Text>
@@ -88,14 +107,14 @@ export default class EventDetailsScreen extends Component {
     return (
       <View style={styles.menuItem}>
         <Image
-          source={{ uri: `http://lorempixel.com/150/150/food/${dish.id}`}}
+          source={{ uri: dish.image}}
           style={dynamicStyles.dishImage}
         />
         <View style={[styles.flex, styles.textPadding]}>
           <Text style={[styles.flex, styles.textCenter]}>{dish.name}</Text>
           <View style={styles.row}>
-            <Text style={styles.flex}>{`${formatCash(dish.cost)} x ${dish.quantity}`}</Text>
-            <Text style={[styles.flex, styles.textRight]}>{formatCash(dish.cost * dish.quantity)}</Text>
+            <Text style={styles.flex}>{`${formatCash(dish.price)} x ${dish.quantities}`}</Text>
+            <Text style={[styles.flex, styles.textRight]}>{formatCash(dish.price * dish.quantities)}</Text>
           </View>
         </View>
       </View>
