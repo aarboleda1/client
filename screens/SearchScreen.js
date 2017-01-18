@@ -100,7 +100,11 @@ class SearchScreen extends React.Component {
 
   render() {
     const context = this;
-    return (this.state.loading ? <ActivityIndicator size="large" style={styles.loading}/> :
+    return (this.state.loading ? (
+        <View style={styles.loading}>
+          <ActivityIndicator size="large"/>
+        </View>
+      ) :
       <ScrollView
         style={styles.container}
         contentContainerStyle={[this.props.route.getContentContainerStyle()]}>
@@ -222,6 +226,11 @@ var styles = StyleSheet.create({
     marginLeft: 15,
     height: WINDOW_HEIGHT / 12,
     width: WINDOW_WIDTH / 1.1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loading: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   }
