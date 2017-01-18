@@ -29,7 +29,7 @@ export default class ChefPageViewScreen extends React.Component {
     },
   }
 
-  /*!!!!!!!!!!!!!!!!! food selection and quantity*/
+
   constructor(props) {
     super(props);
     this.state = {
@@ -37,12 +37,6 @@ export default class ChefPageViewScreen extends React.Component {
       selected: {},
       dishes: [],
     }
-
-
-    // this.state = store.getState();
-    // store.subscribe(() => {
-    //   this.setState(store.getState());
-    // })
 
   }
 
@@ -104,7 +98,6 @@ export default class ChefPageViewScreen extends React.Component {
           eventData.quantity[key] = context.state.quantity;
         }
       }
-
       return fetch(`${serverURI}/events`, {
         method: 'POST',
         headers: {
