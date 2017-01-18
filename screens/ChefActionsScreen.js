@@ -9,6 +9,8 @@ import {
   Modal,
   View,
   AsyncStorage,
+  TouchableHighlight,
+  Dimensions,
 } from 'react-native';
 
 import CheckBox from 'react-native-checkbox';
@@ -22,6 +24,9 @@ import { setCurrentChef } from '../actions/authActions';
 import { connect } from 'react-redux';
 
 import getTruthyKeys from '../utilities/getTruthyKeys';
+
+const WINDOW_WIDTH = Dimensions.get('window').width;
+const WINDOW_HEIGHT = Dimensions.get('window').height;
 
 class ChefActionsScreen extends Component {
   static route = {
@@ -112,7 +117,6 @@ class ChefActionsScreen extends Component {
   }
 
   addLocation() {
-    this.toggleState('showLocationsModal');
     this.props.dispatch(setMapContext('chefActions'));
     this.props.navigator.push('chooseLocation');
   }
@@ -215,10 +219,13 @@ class ChefActionsScreen extends Component {
         {this.state.locations.map((location, index) =>
           <Text key={index}>{location}</Text>
         )}
-        <Button
-          title="Edit Locations"
-          onPress={this.toggleState.bind(this, 'showLocationsModal')}
-        />
+
+        <TouchableHighlight
+            title="Add Location"
+            onPress={this.addLocation.bind(this)}
+            style={styles.test}> 
+            <Text style={styles.textTest}>Add New Location</Text>
+        </TouchableHighlight>
 
         <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Restrictions:</Text>
           {getTruthyKeys(this.state.checkedRestrictions).map((restriction, index) =>
@@ -253,29 +260,6 @@ class ChefActionsScreen extends Component {
           title="Edit Dishes"
           onPress={this.toggleState.bind(this, 'showDishesModal')}
         />
-
-        <Modal
-          animationType="fade"
-          transparent={false}
-          visible={!!this.state.showLocationsModal}>
-          <ScrollView style={[styles.textPadding, styles.modal]}>
-            <Text>Locations Modal</Text>
-            <TextInput
-              onChangeText={(text) => this.setState({locations})}
-            />
-            {this.state.locations.map((location, index) =>
-              <Text key={index}>{location}</Text>
-            )}
-            <Button
-              title="Add Location"
-              onPress={this.addLocation.bind(this)}
-              />
-            <Button
-              title="Close"
-              onPress={this.toggleState.bind(this, 'showLocationsModal')}
-              />
-          </ScrollView>
-        </Modal>
 
 
         <Modal
@@ -365,10 +349,34 @@ const styles = StyleSheet.create({
   },
   modal: {
     paddingTop: 15,
+    backgroundColor: '#e7e7e6'
   },
   titleText: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  test: {
+    borderColor: 'black',
+    borderWidth: 4,
+    backgroundColor: '#4b3832',
+    margin: 10,
+    height: WINDOW_HEIGHT / 14,
+    width: WINDOW_WIDTH / 1.6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 15,
+    alignSelf: 'center',
+    marginTop: 40, 
+
+  },
+  textTest: {
+    fontSize: 25,
+    color: 'white',
+  },
+  testView: {
+    alignItems: 'center',
+    paddingTop: 40,
+    justifyContent: 'center'
   },
 });
 
@@ -382,3 +390,9 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(ChefActionsScreen);
+
+// <Text>Locations Modal</Text>
+            
+// {this.state.locations.map((location, index) =>
+//   <Text key={index}>{location}</Text>
+// )}
