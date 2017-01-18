@@ -72,8 +72,6 @@ class SearchScreen extends React.Component {
     }
     searchParams.restrictions = queryRestrictions;
 
-    console.log(`GET to ${serverURI}/chefs?${qs.stringify(searchParams)}`);
-    
     let context = this;
     this.setState({loading: true}, function() {
       fetch(`${serverURI}/chefs?${qs.stringify(searchParams)}`, {
@@ -205,7 +203,8 @@ var styles = StyleSheet.create({
     fontWeight: '500',
   },
   square: {
-    flex: 1,
+    // flex: 1,
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
     flexDirection: 'row',
     flexWrap: 'wrap',
