@@ -134,53 +134,54 @@ class SignupScreen extends React.Component {
   _doSignup() {
     // TODO: Disable button while waiting for response from server
     // and show loading indicator
-    if (this._verifySignupFields.call(this)) {
-      let signupData = {
-        name: this.state.name.trim(),
-        email: this.state.email.trim(),
-        password: this.state.password.trim(),
-        bio: 'No description set.',
-      };
+    if (!this._verifySignupFields.call(this)) {
+      return;
+    }
+    let signupData = {
+      name: this.state.name.trim(),
+      email: this.state.email.trim(),
+      password: this.state.password.trim(),
+      bio: 'No description set.',
+    };
 
-      const context = this;
+    const context = this;
 
-      fetch(`${serverURI}/signup`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(signupData)
-      }).then(function(resp) {
-        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
-          return resp.json();
-        } else {
-          return resp.text().then(function(message) {
-            throw new Error(message);
-          });
-        }
-      })
-      .then(function (data) {
-        context.props.dispatch(setAuthToken(data.AuthToken));
-        context.props.dispatch(setCurrentUser(data.id.toString()));
-
-        return AsyncStorage.multiSet([
-          ['AuthToken', data.AuthToken],
-          ['currentUser', data.id.toString()],
-        ]);
-      }).then(function() {
-        Alert.alert(
-          'Registered successfully',
-          '',
-          [{text: 'Nice!', onPress: () => {finishAuth()}}])
-      }).catch(function(err) {
-        Alert.alert(err.message);
-      });
-
-      const rootNavigator = this.props.navigation.getNavigator('root');
-      function finishAuth() {
-        rootNavigator.immediatelyResetStack([Router.getRoute('rootNavigation', {authed: true})]);
+    fetch(`${serverURI}/signup`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(signupData)
+    }).then(function(resp) {
+      if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+        return resp.json();
+      } else {
+        return resp.text().then(function(message) {
+          throw new Error(message);
+        });
       }
+    })
+    .then(function (data) {
+      context.props.dispatch(setAuthToken(data.AuthToken));
+      context.props.dispatch(setCurrentUser(data.id.toString()));
+
+      return AsyncStorage.multiSet([
+        ['AuthToken', data.AuthToken],
+        ['currentUser', data.id.toString()],
+      ]);
+    }).then(function() {
+      Alert.alert(
+        'Registered successfully',
+        '',
+        [{text: 'Nice!', onPress: () => {finishAuth()}}])
+    }).catch(function(err) {
+      Alert.alert(err.message);
+    });
+
+    const rootNavigator = this.props.navigation.getNavigator('root');
+    function finishAuth() {
+      rootNavigator.immediatelyResetStack([Router.getRoute('rootNavigation', {authed: true})]);
     }
   }
 }
