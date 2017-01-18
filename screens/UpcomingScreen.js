@@ -49,7 +49,7 @@ class UpcomingScreen extends React.Component {
     this.setState({refreshing: true}, function() {
       fetch(`${serverURI}/events/users/${this.props.currentUser}`)
         .then(function(resp) {
-          if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+          if(resp.status === 200) {
             return resp.json();
           } else {
             return resp.text();

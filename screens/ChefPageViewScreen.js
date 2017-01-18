@@ -15,20 +15,18 @@ import {
   FontAwesome,
 } from '@exponent/vector-icons';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Router from '../navigation/Router';
 import Colors from '../constants/Colors';
-import Rating from '../components/Rating';
 
 import { serverURI } from '../config';
 
-export default class ChefPageViewScreen extends React.Component {
+class ChefPageViewScreen extends React.Component {
   static route = {
     navigationBar: {
       title: 'Chef Info',
     },
   }
-
 
   constructor(props) {
     super(props);
@@ -36,8 +34,7 @@ export default class ChefPageViewScreen extends React.Component {
       quantity: 1, 
       selected: {},
       dishes: [],
-    }
-
+    };
   }
 
   componentWillMount() {
@@ -68,47 +65,38 @@ export default class ChefPageViewScreen extends React.Component {
   }
 
   confirmEvent() {
-    let eventDetails = {
+    let eventData = {
+      name: 'Upcoming Event',
+      time: Date.now(),
+      location: this.props.location,
+      text: 'An upcoming event',
+      chefId: this.props.details.id,
+      userId: this.props.currentUser,
+      quantity: {},
       dishes: [],
-      quantity: this.state.quantity,
-    };
+    }
+
     let selected = this.state.selected;
     for (let key in selected) {
       if (selected[key] === true) {
-        eventDetails.dishes.push(key);
+        eventData.dishes.push(key);
+        eventData.quantity[key] = this.state.quantity;
       }
     }
 
     let context = this;
-
-    AsyncStorage.getItem('currentUser').then(function(currentUser) {
-      let eventData = {
-        name: 'Upcoming Event',
-        time: Date.now(),
-        location: 'San Francisco, CA, USA',
-        text: 'An upcoming event',
-        chefId: context.props.details.id,
-        userId: currentUser,
-        quantity: {},
-      }
-
-      let selected = context.state.selected;
-      for (let key in selected) {
-        if (selected[key] === true) {
-          eventData.quantity[key] = context.state.quantity;
-        }
-      }
-      return fetch(`${serverURI}/events`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(eventData)
-      })
-    }).then(function() {
-      context.props.navigator.push(Router.getRoute('confirmEvent', eventDetails));
-    }).catch(function(err){
+    fetch(`${serverURI}/events`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(eventData)
+    })
+    .then(function() {
+      context.props.navigator.push(Router.getRoute('confirmEvent', eventData));
+    })
+    .catch(function(err){
       alert(err);
     });
   }
@@ -235,8 +223,6 @@ export default class ChefPageViewScreen extends React.Component {
         context.setState(stateUpdate);
       }
 
-      // return <Text>I'm a dish!</Text>
-
       return (
         <TouchableOpacity key={dish} style={styles.dish} onPress={toggleCheck.bind(context)}>
           <View style={styles.dish}>
@@ -257,26 +243,11 @@ export default class ChefPageViewScreen extends React.Component {
   }
 }
 
-// function mapStateToProps(state, ownProps){
-//   // ******* #4 *******
-//   return(
-//     selection: state.selection
-//   )
-// }
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser,
+    location: state.search.location,
+  };
+}
 
-// // Generates a container component and connects it to the Redux store
-// export default connect(mapStateToProps)(ChefPageViewScreen);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default connect(mapStateToProps)(ChefPageViewScreen);

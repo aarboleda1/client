@@ -10,6 +10,7 @@ import {
   TouchableHighlight,
   View,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { FontAwesome } from '@exponent/vector-icons';
@@ -55,7 +56,33 @@ class SearchScreen extends React.Component {
     this.props.navigator.push('chooseLocation');
   }
 
+  _verifySearchForm() {
+    if (!this.props.search.cuisine) {
+      Alert.alert(
+        'You must specify a cuisine type',
+        '',
+        [{text: 'Ok'}]
+      );
+      return false;
+    }
+
+    if (!this.props.search.location) {
+      Alert.alert(
+        'You must specify a location',
+        '',
+        [{text: 'Ok'}]
+      );
+      return false;
+    }
+
+    return true;
+  }
+
   _search() {
+    if(!this._verifySearchForm.call(this)) {
+      return;
+    }
+
     let dispatch = this.props.dispatch;
     let searchParams = {
       cuisine: this.props.search.cuisine,
@@ -100,7 +127,11 @@ class SearchScreen extends React.Component {
 
   render() {
     const context = this;
-    return (this.state.loading ? <ActivityIndicator size="large" style={styles.loading}/> :
+    return (this.state.loading ? (
+        <View style={styles.loading}>
+          <ActivityIndicator size="large"/>
+        </View>
+      ) :
       <ScrollView
         style={styles.container}
         contentContainerStyle={[this.props.route.getContentContainerStyle()]}>
@@ -222,6 +253,11 @@ var styles = StyleSheet.create({
     marginLeft: 15,
     height: WINDOW_HEIGHT / 12,
     width: WINDOW_WIDTH / 1.1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loading: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   }
