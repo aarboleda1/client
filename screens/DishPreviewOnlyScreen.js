@@ -30,14 +30,14 @@ class DishPreviewOnlyScreen extends Component {
     let restrictions = this.props.route.params.dish.restrictions;
     if (!this.props.route.params.dish.restrictions) {
       return (
-        <View style={{width: 50, height: 50}}>
+        <View style={{borderColor: 'blue', borderWidth: 2, width: 50, height: 50}}>
           <Text style={{fontStyle: 'italic'}}>{'none'}</Text>
         </View>
       )
     } else {
       return restrictions.map((restriction) => {
         return (
-          <View style={{width: 50, height: 50}}>
+          <View style={{borderColor: 'blue', borderWidth: 2, width: 50, height: 50, flexDirection: 'row'}}>
             <Text>
               { restriction }
             </Text>
@@ -51,7 +51,7 @@ class DishPreviewOnlyScreen extends Component {
     let cuisines = this.props.route.params.dish.cuisines;
     if (!cuisines) {
       return (
-        <View style={{width: 50, height: 50}}>
+        <View style={{width: 20, height: 20, flexDirection: 'row'}}>
           <Text style={{fontStyle: 'italic'}}>{'none'}</Text>
         </View>        
       ) 
@@ -98,9 +98,11 @@ class DishPreviewOnlyScreen extends Component {
       </ListItemSection> 
       <ListItemSection>
         <Text style={dishPropertyName}>{ 'Cuisines: '}</Text>
-        <Text>
-          {this._renderCuisines()}
-        </Text>
+        <View>
+          <Text>
+            {this._renderCuisines()}
+          </Text>
+        </View>
       </ListItemSection>       
       <ListItemSection>
         <Text style={dishPropertyName}>{ 'Restrictions: '}</Text>
@@ -148,6 +150,10 @@ const styles = {
   dishPropertyName: {
     fontSize: 14,
     fontWeight: 'bold'
+  },
+  textContainerStyling: {
+    flexDirection: 'row',
+    justifyContent: 'space-around'
   }
 }
 

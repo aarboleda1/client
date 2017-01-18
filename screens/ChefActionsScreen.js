@@ -211,6 +211,7 @@ class ChefActionsScreen extends Component {
 
 
   renderDishes() {
+    console.log(this.props.dishes.dishList, 'DISHLIST');
     return this.props.dishes.dishList.map((dish, index) => {
       return (
       <View key={index}>
@@ -417,7 +418,7 @@ const styles = StyleSheet.create({
 
   },
   modalStyle: {
-    flex: 1,
+    flex: 1,  
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'space-between',

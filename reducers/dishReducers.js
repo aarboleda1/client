@@ -9,12 +9,14 @@ export default function dishReducers(state = {
   },
   { 
     name: 'Filet Mignon with Rich Balsamic Glaze',
-    text: `This is a great Valentine’s Day meal. The red wine and balsamic glaze may be the best sauce you've ever tasted! Try these tender steaks with asparagus and baby red potatoes.`,
+    text: 'This is a great Valentine’s Day meal. The red wine and balsamic glaze may be the best sauce youve ever tasted! Try these tender steaks with asparagus and baby red potatoes.',
     image: 'https://www.homewetbar.com/blog/wp-content/uploads/2014/04/how-to-grill-steak.jpg',
     price: 10,
     restrictions: null,
     cuisines: ['American']
   }],
+
+
   dish: {
     title: '',
     text: '',
@@ -39,9 +41,18 @@ export default function dishReducers(state = {
   case 'UPDATE_ENTIRE_DISH':
     return Object.assign({}, state, { dish: action.dish });
     break;
+
+
   case 'ADD_TO_DISH_LIST':
-    return Object.assign({}, state, { dishList: action.dishList });
+    console.log(action.payload, 'ACTIONPAYLOADREDUCER in reducer');
+    return Object.assign({}, state, { 
+      dishList: action.payload
+    });
     break;
+
+
+
+
   case 'REMOVE_FROM_DISHLIST':
     return Object.assign({}, state, { dishList: action.dishList });
   default:
