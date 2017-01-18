@@ -91,64 +91,97 @@ class SignupScreen extends React.Component {
     );
   }
 
-  _doSignup() {
-    // TODO: Disable button while waiting for response from server
-    // and show loading indicator
-    const rootNavigator = this.props.navigation.getNavigator('root');
-
-    //TODO: Add more validation
+  _verifySignupFields() {
     if (this.state.password !== this.state.verify) {
       Alert.alert(
         'Passwords do not match',
         'Please fix this and try again',
         [{text: 'Ok!'}]
-        );
-    } else {
-      let signupData = {
-        name: this.state.name.trim(),
-        email: this.state.email.trim(),
-        password: this.state.password.trim(),
-        bio: 'No description set.',
-      };
+      );
+      return false;
+    }
 
-      const context = this;
+    if (!this.state.name) {
+      Alert.alert(
+        'Name cannot be left empty',
+        '',
+        [{text: 'Ok!'}]
+      );
+      return false;
+    }
 
-      fetch(`${serverURI}/signup`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(signupData)
-      }).then(function(resp) {
-        if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
-          return resp.json();
-        } else {
-          return resp.text().then(function(message) {
-            throw new Error(message);
-          });
-        }
-      })
-      .then(function (data) {
-        context.props.dispatch(setAuthToken(data.AuthToken));
-        context.props.dispatch(setCurrentUser(data.id.toString()));
+    if (!this.state.email) {
+      Alert.alert(
+        'E-Mail cannot be left empty',
+        '',
+        [{text: 'Ok!'}]
+      );
+      return false;
+    }
 
-        return AsyncStorage.multiSet([
-          ['AuthToken', data.AuthToken],
-          ['currentUser', data.id.toString()],
-        ]);
-      }).then(function() {
-        Alert.alert(
-          'Registered successfully',
-          '',
-          [{text: 'Nice!', onPress: () => {finishAuth()}}])
-      }).catch(function(err) {
-        Alert.alert(err.message);
-      });
+    if (!this.state.password) {
+      Alert.alert(
+        'Password cannot be left empty',
+        '',
+        [{text: 'Ok!'}]
+      );
+      return false;
+    }
 
-      function finishAuth() {
-        rootNavigator.immediatelyResetStack([Router.getRoute('rootNavigation', {authed: true})]);
+    return true;
+  }
+
+  _doSignup() {
+    // TODO: Disable button while waiting for response from server
+    // and show loading indicator
+    if (!this._verifySignupFields.call(this)) {
+      return;
+    }
+    let signupData = {
+      name: this.state.name.trim(),
+      email: this.state.email.trim(),
+      password: this.state.password.trim(),
+      bio: 'No description set.',
+    };
+
+    const context = this;
+
+    fetch(`${serverURI}/signup`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(signupData)
+    }).then(function(resp) {
+      if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
+        return resp.json();
+      } else {
+        return resp.text().then(function(message) {
+          throw new Error(message);
+        });
       }
+    })
+    .then(function (data) {
+      context.props.dispatch(setAuthToken(data.AuthToken));
+      context.props.dispatch(setCurrentUser(data.id.toString()));
+
+      return AsyncStorage.multiSet([
+        ['AuthToken', data.AuthToken],
+        ['currentUser', data.id.toString()],
+      ]);
+    }).then(function() {
+      Alert.alert(
+        'Registered successfully',
+        '',
+        [{text: 'Nice!', onPress: () => {finishAuth()}}])
+    }).catch(function(err) {
+      Alert.alert(err.message);
+    });
+
+    const rootNavigator = this.props.navigation.getNavigator('root');
+    function finishAuth() {
+      rootNavigator.immediatelyResetStack([Router.getRoute('rootNavigation', {authed: true})]);
     }
   }
 }
@@ -169,10 +202,5 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
 });
-
-// const mapDispatchToProps = dispatch =>  bindActionCreators({
-//   setAuthToken,
-//   setCurrentUser,
-// }, dispatch);
 
 export default connect(null)(SignupScreen);

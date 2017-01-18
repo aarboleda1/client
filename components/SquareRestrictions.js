@@ -15,27 +15,6 @@ import { toggleSearchRestriction } from '../actions/searchActions';
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
-const styles = StyleSheet.create({
-  a: {
-    borderColor: 'black',
-    borderWidth: 3,
-    backgroundColor: '#2d2d2c',
-    margin: 1,
-    padding: 2,
-    height: WINDOW_HEIGHT / 11,
-    width: WINDOW_WIDTH / 5,
-    alignItems: 'center',
-    borderRadius: 10,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 17,
-    fontWeight: '300',
-  },
-});
-
 class SquareRestrictions extends React.Component {
   constructor(props) {
       super(props);
@@ -62,5 +41,26 @@ function mapStateToProps(state) {
     restrictions: state.search.restrictions,
   };
 }
+
+const styles = StyleSheet.create({
+  a: {
+    borderColor: 'black',
+    borderWidth: 3,
+    backgroundColor: '#2d2d2c',
+    margin: 1,
+    padding: 2,
+    height: WINDOW_HEIGHT / 11,
+    width: WINDOW_WIDTH / 5,
+    alignItems: 'center',
+    borderRadius: 10,
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 17,
+    fontWeight: '300',
+  },
+});
 
 export default connect(mapStateToProps)(SquareRestrictions);
