@@ -74,10 +74,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    // paddingLeft: 5,
-    // paddingRight: 1,
-    // paddingTop: 20,
-    // paddingBottom: 2,
     borderTopWidth: 2,
     borderBottomWidth: 1,
     borderColor: '#4b3832',
@@ -92,13 +88,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     alignSelf: 'flex-end',
-    // margin: 20,
-    // marginBottom: 
   },
   outer: {
     flexDirection: 'row',
     flex: 2,
-    // marginBottom: 5,
-    // borderWidth: 2,
   }
 });
