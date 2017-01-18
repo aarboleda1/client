@@ -29,10 +29,10 @@ class CuisineSelectionEntry extends React.Component {
   render() {
     return (
       <TouchableOpacity onPress={this._toggleSelection.bind(this)}>
-        <View style={[styles.entry, this.props.style]}>
+        <View style={styles.entry}>
           <Text style={styles.entryText}>{this.props.name}</Text>
           <View style={styles.selected}>
-            {this.props.selected === this.props.name ?
+            {this.props.selected === this.props.name ? 
               <View style={styles.checkMark}>
                 <FontAwesome
                   name="check"
@@ -50,16 +50,14 @@ class CuisineSelectionEntry extends React.Component {
 
 const styles = StyleSheet.create({
   entry: {
-    flex: 1,
-    borderBottomWidth: 1,
-    borderColor: '#000',
-    borderRadius: 4,
-    height: 50,
-    padding: 10,
+    borderBottomWidth: 1
   },
   entryText: {
     textAlign: 'center',
     fontSize: 20,
+    flex: 1,
+    height: 50,
+    padding: 10,
   },
   selected: {
     flex: 0.01,
@@ -67,7 +65,7 @@ const styles = StyleSheet.create({
   checkMark: {
     position: 'absolute',
     right: 2,
-    bottom: 1,
+    bottom: 12,
     backgroundColor: 'rgba(0,0,0,0)',
   }
 });
