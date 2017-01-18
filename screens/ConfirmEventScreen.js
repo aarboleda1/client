@@ -28,12 +28,13 @@ export default class ConfirmEventScreen extends React.Component {
     return (
       <ScrollView
         style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-        >
-        {this.props.route.params.dishes.map((number, index) => ( !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            <Text key={index}>Dish #{number}</Text>
+        contentContainerStyle={styles.contentContainer}>
+        {this.props.route.params.dishes.map((dish, index) => (
+          <View key={index}>
+            <Text>Dish: {dish.name}</Text>
+            <Text>Cost: {dish.cost}</Text>
+          </View>
         ))}
-        <Text>Quantity of Each: {this.props.route.params.quantity}</Text>
         <Button
           title="Confirm"
           onPress={this.doConfirm.bind(this)}
