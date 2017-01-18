@@ -7,7 +7,6 @@ import {
   Image,
   TouchableOpacity,
   AsyncStorage,
-  ActivityIndicator,
 } from 'react-native';
 import {
   FontAwesome,
