@@ -173,9 +173,10 @@ class ChefActionsScreen extends Component {
   saveChef() {
     let chefData = {
       name: this.state.name,
+      bio: this.state.bio,
       locations: this.state.locations,
-      restrictions: getTruthyKeys(this.state.checkedRestrictions),
-      cuisines: getTruthyKeys(this.state.checkedCuisines),
+      restrictions: getTruthyKeys(this.state.checkedRestrictions) || [],
+      cuisines: getTruthyKeys(this.state.checkedCuisines) || [],
       image: this.state.avatarURL,
     }
 
@@ -259,6 +260,13 @@ class ChefActionsScreen extends Component {
           underlineColorAndroid="rgba(0,0,0,0)"
           placeholder="Full Name"
           defaultValue={this.state.name}
+        />
+        <TextInput
+          onChangeText={(bio)=>{this.setState({bio})}}
+          style={styles.formInput}
+          underlineColorAndroid="rgba(0,0,0,0)"
+          placeholder="Chef Bio"
+          defaultValue={this.state.bio}
         />
         <TextInput
           onChangeText={(url)=>{this.setState({avatarURL: url})}}
