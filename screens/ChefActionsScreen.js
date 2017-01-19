@@ -274,7 +274,7 @@ class ChefActionsScreen extends Component {
           onPress={this.toggleState.bind(this, 'showCuisinesModal')}
         />
 
-        <View style={{marginTop: 16, marginBottom: 48}}>
+        <View style={{marginTop: 16, marginBottom: 24}}>
           <Button
             title="Save Chef Profile"
             onPress={this.saveChef.bind(this)}
@@ -287,6 +287,17 @@ class ChefActionsScreen extends Component {
           title="Edit Dishes"
           onPress={this.toggleState.bind(this, 'showDishesModal')}
         />
+        {this.props.currentChef ? 
+          <View>
+            <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Dishes:</Text>
+            {this.state.dishes.map((dish, index) =>
+              <Text key={index}>{dish.name}</Text>
+            )}
+            <Button
+              title="Edit Dishes"
+              onPress={this.toggleState.bind(this, 'showDishesModal')}
+            />
+          </View> : null}
 
         <Modal
           animationType="fade"
