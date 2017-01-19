@@ -15,7 +15,6 @@ import ListItem from '../components/ListItem';
 import ListItemSection from '../components/ListItemSection';
 import CuisineSelectionEntry from '../components/CuisineSelectionEntry';
 
-
 import windowDimensions from '../constants/Layout';
 
 class DishPreviewOnlyScreen extends Component {
@@ -75,11 +74,13 @@ class DishPreviewOnlyScreen extends Component {
     let { headerTextStyle, headerContentStyle, imageStyle, dishPropertyName} = styles;
     return (
     <ListItem>
+
       <ListItemSection>
         <View style={headerContentStyle}>
           <Text style={ headerTextStyle }>{ name }</Text>
         </View>
       </ListItemSection>
+
       <ListItemSection>
         <View>
           <Image
@@ -88,11 +89,6 @@ class DishPreviewOnlyScreen extends Component {
           />
         </View>
       </ListItemSection>
-
-
-
-
-      
 
       <ListItemSection style={{height: height /3, flexFlow: 'row wrap', justifyContent: 'space-around'}}>
         <Text style={ dishPropertyName }>{ 'Description' }</Text>
@@ -113,7 +109,8 @@ class DishPreviewOnlyScreen extends Component {
             {this._renderCuisines()}
           </Text>
         </View>
-      </ListItemSection>       
+      </ListItemSection>
+             
       <ListItemSection>
         <Text style={dishPropertyName}>{ 'Restrictions: '}</Text>
         <Text>
