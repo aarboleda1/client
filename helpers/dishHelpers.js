@@ -1,8 +1,9 @@
 import { serverURI } from '../config';
-import AsyncStorage from 'react-native';
+
 module.exports = {
   postDishToDB: function (newDish, currentChefId) {
-    console.log(newDish.image, 'is the image when posting to DB');
+    console.log(newDish, 'is being posted to DB');
+    console.log(currentChefId, 'is the chefid');
     return fetch(`${serverURI}/dishes/chefs/${currentChefId}`, {
       method: 'POST',
       headers: {
@@ -13,16 +14,8 @@ module.exports = {
     });  
   },
 
-  getDishesForChef (currentChefId) {
-    return fetch (`${serverURI}/dishes/chefs/${currentChefId}`)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson, 'are the dishes from the chef!!!!');
-        return responseJson;
-      })
-      .catch((error) => {
-        console.error(error);
-      });    
 
-  }
 };
+
+
+// export default connect(mapStateToProps)(ChefActionsScreen);
