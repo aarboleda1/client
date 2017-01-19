@@ -31,7 +31,7 @@ export default class EventListing extends Component {
       location: this.props.location,
       description: this.props.description,
       isChef: this.props.isChef,
-      chef: this.props.chef,
+      target: this.props.target,
       currentUser: this.props.currentUser
     };
     this.props.navigator.push(Router.getRoute('eventDetailsView', { details }));
@@ -53,19 +53,16 @@ export default class EventListing extends Component {
       >
         <View 
         style={[styles.container, dynamicStyles.eventListing]}>
-          
           <View>
-            <Text style={styles.text}>
-              {this.props.chef}
-            </Text>
+            <Text style={styles.text}>{this.props.name}</Text>
+            <Text style={[styles.flex, styles.alignStart]}>{this.props.location}</Text>
+            <Text style={[styles.flex, styles.alignEnd, styles.textRight]}>{this.props.target.name}</Text>
           </View>
-          
           <View
           style={styles.icon}>
             <FontAwesome
               name={this.props.isChef ? 'fire' : 'cutlery'}
               size={30}
-              
             />
           </View>
         </View>
