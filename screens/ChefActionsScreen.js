@@ -9,6 +9,8 @@ import {
   View,
   Button,
   AsyncStorage,
+  TouchableHighlight,
+  Dimensions,
 } from 'react-native';
 
 import CheckBox from 'react-native-checkbox';
@@ -28,6 +30,9 @@ import { getDishesForChef } from '../helpers/dishHelpers';
 import { connect } from 'react-redux';
 
 import getTruthyKeys from '../utilities/getTruthyKeys';
+
+const WINDOW_WIDTH = Dimensions.get('window').width;
+const WINDOW_HEIGHT = Dimensions.get('window').height;
 
 class ChefActionsScreen extends Component {
   static route = {
@@ -127,7 +132,6 @@ class ChefActionsScreen extends Component {
   }
 
   addLocation() {
-    this.toggleState('showLocationsModal');
     this.props.dispatch(setMapContext('chefActions'));
     this.props.navigator.push('chooseLocation');
   }
@@ -234,7 +238,7 @@ class ChefActionsScreen extends Component {
   }
 
   render() {
-    return ( this.state.loading ? <ActivityIndicator size="large" style={styles.flex} /> :
+    return ( this.state.loading ? <ActivityIndicator size="large"/> :
       <ScrollView style={styles.textPadding}>
         <TextInput
           onChangeText={(name)=>{this.setState({name})}}
@@ -251,33 +255,51 @@ class ChefActionsScreen extends Component {
           defaultValue={this.state.imageURL}
         />
         {/* Implement some way for the user to edit locations */}
-        <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Locations:</Text>
-        {this.state.locations.map((location, index) =>
-          <Text key={index}>{location}</Text>
-        )}
-        <Button
-          title="Edit Locations"
-          onPress={this.toggleState.bind(this, 'showLocationsModal')}
-        />
+        <Text style={styles.textCenter}>Your Locations</Text>
+        
+        {this.state.locations.length ? this.state.locations.map((location, index) =>
+          <Text key={index}
+          style={styles.results}>-{location}</Text>
+        ) : <Text style={styles.notSet}>No location set</Text>}
 
-        <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Restrictions:</Text>
-          {getTruthyKeys(this.state.checkedRestrictions).map((restriction, index) =>
-            <Text key={index}>{restriction}</Text>
-          )}
-        <Button
-          title="Edit Restrictions"
-          onPress={this.toggleState.bind(this, 'showRestrictionsModal')}
-        />
+        <TouchableHighlight
+          title="Add Location"
+          onPress={this.addLocation.bind(this)}
+          style={styles.test}> 
+          <Text style={styles.textTest}>Add New Location</Text>
+        </TouchableHighlight>
 
-        <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Cuisines:</Text>
-          {getTruthyKeys(this.state.checkedCuisines).map((cuisine, index) =>
-            <Text key={index}>{cuisine}</Text>
-          )}
-        <Button
+        <View style={styles.divider}></View>
+
+        <Text style={styles.textCenter}>Your Cuisine Types</Text>
+
+        {getTruthyKeys(this.state.checkedCuisines).length ? 
+          getTruthyKeys(this.state.checkedCuisines).map((cuisine, index) =>
+            <Text key={index} style={styles.results}>-{cuisine}</Text>
+          ) : <Text style={styles.notSet}>No Cuisine Type Set</Text>}
+
+        <TouchableHighlight
           title="Edit Cuisines"
           onPress={this.toggleState.bind(this, 'showCuisinesModal')}
-        />
+          style={[styles.test, {backgroundColor: '#38324b'}]}> 
+          <Text style={[styles.textTest]}>Edit Cuisines</Text>
+        </TouchableHighlight>
 
+        <View style={styles.divider}></View>
+
+        <Text style={[styles.textCenter]}>Your Restrictions</Text>
+        {getTruthyKeys(this.state.checkedCuisines).length ? 
+          getTruthyKeys(this.state.checkedRestrictions).map((restriction, index) =>
+            <Text key={index} style={styles.results}>-{restriction}</Text>
+          ) : <Text style={styles.notSet}>No Restrictions Set</Text>}
+
+       <TouchableHighlight
+          title="Edit Restrictions"
+          onPress={this.toggleState.bind(this, 'showRestrictionsModal')}
+          style={[styles.test, {backgroundColor: '#324B38'}]}> 
+          <Text style={styles.textTest}>Edit Restrictions</Text>
+        </TouchableHighlight>
+        
         <View style={{marginTop: 16, marginBottom: 24}}>
           <Button
             title="Save Chef Profile"
@@ -300,41 +322,18 @@ class ChefActionsScreen extends Component {
         <Modal
           animationType="fade"
           transparent={false}
-          visible={!!this.state.showLocationsModal}>
-          <ScrollView>
-            <Text>Locations Modal</Text>
-            <TextInput
-              onChangeText={(text) => this.setState({locations})}
-            />
-            {this.state.locations.map((location, index) =>
-              <Text key={index}>{location}</Text>
-            )}
-            <Button
-              title="Add Location"
-              onPress={this.addLocation.bind(this)}
-              />
-            <Button
-              title="Close"
-              onPress={this.toggleState.bind(this, 'showLocationsModal')}
-              />
-          </ScrollView>
-        </Modal>
-
-        <Modal
-          animationType="fade"
-          transparent={false}
           visible={!!this.state.showRestrictionsModal}>
-          <ScrollView contentContainerStyle={styles.modalStyle}>
-            <Text style={styles.titleText}>Restrictions</Text>
+          <ScrollView style={[styles.textPadding, styles.modal]}>
+            <Text style={styles.titleText}>Choose Your Dietary Cooking Restrictions</Text>
+
+            <View style={[styles.divider , {marginBottom: 20}]}></View>
             
             {this.state.restrictions.map((restriction) => 
               <CheckBox
-                style={{backgroundColor: 'blue'}}
-                checkboxStyle={styles.checkBox}
+                checkboxStyle={[styles.checkboxStyle, {marginLeft: 5, margin: -1}]}
+                labelStyle={styles.labelStyle}
                 key={restriction}
                 label={restriction}
-                labelStyle={styles.labelText}
-                underlayColor={'#d3d3d3'}
                 checked={this.state.checkedRestrictions[restriction]}
                 onChange={() => 
                   this._addOrRemoveRestriction(restriction)}
@@ -342,7 +341,7 @@ class ChefActionsScreen extends Component {
             )}            
 
             <Button
-              title="Close"
+              title="Update Changes"
               onPress={this.toggleState.bind(this, 'showRestrictionsModal')}
               />
           </ScrollView>
@@ -353,10 +352,15 @@ class ChefActionsScreen extends Component {
           transparent={false}
           visible={!!this.state.showCuisinesModal}>
           <ScrollView style={[styles.textPadding, styles.modal]}>
-            <Text style={styles.titleText}>Choose the Cuisines That You Cater</Text>
+            
+            <Text style={styles.titleText}>Choose the cuisine types that you will cater</Text>
+
+            <View style={[styles.divider , {marginBottom: 20}]}></View>
 
             {this.state.cuisines.map((cuisine) =>
               <CheckBox
+                checkboxStyle={styles.checkboxStyle}
+                labelStyle={styles.labelStyle}
                 key={cuisine}
                 label={cuisine}
                 checked={this.state.checkedCuisines[cuisine]}
@@ -366,7 +370,7 @@ class ChefActionsScreen extends Component {
             )}
 
             <Button
-              title="Close"
+              title="Update Changes"
               onPress={this.toggleState.bind(this, 'showCuisinesModal')}
               />
           </ScrollView>
@@ -399,11 +403,9 @@ class ChefActionsScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-  },
   textPadding: {
     padding: 8,
+    backgroundColor: '#e7e7e6'
   },
   formInput: {
     flex: 1,
@@ -411,37 +413,68 @@ const styles = StyleSheet.create({
   },
   textCenter: {
     textAlign: 'center',
-  },
-  verticalMargins: {
-    marginVertical: 8,
+    fontSize: 23,
+    fontWeight: '500',
+    marginVertical: 1,
+    marginBottom: 5,
   },
   modal: {
     paddingTop: 15,
+    backgroundColor: '#e7e7e6'
   },
   titleText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingBottom: 10,
-    textDecorationLine: 'underline',
+    fontSize: 25,
+    fontWeight: '400',
+    margin: 15,
+    marginLeft: 10,
+  },
+  test: {
+    borderColor: 'black',
+    borderWidth: 4,
+    backgroundColor: '#4b3832',
+    margin: 10,
+    height: WINDOW_HEIGHT / 14,
+    width: WINDOW_WIDTH / 1.6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 15,
+    alignSelf: 'center',
+    marginTop: 10,
+    borderRadius: 300, 
+  },
+  textTest: {
+    fontSize: 23,
+    color: 'white',
+  },
+  testView: {
+    alignItems: 'center',
+    paddingTop: 40,
     justifyContent: 'center'
   },
-  labelText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#000'
-
+  results: {
+    fontSize: 20,
+    alignSelf: 'center', 
   },
-  modalStyle: {
-    flex: 1,  
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    marginLeft: 35,
-    marginTop: 30,
+  divider: {
+    borderWidth: 1, 
+    borderColor: 'black', 
+    margin: 3,
+    marginBottom: 10, 
+    marginLeft: 15,
+    marginRight: 15,
   },
-  checkBox: {
-    backgroundColor: '#EDEDED'
-  }
+  checkboxStyle: {
+    margin: 7,
+  },
+  labelStyle: {
+    fontSize: 25,
+    color: 'black',
+  },
+  notSet: {
+    fontSize: 15,
+    alignSelf: 'center',
+    color: 'red',
+  },
 });
 
 //this.props.dish is now availabale in the app
@@ -456,3 +489,9 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(ChefActionsScreen);
+
+// <Text>Locations Modal</Text>
+            
+// {this.state.locations.map((location, index) =>
+//   <Text key={index}>{location}</Text>
+// )}
