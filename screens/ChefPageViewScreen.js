@@ -248,7 +248,6 @@ class ChefPageViewScreen extends React.Component {
     );
 
     function renderDish(dish, context) {
-
       // TODO Change this to open a modal with details about the food,
       // a quantity field, & an add to event button
       function toggleCheck() {
