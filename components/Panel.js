@@ -16,9 +16,9 @@ class Panel extends React.Component{
     };
   }
 
-  toggle(){
-    let initialValue = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight;
-    let finalValue = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
+  toggle() {
+    let initialValue = this.state.expanded ? this.state.maxHeight + this.state.minHeight : this.state.minHeight;
+    let finalValue = this.state.expanded ? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
 
     this.setState({
       expanded : !this.state.expanded  
@@ -29,7 +29,7 @@ class Panel extends React.Component{
 
   }
 
-  _setMaxHeight(event){
+  _setMaxHeight(event) {
     if (this.state.expanded) {
       this.setState({ maxHeight: event.nativeEvent.layout.height });
     }
