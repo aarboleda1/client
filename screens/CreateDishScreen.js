@@ -24,7 +24,11 @@ import RestrictionSelectionEntryList from '../components/RestrictionSelectionEnt
 
 import CheckBox from 'react-native-checkbox';
 
+<<<<<<< HEAD
 import { postDishToDB } from '../helpers/dishHelpers';
+=======
+import { postDishToDB, getDishesForChef } from '../helpers/dishHelpers';
+>>>>>>> dbc4bc43e04ae6d7eaeb5e772a0e2f380bae57f2
 
 //this.props.currentUser '1' 1
 //this.props.route..params
@@ -71,7 +75,12 @@ class CreateDishScreen extends Component {
         title: 'Create New Dish',
       },
     }
+<<<<<<< HEAD
   toggleState(key) {
+=======
+
+  toggleState (key) {
+>>>>>>> dbc4bc43e04ae6d7eaeb5e772a0e2f380bae57f2
     let update = {};
     update[key] = !this.state[key];
     this.setState(update);
@@ -142,9 +151,15 @@ class CreateDishScreen extends Component {
   _saveToMenuList () {
     let { dishName, dishDescription, image, price, checkedRestrictions, checkedCuisines } = this.state;
     let newlyCreatedDish = {
+<<<<<<< HEAD
     "name" : dishName,
     "text" : dishDescription,
     "image": "image",
+=======
+    "name" : dishName.toString(),
+    "text" : dishDescription.toString(),
+    "image": image.toString(),
+>>>>>>> dbc4bc43e04ae6d7eaeb5e772a0e2f380bae57f2
     "price": price,
     "cuisines": checkedCuisines,
     "restrictions": checkedRestrictions
@@ -221,6 +236,16 @@ class CreateDishScreen extends Component {
           onPress={this._saveToMenuList.bind(this)}
         />
         </ListItem>
+<<<<<<< HEAD
+=======
+        <ListItem>
+        <Button
+          title="GetDishesTest"
+          style={{flexDirection: 'column', justifyContent: 'flex-end'}}
+          onPress={() => getDishesForChef(parseInt(this.props.currentChef))}
+        />
+        </ListItem>        
+>>>>>>> dbc4bc43e04ae6d7eaeb5e772a0e2f380bae57f2
 
 
       {/*Modals to create dishes*/}

@@ -2,7 +2,7 @@ module.exports = {
   setSearchCuisine: function(cuisine) {
     return { type: 'SET_SEARCH_CUISINE', cuisine };
   },
-
+  
   setSearchLocation: function(location) {
     return { type: 'SET_SEARCH_LOCATION', location };
   },
@@ -30,4 +30,4 @@ module.exports = {
   clearSearchPrices: function() {
     return { type: 'CLEAR_SEARCH_PRICES' };
   },
-}
+};

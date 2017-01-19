@@ -9,45 +9,45 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
-  AsyncStorage,
+  Modal,
 } from 'react-native';
 import {
   FontAwesome,
 } from '@exponent/vector-icons';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Router from '../navigation/Router';
 import Colors from '../constants/Colors';
-import Rating from '../components/Rating';
 
 import { serverURI } from '../config';
 
-export default class ChefPageViewScreen extends React.Component {
+class ChefPageViewScreen extends React.Component {
   static route = {
     navigationBar: {
       title: 'Chef Info',
     },
   }
 
-  /*!!!!!!!!!!!!!!!!! food selection and quantity*/
   constructor(props) {
     super(props);
     this.state = {
       quantity: 1, 
       selected: {},
       dishes: [],
-    }
-
-
-    // this.state = store.getState();
-    // store.subscribe(() => {
-    //   this.setState(store.getState());
-    // })
-
+      selectedDish: {
+        name: 'No Dish Selected',
+        description: 'No dish selected.',
+        cuisine: 'No dish selected.',
+        cost: 0.01,
+        restrictions: ['No', 'Dish', 'Selected'],
+        image: 'http://omfgdogs.com/omfgdogs@2X.gif',
+      },
+    };
   }
 
   componentWillMount() {
     let context = this;
+    // get dishes for the current chef using chefid
     fetch(`${serverURI}/dishes/chefs/${this.props.details.id}`)
       .then(function(resp) {
         if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
@@ -74,48 +74,38 @@ export default class ChefPageViewScreen extends React.Component {
   }
 
   confirmEvent() {
-    let eventDetails = {
+    let eventData = {
+      name: 'Upcoming Event',
+      time: Date.now(),
+      location: this.props.location,
+      text: 'An upcoming event',
+      chefId: this.props.details.id,
+      userId: this.props.currentUser,
+      quantity: {},
       dishes: [],
-      quantity: this.state.quantity,
-    };
+    }
+
     let selected = this.state.selected;
     for (let key in selected) {
       if (selected[key] === true) {
-        eventDetails.dishes.push(key);
+        eventData.dishes.push(key);
+        eventData.quantity[key] = this.state.quantity;
       }
     }
 
     let context = this;
-
-    AsyncStorage.getItem('currentUser').then(function(currentUser) {
-      let eventData = {
-        name: 'Upcoming Event',
-        time: Date.now(),
-        location: 'San Francisco, CA, USA',
-        text: 'An upcoming event',
-        chefId: context.props.details.id,
-        userId: currentUser,
-        quantity: {},
-      }
-
-      let selected = context.state.selected;
-      for (let key in selected) {
-        if (selected[key] === true) {
-          eventData.quantity[key] = context.state.quantity;
-        }
-      }
-
-      return fetch(`${serverURI}/events`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(eventData)
-      })
-    }).then(function() {
-      context.props.navigator.push(Router.getRoute('confirmEvent', eventDetails));
-    }).catch(function(err){
+    fetch(`${serverURI}/events`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(eventData)
+    })
+    .then(function() {
+      context.props.navigator.push(Router.getRoute('confirmEvent', eventData));
+    })
+    .catch(function(err){
       alert(err);
     });
   }
@@ -155,16 +145,24 @@ export default class ChefPageViewScreen extends React.Component {
       },
       dishes: {
         flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
+        flexDirection: 'column',
+        // flexDirection: 'row',
+        // flexWrap: 'wrap',
       },
       dish: {
-        height: 48,
-        width: width/3,
+        height: height/10,
+        width: width,
+        // alignItems: 'center',
+        flexDirection: 'row',
       },
       dishImage: {
         flex: 1,
+        height: 64,
+        width: 64
       },
+      // dishDetails: {
+
+      // }
       dishSelection: {
         position: 'absolute',
         right: 2,
@@ -186,15 +184,29 @@ export default class ChefPageViewScreen extends React.Component {
       },
     });
 
+    const dishModalStyles = StyleSheet.create({
+      chefImage: {
+        width,
+        height: height / 3,
+      },
+      container: {
+        padding: 8,
+        flex: 1,
+      },
+    });
+
     let context = this;
 
     return (
       <View style={styles.flex}>
-        <Text>Menu</Text>
+        <Text>{this.props.details.name}</Text>
         <ScrollView
           style={styles.container}
           contentContainerStyle={this.props.route.getContentContainerStyle()}>
-          <Image style={styles.splashImage} source={{uri: `http://lorempixel.com/${Math.ceil(width)}/${Math.ceil(height * 0.35)}/food`}}/>
+          <Image style={styles.splashImage} source={{uri: this.props.details.img}}/>
+          <Text>Biography:</Text>
+          <Text>{this.props.details.desc}</Text>
+          <Text>Menu:</Text>
           <View style={styles.dishes}>
             {this.state.dishes.map(function(dish, index) {
               return (
@@ -204,29 +216,34 @@ export default class ChefPageViewScreen extends React.Component {
               );
             })}
           </View>
-          {/* TODO: Quantity will be moved to individual food modals */}
-          <View style={styles.quantity}>
-            <Text style={styles.textCenter}>Quantity: {this.state.quantity}</Text>
-            <View style={styles.row}>
-              <View style={styles.changeQuantityButton}>
-                <Button
-                  title="-"
-                  onPress={this.changeQuantity.bind(this, -1)}
-                />
-              </View>
-              <View style={styles.changeQuantityButton}>
-                <Button
-                  title="+"
-                  onPress={this.changeQuantity.bind(this, 1)}
-                />
-              </View>
-            </View>
-          </View>
-          <Button
-            title="Confirm Event"
-            onPress={this.confirmEvent.bind(this)}
-          />
+
+          <Button title="Modal" onPress={()=>{this.setState({
+            showDishModal: !this.state.showDishModal,
+          })}}/>
+          <Button title="Set Location" onPress={() => (console.log("TODO: Set location for ChefPageViewScreen.js"))}/>
+          <Button title="Next" onPress={this.confirmEvent.bind(this)} />
         </ScrollView>
+
+        <Modal
+          animimationType="fade"
+          transparent={false}
+          visible={!!this.state.showDishModal}
+        >
+          <Image style={dishModalStyles.chefImage} source={{ uri: this.state.selectedDish.image }}/>
+          <View style={dishModalStyles.container}>
+            <Text>{this.state.selectedDish.name}</Text>
+            <Text>{this.state.selectedDish.description}</Text>
+            <Text>{this.state.selectedDish.cuisine}</Text>
+            {this.state.selectedDish.restrictions.map(restriction =>
+              <Text key={restriction}>{restriction}</Text>
+            )}
+            <Text>{this.state.selectedDish.cost}</Text>
+            <Text>{'>>>Quantity Stuff Here<<<'}</Text>
+            <Button title="Close" onPress={()=>{this.setState({
+                  showDishModal: !this.state.showDishModal,
+                })}}/>
+          </View>
+        </Modal>
       </View>
     );
 
@@ -242,12 +259,15 @@ export default class ChefPageViewScreen extends React.Component {
         context.setState(stateUpdate);
       }
 
-      // return <Text>I'm a dish!</Text>
-
       return (
         <TouchableOpacity key={dish} style={styles.dish} onPress={toggleCheck.bind(context)}>
           <View style={styles.dish}>
-            <Image style={styles.dishImage} source={{ uri: `http://lorempixel.com/150/150/food/${dish.id % 10}` }}/>
+            <Image style={styles.dishImage} source={{ uri: dish.image }}/>
+            <View style={styles.dishDetails}>
+              <Text>{dish.name}</Text>
+              <Text>{dish.text}</Text>
+              <Text>${dish.price}</Text>
+            </View>
             {context.state.selected[dish.id] ?
               <View style={styles.dishSelection}>
                 <FontAwesome
@@ -264,26 +284,11 @@ export default class ChefPageViewScreen extends React.Component {
   }
 }
 
-// function mapStateToProps(state, ownProps){
-//   // ******* #4 *******
-//   return(
-//     selection: state.selection
-//   )
-// }
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser,
+    location: state.search.location,
+  };
+}
 
-// // Generates a container component and connects it to the Redux store
-// export default connect(mapStateToProps)(ChefPageViewScreen);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default connect(mapStateToProps)(ChefPageViewScreen);

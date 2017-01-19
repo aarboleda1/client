@@ -14,29 +14,29 @@ import Colors from '../constants/Colors';
 
 import { connect } from 'react-redux';
 
-import { toggleSearchRestriction } from '../actions/searchActions';
+import { setSearchCuisine } from '../actions/searchActions';
 
 
-class RestrictionSelectionEntry extends React.Component {
+class CuisineSelectionEntry extends React.Component {
   constructor(props) {
     super(props);
   }
 
   _toggleSelection() {
-    this.props.dispatch(toggleSearchRestriction(this.props.name));
+    this.props.dispatch(setSearchCuisine(this.props.name));
   }
 
   render() {
     return (
       <TouchableOpacity onPress={this._toggleSelection.bind(this)}>
-        <View style={[styles.entry, this.props.style]}>
+        <View style={styles.entry}>
           <Text style={styles.entryText}>{this.props.name}</Text>
           <View style={styles.selected}>
-            {this.props.restrictions[this.props.name] ?
+            {this.props.selected === this.props.name ? 
               <View style={styles.checkMark}>
                 <FontAwesome
                   name="check"
-                  size={16}
+                  size={30}
                   color={Colors.checkMark}
                 />
               </View>
@@ -50,13 +50,14 @@ class RestrictionSelectionEntry extends React.Component {
 
 const styles = StyleSheet.create({
   entry: {
-    flex: 0.99,
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 4,
+    borderBottomWidth: 1
   },
   entryText: {
     textAlign: 'center',
+    fontSize: 20,
+    flex: 1,
+    height: 50,
+    padding: 10,
   },
   selected: {
     flex: 0.01,
@@ -64,15 +65,15 @@ const styles = StyleSheet.create({
   checkMark: {
     position: 'absolute',
     right: 2,
-    bottom: 1,
+    bottom: 12,
     backgroundColor: 'rgba(0,0,0,0)',
   }
 });
 
 function mapStateToProps(state) {
   return {
-    restrictions: state.search.restrictions,
+    selected: state.search.cuisine,
   };
 }
 
-export default connect(mapStateToProps)(RestrictionSelectionEntry);
+export default connect(mapStateToProps)(CuisineSelectionEntry);

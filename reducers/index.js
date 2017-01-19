@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import searchReducers from './searchReducers';
 import mapContextReducers from './mapContextReducers';
 import chefReducers from './chefReducers';
+import dishReducers from './dishReducers';
 
 /* Auth Reducers */
 import tokenReducer from './auth/tokenReducer';
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   search: searchReducers,
   mapContext: mapContextReducers,
   chef: chefReducers,
+  dishes: dishReducers
 });
 
 export default rootReducer;

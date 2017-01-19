@@ -73,8 +73,32 @@ class LoginScreen extends React.Component {
     );
   }
 
+  _verifyLoginFields() {
+    if (!this.state.email) {
+      Alert.alert(
+        'E-Mail cannot be left empty',
+        '',
+        [{text: 'Ok!'}]
+      );
+      return false;
+    }
+
+    if (!this.state.password) {
+      Alert.alert(
+        'Password cannot be left empty',
+        '',
+        [{text: 'Ok!'}]
+      );
+      return false;
+    }
+
+    return true;
+  }
+
   _doLogin() {
-    const rootNavigator = this.props.navigation.getNavigator('root');
+    if (!this._verifyLoginFields.call(this)) {
+      return;
+    }
 
     let loginData = {
       email: this.state.email,
@@ -101,9 +125,12 @@ class LoginScreen extends React.Component {
     })
     .then(function(data) {
       let chefId = null
+      console.log(typeof data.chefId, 'DATACHEFIDtype ');
+      console.log( data.chefId, 'DATACHEFID');
       if (data.chefId !== null) {
         chefId = data.chefId.toString();
       }
+      console.log(data.AuthToken, 'AUTH TOKEN');
 
       context.props.dispatch(setAuthToken(data.AuthToken));
       context.props.dispatch(setCurrentUser(data.id.toString()));
@@ -125,6 +152,7 @@ class LoginScreen extends React.Component {
       Alert.alert(err.message);
     });
 
+    const rootNavigator = this.props.navigation.getNavigator('root');
     function finishAuth() {
       rootNavigator.immediatelyResetStack([Router.getRoute('rootNavigation')]);
     }

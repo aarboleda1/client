@@ -9,9 +9,9 @@ import { setChefLocation } from '../actions/chefActions';
 import { clearMapContext } from '../actions/mapContextActions';
 
 const contexts = {
-	'search': setSearchLocation,
+  'search': setSearchLocation,
   'chefActions': setChefLocation,
-}
+};
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const WINDOW_HEIGHT = Dimensions.get('window').height;
@@ -23,11 +23,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   button: {
-  	borderColor: '#05A5D1',
-  	borderWidth: 2,
-  	backgroundColor: '#333',
+  	borderColor: 'black',
+  	borderWidth: 4,
+  	backgroundColor: '#38324b',
   	margin: 20,
-  	height: WINDOW_HEIGHT / 7.5,
+    marginBottom: 30,
+  	height: WINDOW_HEIGHT / 12,
   	width: WINDOW_WIDTH / 1.1,
   	alignItems: 'center',
   	justifyContent: 'center',

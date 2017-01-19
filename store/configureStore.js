@@ -15,7 +15,8 @@ export default function configureStore() {
 		rootReducer,
 		initialState,
 		// applyMiddleware(reduxImmutableStateInvariant())
-	);
+  )
 }
 
 // reduxImmutableStateInvariant = Redux middleware that spits an error on you when you try to mutate your state either inside a dispatch or between dispatches
+``
