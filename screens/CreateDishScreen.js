@@ -26,7 +26,6 @@ import CheckBox from 'react-native-checkbox';
 
 import { postDishToDB } from '../helpers/dishHelpers';
 
-// let cameraIcon = require('../Images/camera-icon-33.png');
 
 @withNavigation
 class CreateDishScreen extends Component {
@@ -164,13 +163,13 @@ class CreateDishScreen extends Component {
 
   render () {
     let cameraIcon = require('../Images/camera-icon-33.png');
-
+    let image = this.state.image ? {uri: this.state.image} : require('../Images/camera-icon-33.png');
     return (
       <ScrollView style={styles.flex}>      
       {/*Buttons in CreateDishScreen which take user to each Modal*/}
         <ListItemSection>
           <Image 
-            source={{uri: "http://i0.wp.com/wrbbradio.org/wp-content/uploads/2016/10/grey-background-07.jpg?zoom=2&fit=2560%2C1544"}}
+            source={image}
             style={styles.imageStyle}
             backGroundColor
           />
