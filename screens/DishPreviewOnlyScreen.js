@@ -13,6 +13,8 @@ import { connect } from 'react-redux';
 
 import ListItem from '../components/ListItem';
 import ListItemSection from '../components/ListItemSection';
+import CuisineSelectionEntry from '../components/CuisineSelectionEntry';
+
 
 import windowDimensions from '../constants/Layout';
 
@@ -86,16 +88,24 @@ class DishPreviewOnlyScreen extends Component {
           />
         </View>
       </ListItemSection>
-      <ListItemSection style={{flexFlow: 'row wrap', justifyContent: 'space-around'}}>
+
+
+
+
+      
+
+      <ListItemSection style={{height: height /3, flexFlow: 'row wrap', justifyContent: 'space-around'}}>
         <Text style={ dishPropertyName }>{ 'Description' }</Text>
-        <Text>{text}</Text>
+        <Text>{text}</Text>            
       </ListItemSection>
+      
       <ListItemSection>
         <Text style={dishPropertyName}>{'Price: '}</Text>
         <Text>
           {price}
         </Text>
-      </ListItemSection> 
+      </ListItemSection>
+
       <ListItemSection>
         <Text style={dishPropertyName}>{ 'Cuisines: '}</Text>
         <View>
@@ -157,6 +167,16 @@ const styles = {
   textContainerStyling: {
     flexDirection: 'row',
     justifyContent: 'space-around'
+  },
+  entry: {
+    borderBottomWidth: 1
+  },
+  entryText: {
+    textAlign: 'center',
+    fontSize: 20,
+    flex: 1,
+    height: 50,
+    padding: 10,
   }
 }
 

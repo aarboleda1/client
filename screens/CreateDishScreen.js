@@ -60,8 +60,9 @@ class CreateDishScreen extends Component {
         'Italian',
         'Japanese',
         'Korean',
-        'Mexican',
+        'Mexican',      
       ],
+      isPictureInserted: false
     };
   }
     static route = {
@@ -102,10 +103,13 @@ class CreateDishScreen extends Component {
 
   _saveImageURL (imageURL) {
     this.setState({image: imageURL});
+    let isInserted = !this.state.isPictureInserted;
+    this.setState({isPictureInserted: isInserted})
+    console.log(this.state.isInserted, 'boolean?')
   };
 
   _addOrRemoveRestriction(restriction) {
-    let update = this.state.checkedRestrictions;
+    // let update = this.state.checkedRestrictions;
   {/*RUN BY ZACK*/}
     // if (this.state.checkedRestrictions[restriction]) {
     //   delete update[restriction];
@@ -120,12 +124,12 @@ class CreateDishScreen extends Component {
     }
   }
   _addOrRemoveCuisine(cuisine) {
+    // let update = this.state.checkedCuisines;
     if (this.state.checkedCuisines.includes(cuisine)) {
       this.state.checkedRestrictions.splice(cuisine, 1);
     } else {
       this.state.checkedRestrictions.push(cuisine);
     }
-    let update = this.state.checkedCuisines;
     // if (this.state.checkedCuisines[cuisine]) {//   delete update[cuisine];
     // } else {
     //   update[cuisine] = true;
@@ -134,6 +138,7 @@ class CreateDishScreen extends Component {
   }
 
   _saveToMenuList () {
+    let context = this;
     let { dishName, dishDescription, image, price, checkedRestrictions, checkedCuisines } = this.state;
     let newlyCreatedDish = {
     "name" : dishName,
@@ -144,67 +149,88 @@ class CreateDishScreen extends Component {
     "restrictions": checkedRestrictions
     }
 
+
     // Create a copy, otherwise a weird type error occurs when trying
     // to push to the currentDishList in stateA  c
     var newDishArray = this.props.dishes.dishList.slice(0);    
     var newDishList = newDishArray.push(newlyCreatedDish);    
     this.props.dispatch(addToDishList(newDishArray));
     
-    let chefId = parseInt(this.props.currentChef)
-    
+    let chefId = parseInt(this.props.currentChef);
+    let resetCameraIcon = require('../Images/camera-icon-33.png');
     postDishToDB(newlyCreatedDish, chefId);
     Alert.alert(
       'Dish Saved!',
       '',
-      [{text: 'Done', onPress: () => {console.log('now what?')}}])    
+      [{text: 'Done', onPress: () => {
+        context.setState({
+          dishName: '',
+          dishDescription: '',
+          price: '',
+          checkedCuisines: [],
+          checkedRestrictions: []
+        })
+        console.log('hello world')
+      }}])   
+      console.log(this.state, 'IS THE DISNAME') 
   };
 
   render () {
     let cameraIcon = require('../Images/camera-icon-33.png');
     let image = this.state.image ? {uri: this.state.image} : require('../Images/camera-icon-33.png');
+    let dishDescription = this.state.dishDescription ? 'Dish Description ' + this.state.dishDescription : 'Dish Description';
     return (
-      <ScrollView style={styles.flex}>      
+      <ScrollView style={ styles.flex }>      
       {/*Buttons in CreateDishScreen which take user to each Modal*/}
         <ListItemSection>
           <Image 
-            source={image}
-            style={styles.imageStyle}
-            backGroundColor
+            source={ image }
+            style={ styles.imageStyle }
           />
         </ListItemSection>
         <ListItem>
-          <Button 
-            title="Dish Title"
-            onPress={this.toggleState.bind(this, 'showAddTitleModal')}
-          />
+          <View style={{flexDirection: 'column', justifyContent: 'space-between'}}>
+           <Button 
+              title={ this.state.dishName ? 'Edit Title' : 'Add Title' }
+              onPress={this.toggleState.bind(this, 'showAddTitleModal')}
+            />  
+            {this.state.dishName ? <Text>{this.state.dishName}</Text> : null}  
+          </View>      
+        </ListItem>
+
+        <ListItem>
+          <View style={{flexDirection: 'column', justifyContent: 'space-between'}}>
+            <Button 
+              title={ this.state.dishDescription ? 'Edit Description' : 'Add Description' }
+              onPress={ this.toggleState.bind(this, 'describeDishModal') }
+            />
+            {this.state.dishDescription ? <Text>{this.state.dishDescription}</Text> : null}  
+          </View>
         </ListItem>
         <ListItem>
           <Button 
-            title="Dish Description"
-            onPress={this.toggleState.bind(this, 'describeDishModal')}
+            title={this.state.isPictureInserted ? 'Edit Dish Image' : 'Add Dish Image'} 
+            onPress={ this.toggleState.bind(this, 'inputImageURLModal') }
           />
         </ListItem>
         <ListItem>
-          <Button 
-            title="Input Image URL"
-            onPress={this.toggleState.bind(this, 'inputImageURLModal')}
-          />
-        </ListItem>
-        <ListItem>
-          <Button 
-            title="$Set Price"
+          <View>
+            <Button 
+            title={ this.state.price ? 'Edit Price' : 'Add Price' }
             onPress={this.toggleState.bind(this, 'setPriceModal')}
-          />
+            />
+            { this.state.price ? <Text>{this.state.price}</Text> : null }
+          </View>
         </ListItem>        
-        <ListItem>
+        <ListItem>        
           <Button 
-            title="Allergens"
+            title={ this.state.checkedRestrictions.length  ? 'Edit Restrictions': 'Add restrictions'}
             onPress={this.toggleState.bind(this, 'setDietaryRestrictionsModal')}
           />
         </ListItem>        
         <ListItem>
           <Button 
-            title="Dish Cuisine Types"
+            title={ this.state.checkedCuisines.length > 0 ? 'Edit Cuisines': 'Add Cuisines'}
             onPress={this.toggleState.bind(this, 'setCuisinesModal')}
           />
         </ListItem>
@@ -241,6 +267,7 @@ class CreateDishScreen extends Component {
               onChangeText={(text) => this._saveDishName.call(this, text) }
               placeholder="Enter descriptive title of dish here!" 
               numberOfLines={4}
+              value={this.state.dishName ? this.state.dishName : null}
             />
           <Button
             title="Save"
@@ -266,6 +293,7 @@ class CreateDishScreen extends Component {
             placeholder="Enter description of dish here!"
             multiline={true} 
             numberOfLines={4}
+            value={this.state.dishDescription ? this.state.dishDescription : null}
           />       
          <Button
             title="Save"
@@ -318,9 +346,10 @@ class CreateDishScreen extends Component {
               style={styles.formInput}              
               maxLength={100}
               editable={true}
-              onChangeText={(text) => this._saveImageURL.call(this, text) }
+              onChangeText={ (text) => this._saveImageURL.call(this, text) }
               placeholder="Input Image URL" 
               numberOfLines={4}
+              value={ this.state.image ? this.state.image : null }
             />
           <Button
             style={{marginBottom: 'auto'}}
@@ -340,8 +369,8 @@ class CreateDishScreen extends Component {
             onChangeText={(priceText)=>{ this._saveDishPrice.call(this, priceText)}}
             style={styles.formInput}
             placeholder="Enter a price for dish here!"
-            defaultValue={this.props.dishes.dish.price}
-            numberOfLines={4}
+            defaultValue={ this.props.dishes.dish.price }
+            numberOfLines={ 4 }
           />           
           <Button
             title="Save"
@@ -349,6 +378,7 @@ class CreateDishScreen extends Component {
           />          
           </ScrollView> 
         </Modal>
+
       {/*CUISINES MODAL*/}
         <Modal
           animationType={"fade"}
