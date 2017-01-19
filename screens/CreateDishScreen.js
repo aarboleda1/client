@@ -71,7 +71,6 @@ class CreateDishScreen extends Component {
         title: 'Create New Dish',
       },
     }
-
   toggleState(key) {
     let update = {};
     update[key] = !this.state[key];
@@ -80,10 +79,11 @@ class CreateDishScreen extends Component {
   _goToPreviewDishScreen () {
     //also send this.the new dish1 to the store
     let { cuisinesSelected, dishName, dishDescription, image, price, checkedRestrictions, checkedCuisines, cuisines } = this.state;
+    console.log(image, 'IS IMAGE before going to preview screen')
     var newlyCreatedDish = {
       name: dishName,
       text: dishDescription,
-      image: 'image',
+      image: image,
       price: price,
       restrictions: checkedRestrictions,
       cuisines: checkedCuisines
@@ -101,6 +101,11 @@ class CreateDishScreen extends Component {
 
   _saveDishPrice (price) {
     this.setState({price: price});
+  };
+
+  _saveImageURL (imageURL) {
+    this.setState({image: imageURL});
+    console.log(this.state.image, 'IS IMAGE')
   };
 
   _addOrRemoveRestriction(restriction) {
@@ -176,6 +181,12 @@ class CreateDishScreen extends Component {
           <Button 
             title="Describe Your Dish"
             onPress={this.toggleState.bind(this, 'describeDishModal')}
+          />
+        </ListItem>
+        <ListItem>
+          <Button 
+            title="Input Image URL"
+            onPress={this.toggleState.bind(this, 'inputImageURLModal')}
           />
         </ListItem>
         <ListItem>
@@ -292,6 +303,32 @@ class CreateDishScreen extends Component {
           />
           </ScrollView>          
         </Modal>
+
+      {/*Modals to input a URL for dishes*/}
+        <Modal
+          animationType={"fade"}
+          transparent={false}
+          visible={!!this.state.inputImageURLModal}> 
+          {/*REFACTOR THIS INTO A COMPONENT*/}
+          <ScrollView style={styles.textPadding}>
+            <TextInput
+              editable = {true}
+              underlineColorAndroid="rgba(0,0,0,0)"
+              style={styles.formInput}              
+              maxLength={100}
+              editable={true}
+              onChangeText={(text) => this._saveImageURL.call(this, text) }
+              placeholder="Input Image URL" 
+              numberOfLines={4}
+            />
+          <Button
+            style={{marginBottom: 'auto'}}
+            title="Save"
+            onPress={this.toggleState.bind(this, 'inputImageURLModal')}
+          />          
+          </ScrollView>
+        </Modal>
+
       {/*PRICE MODAL*/}
         <Modal
           animationType={"fade"}
