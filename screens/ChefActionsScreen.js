@@ -9,6 +9,7 @@ import {
   View,
   Button,
   AsyncStorage,
+  Dimensions
 } from 'react-native';
 
 import CheckBox from 'react-native-checkbox';
@@ -230,7 +231,7 @@ class ChefActionsScreen extends Component {
 
 
   _renderDishes() {
-    if (!this.props.dishes || !this.props.dishes.dishList) {
+    if (!this.props.dishes.dishList) {
       return null;
     }
 
