@@ -243,7 +243,6 @@ class CreateDishScreen extends Component {
               numberOfLines={4}
             />
           <Button
-            style={{marginBottom: 'auto'}}
             title="Save"
             onPress={this.toggleState.bind(this, 'showAddTitleModal')}
           />          
