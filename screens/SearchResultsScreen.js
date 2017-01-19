@@ -41,10 +41,10 @@ export default class SearchResultsScreen extends React.Component {
           {this.state.chefs.map((chef, index) => (
             <ChefListing
               key={index}
-              img={`https://www.gravatar.com/avatar/${chef.md5}?s=256&d=mm&r=g`}
+              img={chef.image || chef.md5}
               name={chef.name}
               desc={chef.bio}
-              rating={chef.avgRating}
+              // rating={chef.avgRating}
               id={chef.id}
             />
           ))}
