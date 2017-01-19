@@ -9,7 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
-  AsyncStorage,
+  Modal,
 } from 'react-native';
 import {
   FontAwesome,
@@ -34,6 +34,14 @@ class ChefPageViewScreen extends React.Component {
       quantity: 1, 
       selected: {},
       dishes: [],
+      selectedDish: {
+        name: 'No Dish Selected',
+        description: 'No dish selected.',
+        cuisine: 'No dish selected.',
+        cost: 0.01,
+        restrictions: ['No', 'Dish', 'Selected'],
+        image: 'http://omfgdogs.com/omfgdogs@2X.gif',
+      },
     };
   }
 
@@ -167,6 +175,17 @@ class ChefPageViewScreen extends React.Component {
       },
     });
 
+    const dishModalStyles = StyleSheet.create({
+      chefImage: {
+        width,
+        height: height / 3,
+      },
+      container: {
+        padding: 8,
+        flex: 1,
+      },
+    });
+
     let context = this;
 
     return (
@@ -186,7 +205,7 @@ class ChefPageViewScreen extends React.Component {
             })}
           </View>
           {/* TODO: Quantity will be moved to individual food modals */}
-          <View style={styles.quantity}>
+{/*          <View style={styles.quantity}>
             <Text style={styles.textCenter}>Quantity: {this.state.quantity}</Text>
             <View style={styles.row}>
               <View style={styles.changeQuantityButton}>
@@ -202,12 +221,37 @@ class ChefPageViewScreen extends React.Component {
                 />
               </View>
             </View>
-          </View>
+          </View>*/}
+
+          <Button title="Modal" onPress={()=>{this.setState({
+            showDishModal: !this.state.showDishModal,
+          })}}/>
           <Button
             title="Confirm Event"
             onPress={this.confirmEvent.bind(this)}
           />
         </ScrollView>
+
+        <Modal
+          animimationType="fade"
+          transparent={false}
+          visible={!!this.state.showDishModal}
+        >
+          <Image style={dishModalStyles.chefImage} source={{ uri: this.state.selectedDish.image }}/>
+          <View style={dishModalStyles.container}>
+            <Text>{this.state.selectedDish.name}</Text>
+            <Text>{this.state.selectedDish.description}</Text>
+            <Text>{this.state.selectedDish.cuisine}</Text>
+            {this.state.selectedDish.restrictions.map(restriction =>
+              <Text key={restriction}>{restriction}</Text>
+            )}
+            <Text>{this.state.selectedDish.cost}</Text>
+            <Text>{'>>>Quantity Stuff Here<<<'}</Text>
+            <Button title="Close" onPress={()=>{this.setState({
+                  showDishModal: !this.state.showDishModal,
+                })}}/>
+          </View>
+        </Modal>
       </View>
     );
 
