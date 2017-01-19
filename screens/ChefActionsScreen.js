@@ -297,7 +297,6 @@ class ChefActionsScreen extends Component {
             onPress={this.saveChef.bind(this)}
           />
         </View>
-  
         {this.props.currentChef ? 
           <View>
             <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Dishes:</Text>
