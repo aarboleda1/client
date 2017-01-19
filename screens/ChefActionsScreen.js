@@ -9,7 +9,6 @@ import {
   View,
   Button,
   AsyncStorage,
-  Dimensions,
   TouchableHighlight,
   Dimensions,
 } from 'react-native';
