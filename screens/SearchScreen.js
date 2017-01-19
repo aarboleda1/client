@@ -46,7 +46,7 @@ class SearchScreen extends React.Component {
   }
   static route = {
     navigationBar: {
-      title: 'Search',
+      title: 'Chef Search',
     },
   }
 

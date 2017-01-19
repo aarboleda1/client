@@ -42,10 +42,7 @@ export default class ChefListing extends Component {
           <View style={styles.chefDetails}>  
             <Text>{this.props.name}</Text>        
             <Text>{this.props.desc}</Text>
-            <View style={styles.rating}>
-              <Text>Rating: </Text>
-              <Rating stars={this.props.rating}/>
-            </View>
+            
           </View>
         </View>
       </TouchableOpacity>
