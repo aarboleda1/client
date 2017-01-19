@@ -198,7 +198,7 @@ class ChefActionsScreen extends Component {
   }
 
   render() {
-    return ( this.state.loading ? <ActivityIndicator size="large" style={styles.flex} /> :
+    return ( this.state.loading ? <ActivityIndicator size="large"/> :
       <ScrollView style={styles.textPadding}>
         <TextInput
           onChangeText={(name)=>{this.setState({name})}}
@@ -215,36 +215,51 @@ class ChefActionsScreen extends Component {
           defaultValue={this.state.imageURL}
         />
         {/* Implement some way for the user to edit locations */}
-        <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Locations:</Text>
-        {this.state.locations.map((location, index) =>
-          <Text key={index}>{location}</Text>
-        )}
+        <Text style={styles.textCenter}>Your Locations</Text>
+        
+        {this.state.locations.length ? this.state.locations.map((location, index) =>
+          <Text key={index}
+          style={styles.results}>-{location}</Text>
+        ) : <Text style={styles.notSet}>No location set</Text>}
 
         <TouchableHighlight
-            title="Add Location"
-            onPress={this.addLocation.bind(this)}
-            style={styles.test}> 
-            <Text style={styles.textTest}>Add New Location</Text>
+          title="Add Location"
+          onPress={this.addLocation.bind(this)}
+          style={styles.test}> 
+          <Text style={styles.textTest}>Add New Location</Text>
         </TouchableHighlight>
 
-        <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Restrictions:</Text>
-          {getTruthyKeys(this.state.checkedRestrictions).map((restriction, index) =>
-            <Text key={index}>{restriction}</Text>
-          )}
-        <Button
-          title="Edit Restrictions"
-          onPress={this.toggleState.bind(this, 'showRestrictionsModal')}
-        />
+        <View style={styles.divider}></View>
 
-        <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Cuisines:</Text>
-          {getTruthyKeys(this.state.checkedCuisines).map((cuisine, index) =>
-            <Text key={index}>{cuisine}</Text>
-          )}
-        <Button
+        <Text style={styles.textCenter}>Your Cuisine Types</Text>
+
+        {getTruthyKeys(this.state.checkedCuisines).length ? 
+          getTruthyKeys(this.state.checkedCuisines).map((cuisine, index) =>
+            <Text key={index} style={styles.results}>-{cuisine}</Text>
+          ) : <Text style={styles.notSet}>No Cuisine Type Set</Text>}
+
+        <TouchableHighlight
           title="Edit Cuisines"
           onPress={this.toggleState.bind(this, 'showCuisinesModal')}
-        />
+          style={[styles.test, {backgroundColor: '#38324b'}]}> 
+          <Text style={[styles.textTest]}>Edit Cuisines</Text>
+        </TouchableHighlight>
 
+        <View style={styles.divider}></View>
+
+        <Text style={[styles.textCenter]}>Your Restrictions</Text>
+        {getTruthyKeys(this.state.checkedCuisines).length ? 
+          getTruthyKeys(this.state.checkedRestrictions).map((restriction, index) =>
+            <Text key={index} style={styles.results}>-{restriction}</Text>
+          ) : <Text style={styles.notSet}>No Restrictions Set</Text>}
+
+       <TouchableHighlight
+          title="Edit Restrictions"
+          onPress={this.toggleState.bind(this, 'showRestrictionsModal')}
+          style={[styles.test, {backgroundColor: '#324B38'}]}> 
+          <Text style={styles.textTest}>Edit Restrictions</Text>
+        </TouchableHighlight>
+        
         <View style={{marginTop: 16, marginBottom: 48}}>
           <Button
             title="Save Chef Profile"
@@ -252,7 +267,7 @@ class ChefActionsScreen extends Component {
           />
         </View>
 
-        <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Dishes:</Text>
+        <Text style={[styles.textCenter]}>Dishes:</Text>
         {this.state.dishes.map((dish, index) =>
           <Text key={index}>{dish.name}</Text>
         )}
@@ -268,9 +283,13 @@ class ChefActionsScreen extends Component {
           visible={!!this.state.showRestrictionsModal}>
           <ScrollView style={[styles.textPadding, styles.modal]}>
             <Text style={styles.titleText}>Choose Your Dietary Cooking Restrictions</Text>
+
+            <View style={[styles.divider , {marginBottom: 20}]}></View>
             
             {this.state.restrictions.map((restriction) => 
               <CheckBox
+                checkboxStyle={[styles.checkboxStyle, {marginLeft: 5, margin: -1}]}
+                labelStyle={styles.labelStyle}
                 key={restriction}
                 label={restriction}
                 checked={this.state.checkedRestrictions[restriction]}
@@ -280,7 +299,7 @@ class ChefActionsScreen extends Component {
             )}            
 
             <Button
-              title="Close"
+              title="Update Changes"
               onPress={this.toggleState.bind(this, 'showRestrictionsModal')}
               />
           </ScrollView>
@@ -291,10 +310,15 @@ class ChefActionsScreen extends Component {
           transparent={false}
           visible={!!this.state.showCuisinesModal}>
           <ScrollView style={[styles.textPadding, styles.modal]}>
-            <Text style={styles.titleText}>Choose the Cuisines That You Cater</Text>
+            
+            <Text style={styles.titleText}>Choose the cuisine types that you will cater</Text>
+
+            <View style={[styles.divider , {marginBottom: 20}]}></View>
 
             {this.state.cuisines.map((cuisine) =>
               <CheckBox
+                checkboxStyle={styles.checkboxStyle}
+                labelStyle={styles.labelStyle}
                 key={cuisine}
                 label={cuisine}
                 checked={this.state.checkedCuisines[cuisine]}
@@ -304,7 +328,7 @@ class ChefActionsScreen extends Component {
             )}
 
             <Button
-              title="Close"
+              title="Update Changes"
               onPress={this.toggleState.bind(this, 'showCuisinesModal')}
               />
           </ScrollView>
@@ -331,11 +355,9 @@ class ChefActionsScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-  },
   textPadding: {
     padding: 8,
+    backgroundColor: '#e7e7e6'
   },
   formInput: {
     flex: 1,
@@ -343,17 +365,20 @@ const styles = StyleSheet.create({
   },
   textCenter: {
     textAlign: 'center',
-  },
-  verticalMargins: {
-    marginVertical: 8,
+    fontSize: 23,
+    fontWeight: '500',
+    marginVertical: 1,
+    marginBottom: 5,
   },
   modal: {
     paddingTop: 15,
     backgroundColor: '#e7e7e6'
   },
   titleText: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 25,
+    fontWeight: '400',
+    margin: 15,
+    marginLeft: 10,
   },
   test: {
     borderColor: 'black',
@@ -366,11 +391,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: 15,
     alignSelf: 'center',
-    marginTop: 40, 
-
+    marginTop: 10,
+    borderRadius: 300, 
   },
   textTest: {
-    fontSize: 25,
+    fontSize: 23,
     color: 'white',
   },
   testView: {
@@ -378,6 +403,30 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     justifyContent: 'center'
   },
+  results: {
+    fontSize: 20,
+    alignSelf: 'center', 
+  },
+  divider: {
+    borderWidth: 1, 
+    borderColor: 'black', 
+    margin: 3,
+    marginBottom: 10, 
+    marginLeft: 15,
+    marginRight: 15,
+  },
+  checkboxStyle: {
+    margin: 7,
+  },
+  labelStyle: {
+    fontSize: 25,
+    color: 'black',
+  },
+  notSet: {
+    fontSize: 15,
+    alignSelf: 'center',
+    color: 'red',
+  }
 });
 
 function mapStateToProps(state) {
