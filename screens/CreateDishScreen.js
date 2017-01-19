@@ -24,7 +24,7 @@ import RestrictionSelectionEntryList from '../components/RestrictionSelectionEnt
 
 import CheckBox from 'react-native-checkbox';
 
-import { postDishToDB, getDishesForChef } from '../helpers/dishHelpers';
+import { postDishToDB } from '../helpers/dishHelpers';
 
 //this.props.currentUser '1' 1
 //this.props.route..params
@@ -143,9 +143,9 @@ class CreateDishScreen extends Component {
   _saveToMenuList () {
     let { dishName, dishDescription, image, price, checkedRestrictions, checkedCuisines } = this.state;
     let newlyCreatedDish = {
-    "name" : dishName.toString(),
-    "text" : dishDescription.toString(),
-    "image": image.toString(),
+    "name" : dishName,
+    "text" : dishDescription,
+    "image": image,
     "price": price,
     "cuisines": checkedCuisines,
     "restrictions": checkedRestrictions
@@ -222,13 +222,7 @@ class CreateDishScreen extends Component {
           onPress={this._saveToMenuList.bind(this)}
         />
         </ListItem>
-        <ListItem>
-        <Button
-          title="GetDishesTest"
-          style={{flexDirection: 'column', justifyContent: 'flex-end'}}
-          onPress={() => getDishesForChef(parseInt(this.props.currentChef))}
-        />
-        </ListItem>        
+     
 
 
       {/*Modals to create dishes*/}
