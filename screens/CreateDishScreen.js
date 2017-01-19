@@ -126,9 +126,7 @@ class CreateDishScreen extends Component {
       this.state.checkedRestrictions.push(cuisine);
     }
     let update = this.state.checkedCuisines;
-
-    // if (this.state.checkedCuisines[cuisine]) {
-    //   delete update[cuisine];
+    // if (this.state.checkedCuisines[cuisine]) {//   delete update[cuisine];
     // } else {
     //   update[cuisine] = true;
     // }
@@ -176,13 +174,13 @@ class CreateDishScreen extends Component {
         </ListItemSection>
         <ListItem>
           <Button 
-            title="Give Dish a Title"
+            title="Dish Title"
             onPress={this.toggleState.bind(this, 'showAddTitleModal')}
           />
         </ListItem>
         <ListItem>
           <Button 
-            title="Describe Your Dish"
+            title="Dish Description"
             onPress={this.toggleState.bind(this, 'describeDishModal')}
           />
         </ListItem>
@@ -194,19 +192,19 @@ class CreateDishScreen extends Component {
         </ListItem>
         <ListItem>
           <Button 
-            title="Set Price"
+            title="$Set Price"
             onPress={this.toggleState.bind(this, 'setPriceModal')}
           />
         </ListItem>        
         <ListItem>
           <Button 
-            title="Dietary Restrictions this may meet"
+            title="Allergens"
             onPress={this.toggleState.bind(this, 'setDietaryRestrictionsModal')}
           />
         </ListItem>        
         <ListItem>
           <Button 
-            title="Set Cuisines"
+            title="Dish Cuisine Types"
             onPress={this.toggleState.bind(this, 'setCuisinesModal')}
           />
         </ListItem>
