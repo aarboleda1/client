@@ -103,7 +103,6 @@ class ChefActionsScreen extends Component {
 
   componentWillMount() {
     let context = this;
-    console.log(`GET TO ${serverURI}/chefs/userId/${this.props.currentUser} ${this.props.currentChef ? 'as chef' + this.props.currentChef : ''}`);
     fetch(`${serverURI}/chefs/userId/${this.props.currentUser}`)
       .then(function(resp) {
         if(resp.status === 200) {
@@ -117,17 +116,19 @@ class ChefActionsScreen extends Component {
         chefData.restrictions = chefData.restrictions || [];
         //Remove when route changed to return object rather than [obj]
         let cuisines = context.state.checkedCuisines;
-        if (cuisines.length > 0) { 
+        if (chefData.cuisines.length > 0) { 
           chefData.cuisines.forEach(function(cuisine) {
             cuisines[cuisine] = true;
           });
         }
+
         let restrictions = context.state.checkedRestrictions;
-        if (restrictions.length > 0) {
+        if (chefData.restrictions.length > 0) {
           chefData.restrictions.forEach(function(restriction) {
             restrictions[restriction] = true;
           });          
         }
+
         context.setState({
           name: chefData.name || context.state.name,
           imageURL: chefData.imageURL || context.state.imageURL,
@@ -175,7 +176,7 @@ class ChefActionsScreen extends Component {
       locations: this.state.locations,
       restrictions: getTruthyKeys(this.state.checkedRestrictions),
       cuisines: getTruthyKeys(this.state.checkedCuisines),
-      iamge: this.state.avatarURL,
+      image: this.state.avatarURL,
     }
 
     if (!this.props.currentChef) {
@@ -187,7 +188,7 @@ class ChefActionsScreen extends Component {
     if (this.props.currentChef) {
       uri += `/${this.props.currentChef}`;
     }
-    console.log(`${this.props.currentChef ? 'PUT' : 'POST'} to ${uri}`);
+
     fetch(uri, {
       method: this.props.currentChef ? 'PUT' : 'POST',
       headers: {
@@ -231,16 +232,12 @@ class ChefActionsScreen extends Component {
     this.props.navigator.push('createDishView');
   }
 
-
-
   _renderDishes() {
     if (!this.props.dishes.dishList) {
       return null;
     }
     let {height, width} = Dimensions.get('window');
     let dishHeight = height / 3;
-    console.log(dishHeight, 'is the height');
-    console.log(width, 'is the width');
     return this.props.dishes.dishList.map((dish, index) => {
       return (
       <View key={index}>
