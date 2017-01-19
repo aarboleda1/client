@@ -33,15 +33,15 @@ export default class EventDetailsScreen extends Component {
         <View style={[styles.flex, styles.textPadding]}>
           <Text style={styles.textCenter}>{this.props.details.name}</Text>
           <Text style={styles.textCenter}>{this.props.details.location}</Text>
-          <Text style={styles.textCenter}>{this.props.details.dateTime}</Text>
           <View style={[styles.flex, styles.row]}>
             <Image
-            source={{ uri: this.props.details.chef.image}}
             style={styles.chef}
+            source={{ uri: this.props.details.target.image || 
+                           `http://www.gravatar.com/avatar/${this.props.details.target.md5}?s=256&d=mm&r=g` }}
             />
             <View style={[styles.flex, styles.textPadding, {}]}>
-              <Text style={styles.textCenter}>{this.props.details.chef.name}</Text>
-              <Text>{this.props.details.chef.bio}</Text>
+              <Text style={styles.textCenter}>{this.props.details.target.name}</Text>
+              <Text>{this.props.details.target.bio}</Text>
             </View>
           </View>
         </View>
@@ -83,11 +83,9 @@ export default class EventDetailsScreen extends Component {
         <View style={[styles.flex, styles.row, styles.textPadding]}>
           <Text style={styles.flex}>Total:</Text>
           <Text style={[styles.flex, styles.textRight]}>
-            {
-              formatCash(dishes.reduce((total, dish) => {
+            { formatCash(dishes.reduce((total, dish) => {
                 return total + (dish.price * dish.quantities)
-              }, 0))
-            }
+              }, 0)) }
           </Text>
         </View>
       </View>
