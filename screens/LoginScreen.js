@@ -130,7 +130,6 @@ class LoginScreen extends React.Component {
       if (data.chefId !== null) {
         chefId = data.chefId.toString();
       }
-      console.log(data.AuthToken, 'AUTH TOKEN');
 
       context.props.dispatch(setAuthToken(data.AuthToken));
       context.props.dispatch(setCurrentUser(data.id.toString()));
