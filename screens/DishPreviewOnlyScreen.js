@@ -134,7 +134,10 @@ const styles = {
     justifyContent: 'space-around'
   },
   headerTextStyle: {
-    fontSize: 18
+    fontSize: 25,
+    paddingLeft: 13,
+    color: 'black',
+    fontWeight: '600',    
   },
   thumbnailContainerStyle: {
     justifyContent: 'center',

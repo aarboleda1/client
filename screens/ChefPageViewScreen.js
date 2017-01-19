@@ -150,15 +150,16 @@ class ChefPageViewScreen extends React.Component {
         // flexWrap: 'wrap',
       },
       dish: {
-        height: height/10,
-        width: width,
+        // height: height/10,
+        // width: width,
         // alignItems: 'center',
+        flex: 1,
         flexDirection: 'row',
       },
       dishImage: {
         flex: 1,
-        height: 64,
-        width: 64
+        height: width/4,
+        width: width/4
       },
       // dishDetails: {
 
@@ -248,7 +249,6 @@ class ChefPageViewScreen extends React.Component {
     );
 
     function renderDish(dish, context) {
-
       // TODO Change this to open a modal with details about the food,
       // a quantity field, & an add to event button
       function toggleCheck() {
