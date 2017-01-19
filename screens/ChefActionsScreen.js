@@ -285,12 +285,6 @@ class ChefActionsScreen extends Component {
           />
         </View>
 
-        <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Dishes:</Text>
-    
-        <Button
-          title="Edit Dishes"
-          onPress={this.toggleState.bind(this, 'showDishesModal')}
-        />
         {this.props.currentChef ? 
           <View>
             <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Dishes:</Text>
