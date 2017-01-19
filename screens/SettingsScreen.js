@@ -41,7 +41,11 @@ class SettingsScreen extends React.Component {
       });
 
     function finishAuth() {
-      AsyncStorage.removeItem('AuthToken').then(function() {
+      AsyncStorage.multiRemove([
+        'AuthToken',
+        'currentUser',
+        'currentChef',
+      ]).then(function() {
         context.props.dispatch(clearAuthToken());
         context.props.dispatch(clearCurrentChef());
         context.props.dispatch(clearCurrentUser());
