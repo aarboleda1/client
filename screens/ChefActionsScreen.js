@@ -22,6 +22,8 @@ import { setCurrentChef } from '../actions/authActions';
 import DishViewEntry from '../components/DishViewEntry';
 import ListItem from '../components/ListItem';
 import ListItemSection from '../components/ListItemSection';
+import { getDishesForChef } from '../helpers/dishHelpers';
+
 
 import { connect } from 'react-redux';
 
@@ -76,6 +78,10 @@ class ChefActionsScreen extends Component {
     this.setState(update);
   }
 
+  componentDidMount() {
+    console.log('Component did Mount????')
+    getDishesForChef(parseInt(this.props.currentChef))    
+  }
 
   componentWillMount() {
     let context = this;
