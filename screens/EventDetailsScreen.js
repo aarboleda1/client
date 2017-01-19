@@ -33,12 +33,11 @@ export default class EventDetailsScreen extends Component {
         <View style={[styles.flex, styles.textPadding]}>
           <Text style={styles.textCenter}>{this.props.details.name}</Text>
           <Text style={styles.textCenter}>{this.props.details.location}</Text>
-          <Text style={styles.textCenter}>{this.props.details.dateTime}</Text>
           <View style={[styles.flex, styles.row]}>
             <Image
             style={styles.chef}
             source={{ uri: this.props.details.target.image || 
-                           `http://www.gravatar.com/avatar/${this.props.details.target.md5}` }}
+                           `http://www.gravatar.com/avatar/${this.props.details.target.md5}?s=256&d=mm&r=g` }}
             />
             <View style={[styles.flex, styles.textPadding, {}]}>
               <Text style={styles.textCenter}>{this.props.details.target.name}</Text>
