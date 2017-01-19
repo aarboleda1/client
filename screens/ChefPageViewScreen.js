@@ -47,6 +47,7 @@ class ChefPageViewScreen extends React.Component {
 
   componentWillMount() {
     let context = this;
+    // get dishes for the current chef using chefid
     fetch(`${serverURI}/dishes/chefs/${this.props.details.id}`)
       .then(function(resp) {
         if(resp.headers.map['content-type'][0] === "application/json; charset=utf-8") {
@@ -144,16 +145,24 @@ class ChefPageViewScreen extends React.Component {
       },
       dishes: {
         flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
+        flexDirection: 'column',
+        // flexDirection: 'row',
+        // flexWrap: 'wrap',
       },
       dish: {
-        height: 48,
-        width: width/3,
+        height: height/10,
+        width: width,
+        // alignItems: 'center',
+        flexDirection: 'row',
       },
       dishImage: {
         flex: 1,
+        height: 64,
+        width: 64
       },
+      // dishDetails: {
+
+      // }
       dishSelection: {
         position: 'absolute',
         right: 2,
@@ -190,11 +199,14 @@ class ChefPageViewScreen extends React.Component {
 
     return (
       <View style={styles.flex}>
-        <Text>Menu</Text>
+        <Text>{this.props.details.name}</Text>
         <ScrollView
           style={styles.container}
           contentContainerStyle={this.props.route.getContentContainerStyle()}>
-          <Image style={styles.splashImage} source={{uri: `http://lorempixel.com/${Math.ceil(width)}/${Math.ceil(height * 0.35)}/food`}}/>
+          <Image style={styles.splashImage} source={{uri: this.props.details.img}}/>
+          <Text>Biography:</Text>
+          <Text>{this.props.details.desc}</Text>
+          <Text>Menu:</Text>
           <View style={styles.dishes}>
             {this.state.dishes.map(function(dish, index) {
               return (
@@ -204,32 +216,12 @@ class ChefPageViewScreen extends React.Component {
               );
             })}
           </View>
-          {/* TODO: Quantity will be moved to individual food modals */}
-{/*          <View style={styles.quantity}>
-            <Text style={styles.textCenter}>Quantity: {this.state.quantity}</Text>
-            <View style={styles.row}>
-              <View style={styles.changeQuantityButton}>
-                <Button
-                  title="-"
-                  onPress={this.changeQuantity.bind(this, -1)}
-                />
-              </View>
-              <View style={styles.changeQuantityButton}>
-                <Button
-                  title="+"
-                  onPress={this.changeQuantity.bind(this, 1)}
-                />
-              </View>
-            </View>
-          </View>*/}
 
           <Button title="Modal" onPress={()=>{this.setState({
             showDishModal: !this.state.showDishModal,
           })}}/>
-          <Button
-            title="Confirm Event"
-            onPress={this.confirmEvent.bind(this)}
-          />
+          <Button title="Set Location" onPress={() => (console.log("TODO: Set location for ChefPageViewScreen.js"))}/>
+          <Button title="Next" onPress={this.confirmEvent.bind(this)} />
         </ScrollView>
 
         <Modal
@@ -270,7 +262,12 @@ class ChefPageViewScreen extends React.Component {
       return (
         <TouchableOpacity key={dish} style={styles.dish} onPress={toggleCheck.bind(context)}>
           <View style={styles.dish}>
-            <Image style={styles.dishImage} source={{ uri: `http://lorempixel.com/150/150/food/${dish.id % 10}` }}/>
+            <Image style={styles.dishImage} source={{ uri: dish.image }}/>
+            <View style={styles.dishDetails}>
+              <Text>{dish.name}</Text>
+              <Text>{dish.text}</Text>
+              <Text>${dish.price}</Text>
+            </View>
             {context.state.selected[dish.id] ?
               <View style={styles.dishSelection}>
                 <FontAwesome
