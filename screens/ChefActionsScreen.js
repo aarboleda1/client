@@ -5,21 +5,27 @@ import {
   Text,
   ActivityIndicator,
   TextInput,
-  Button,
   Modal,
   View,
+  Button,
   AsyncStorage,
   TouchableHighlight,
   Dimensions,
 } from 'react-native';
 
 import CheckBox from 'react-native-checkbox';
-
 import { serverURI } from '../config';
 
 import { setMapContext } from '../actions/mapContextActions';
 import { clearChefLocation } from '../actions/chefActions';
+import dishActions from '../actions/dishActions';
 import { setCurrentChef } from '../actions/authActions';
+
+import DishViewEntry from '../components/DishViewEntry';
+import ListItem from '../components/ListItem';
+import ListItemSection from '../components/ListItemSection';
+import { getDishesForChef } from '../helpers/dishHelpers';
+
 
 import { connect } from 'react-redux';
 
@@ -39,7 +45,8 @@ class ChefActionsScreen extends Component {
     super(props);
     this.state = {
       loading: true,
-      locations: [],
+      locations: [],      
+      checkedRestrictions: [],
       restrictions: [
         'Eggs',
         'Dairy',
@@ -76,6 +83,11 @@ class ChefActionsScreen extends Component {
     this.setState(update);
   }
 
+  componentDidMount() {
+    console.log('Component did Mount????')
+    getDishesForChef(parseInt(this.props.currentChef))    
+  }
+
   componentWillMount() {
     let context = this;
     console.log(`GET TO ${serverURI}/chefs/userId/${this.props.currentUser} ${this.props.currentChef ? 'as chef' + this.props.currentChef : ''}`);
@@ -92,14 +104,17 @@ class ChefActionsScreen extends Component {
         chefData.restrictions = chefData.restrictions || [];
         //Remove when route changed to return object rather than [obj]
         let cuisines = context.state.checkedCuisines;
-        chefData.cuisines.forEach(function(cuisine) {
-          cuisines[cuisine] = true;
-        });
-
+        if (cuisines.length > 0) { 
+          chefData.cuisines.forEach(function(cuisine) {
+            cuisines[cuisine] = true;
+          });
+        }
         let restrictions = context.state.checkedRestrictions;
-        chefData.restrictions.forEach(function(restriction) {
-          restrictions[restriction] = true;
-        });
+        if (restrictions.length > 0) {
+          chefData.restrictions.forEach(function(restriction) {
+            restrictions[restriction] = true;
+          });          
+        }
         context.setState({
           name: chefData.name || context.state.name,
           imageURL: chefData.imageURL || context.state.imageURL,
@@ -197,6 +212,31 @@ class ChefActionsScreen extends Component {
       });
   }
 
+  _handleCreateDishPress () {
+    // Needs some touching up, has a weird glitch where you see chefAction Screen
+    this.toggleState('showDishesModal');
+    this.props.navigator.push('createDishView');
+  }
+
+
+
+  renderDishes() {
+    if (!this.props.dishes || !this.props.dishList) {
+      return null;
+    }
+
+    return this.props.dishes.dishList.map((dish, index) => {
+      return (
+      <View key={index}>
+        <DishViewEntry
+          toggleState={this.toggleState.bind(this, 'showDishesModal')}
+          dish={dish}
+        />
+      </View>
+      )
+    });
+  }
+
   render() {
     return ( this.state.loading ? <ActivityIndicator size="large"/> :
       <ScrollView style={styles.textPadding}>
@@ -260,7 +300,7 @@ class ChefActionsScreen extends Component {
           <Text style={styles.textTest}>Edit Restrictions</Text>
         </TouchableHighlight>
         
-        <View style={{marginTop: 16, marginBottom: 48}}>
+        <View style={{marginTop: 16, marginBottom: 24}}>
           <Button
             title="Save Chef Profile"
             onPress={this.saveChef.bind(this)}
@@ -271,11 +311,22 @@ class ChefActionsScreen extends Component {
         {this.state.dishes.map((dish, index) =>
           <Text key={index}>{dish.name}</Text>
         )}
+
         <Button
           title="Edit Dishes"
           onPress={this.toggleState.bind(this, 'showDishesModal')}
         />
-
+        {this.props.currentChef ? 
+          <View>
+            <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Dishes:</Text>
+            {this.state.dishes.map((dish, index) =>
+              <Text key={index}>{dish.name}</Text>
+            )}
+            <Button
+              title="Edit Dishes"
+              onPress={this.toggleState.bind(this, 'showDishesModal')}
+            />
+          </View> : null}
 
         <Modal
           animationType="fade"
@@ -339,10 +390,16 @@ class ChefActionsScreen extends Component {
           transparent={false}
           visible={!!this.state.showDishesModal}>
           <ScrollView style={[styles.textPadding, styles.modal]}>
-            <Text>Dishes Modal</Text>
-            {this.state.dishes.map((dish, index) =>
-              <Text key={index}>{dish}</Text>
-            )}
+            <Text style={styles.titleText}>Your Dishes</Text>
+              {this.renderDishes()}
+          <ListItem>
+            <ListItemSection>
+            <Button 
+              title="+Add New Dish"
+              onPress={ this._handleCreateDishPress.bind(this) }
+            />
+            </ListItemSection>
+          </ListItem>
             <Button
               title="Close"
               onPress={this.toggleState.bind(this, 'showDishesModal')}
@@ -426,14 +483,16 @@ const styles = StyleSheet.create({
     fontSize: 15,
     alignSelf: 'center',
     color: 'red',
-  }
+  },
 });
 
+//this.props.dish is now availabale in the app
 function mapStateToProps(state) {
   return {
     currentChef: state.currentChef,
     currentUser: state.currentUser,
     chefLocation: state.chef.location,
+    dishes: state.dishes,
     state,
   };
 }
