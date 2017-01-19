@@ -18,6 +18,8 @@ import { setMapContext } from '../actions/mapContextActions';
 import { clearChefLocation } from '../actions/chefActions';
 import dishActions from '../actions/dishActions';
 import { setCurrentChef } from '../actions/authActions';
+import { addToDishList } from '../actions/dishActions';
+
 
 import DishViewEntry from '../components/DishViewEntry';
 import ListItem from '../components/ListItem';
@@ -78,9 +80,18 @@ class ChefActionsScreen extends Component {
     this.setState(update);
   }
 
-  componentDidMount() {
-    console.log('Component did Mount????')
-    getDishesForChef(parseInt(this.props.currentChef))    
+  componentDidMount() {    
+    let context = this;
+    fetch (`${serverURI}/dishes/chefs/${this.props.currentChef}`)
+      .then((dishes) => dishes.json())
+      .then((dishes) => {
+        console.log(dishes);
+        context.props.dispatch(addToDishList(dishes));
+        return;
+      })
+      .catch((error) => {
+        console.error(error);
+      }); 
   }
 
   componentWillMount() {
@@ -209,7 +220,6 @@ class ChefActionsScreen extends Component {
   }
 
   _handleCreateDishPress () {
-    // Needs some touching up, has a weird glitch where you see chefAction Screen
     this.toggleState('showDishesModal');
     this.props.navigator.push('createDishView');
   }
@@ -217,8 +227,9 @@ class ChefActionsScreen extends Component {
 
 
   renderDishes() {
-    if (!this.props.dishes || !this.props.dishList) {
-      return null;
+    console.log(this.props.dishes, 'WHAT ARE YOU IN RENDEIRNG THEDISH')
+    if (!this.props.dishes.dishList) {
+      return null;  
     }
 
     return this.props.dishes.dishList.map((dish, index) => {
