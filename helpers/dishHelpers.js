@@ -2,8 +2,6 @@ import { serverURI } from '../config';
 
 module.exports = {
   postDishToDB: function (newDish, currentChefId) {
-    console.log(newDish, 'is being posted to DB');
-    console.log(currentChefId, 'is the chefid');
     return fetch(`${serverURI}/dishes/chefs/${currentChefId}`, {
       method: 'POST',
       headers: {

@@ -175,7 +175,7 @@ class ChefActionsScreen extends Component {
       locations: this.state.locations,
       restrictions: getTruthyKeys(this.state.checkedRestrictions),
       cuisines: getTruthyKeys(this.state.checkedCuisines),
-      iamge: this.state.avatarURL,
+      image: this.state.avatarURL,
     }
 
     if (!this.props.currentChef) {
