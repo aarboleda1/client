@@ -9,9 +9,9 @@ import { setChefLocation } from '../actions/chefActions';
 import { clearMapContext } from '../actions/mapContextActions';
 
 const contexts = {
-	'search': setSearchLocation,
+  'search': setSearchLocation,
   'chefActions': setChefLocation,
-}
+};
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const WINDOW_HEIGHT = Dimensions.get('window').height;

@@ -23,6 +23,10 @@ import MapScreen from '../screens/MapScreen';
 import RootNavigation from './RootNavigation';
 import SearchResultsScreen from '../screens/SearchResultsScreen';
 
+/*Dish Creation Screens*/
+import CreateDishScreen from '../screens/CreateDishScreen';
+import DishPreviewOnlyScreen from '../screens/DishPreviewOnlyScreen';
+
 export default createRouter(() => ({
   auth: () => AuthScreen,
   login: () => LoginScreen,
@@ -41,4 +45,8 @@ export default createRouter(() => ({
   map: () => MapScreen,
   rootNavigation: () => RootNavigation,
   searchResults: () => SearchResultsScreen,
+  
+  createDishView: () => CreateDishScreen,
+  dishPreviewOnlyView: () => DishPreviewOnlyScreen,
+
 }));
