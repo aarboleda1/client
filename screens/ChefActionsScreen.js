@@ -20,6 +20,8 @@ import { setMapContext } from '../actions/mapContextActions';
 import { clearChefLocation } from '../actions/chefActions';
 import dishActions from '../actions/dishActions';
 import { setCurrentChef } from '../actions/authActions';
+import { addToDishList } from '../actions/dishActions';
+
 
 import DishViewEntry from '../components/DishViewEntry';
 import ListItem from '../components/ListItem';
@@ -37,7 +39,7 @@ const WINDOW_HEIGHT = Dimensions.get('window').height;
 class ChefActionsScreen extends Component {
   static route = {
     navigationBar: {
-      title: 'Chef Actions',
+      title: 'Chef Settings',
     },
   }
 
@@ -84,9 +86,20 @@ class ChefActionsScreen extends Component {
   }
 
   componentDidMount() {
-    console.log('Component did Mount????')
-    getDishesForChef(parseInt(this.props.currentChef))    
-  }
+    var context = this;
+
+    fetch (`${serverURI}/dishes/chefs/${this.props.currentChef}`)
+      .then((dishes) => dishes.json())
+      .then((dishes) => {
+        context.props.dispatch(addToDishList(dishes));
+        return;
+      })
+      .catch((error) => {
+        console.error(error);
+      });    
+
+  }   
+  
 
   componentWillMount() {
     let context = this;
@@ -220,11 +233,14 @@ class ChefActionsScreen extends Component {
 
 
 
-  renderDishes() {
-    if (!this.props.dishes || !this.props.dishList) {
+  _renderDishes() {
+    if (!this.props.dishes.dishList) {
       return null;
     }
-
+    let {height, width} = Dimensions.get('window');
+    let dishHeight = height / 3;
+    console.log(dishHeight, 'is the height');
+    console.log(width, 'is the width');
     return this.props.dishes.dishList.map((dish, index) => {
       return (
       <View key={index}>
@@ -299,25 +315,35 @@ class ChefActionsScreen extends Component {
           style={[styles.test, {backgroundColor: '#324B38'}]}> 
           <Text style={styles.textTest}>Edit Restrictions</Text>
         </TouchableHighlight>
-        
-        <View style={{marginTop: 16, marginBottom: 24}}>
-          <Button
-            title="Save Chef Profile"
-            onPress={this.saveChef.bind(this)}
-          />
-        </View>
 
+        <View style={styles.divider}></View>        
+        
         {this.props.currentChef ? 
           <View>
             <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Dishes:</Text>
             {this.state.dishes.map((dish, index) =>
               <Text key={index}>{dish.name}</Text>
             )}
-            <Button
+            <TouchableHighlight
               title="Edit Dishes"
               onPress={this.toggleState.bind(this, 'showDishesModal')}
-            />
+              style={[styles.test, {backgroundColor: '#324B38'}]}> 
+              <Text style={styles.textTest}>Edit Menu</Text>
+            </TouchableHighlight>
           </View> : null}
+        
+        <View style={styles.divider}></View>        
+
+        <View style={{marginTop: 16, marginBottom: 24}}>
+          <TouchableHighlight
+            title="Save Chef Profile"
+            onPress={this.saveChef.bind(this)}
+            style={[styles.test, {backgroundColor: '#324B38'}]}> 
+            <Text style={styles.textTest}>Save Chef Profile</Text>
+          </TouchableHighlight>
+        </View>
+
+
 
         <Modal
           animationType="fade"
@@ -382,7 +408,7 @@ class ChefActionsScreen extends Component {
           visible={!!this.state.showDishesModal}>
           <ScrollView style={[styles.textPadding, styles.modal]}>
             <Text style={styles.titleText}>Your Dishes</Text>
-              {this.renderDishes()}
+              {this._renderDishes()}
           <ListItem>
             <ListItemSection>
             <Button 
@@ -403,6 +429,12 @@ class ChefActionsScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  cardTitleText: {
+    fontSize: 25,
+    paddingLeft: 13,
+    color: 'black',
+    fontWeight: '600',
+  },
   textPadding: {
     padding: 8,
     backgroundColor: '#e7e7e6'
@@ -490,8 +522,4 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps)(ChefActionsScreen);
 
-// <Text>Locations Modal</Text>
-            
-// {this.state.locations.map((location, index) =>
-//   <Text key={index}>{location}</Text>
-// )}
+
