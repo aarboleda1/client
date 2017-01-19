@@ -84,14 +84,18 @@ class UpcomingScreen extends React.Component {
           />
         }>
 
-        <Text style={styles.chefText}> Events as Host </Text>
-
-        {this.props.currentChef ? (
-        <View>
-          <Text style={styles.chefText}> Events as Chef </Text>
-
-        </View>
-        ) : null}
+        {this.state.events.map((event, index) =>
+          <EventListing
+            key={index}
+            id={event.id}
+            name={event.name}
+            time={event.time}
+            location={event.location}
+            description={event.text}
+            chef={event.chefInfo}
+            currentUser= {this.props.currentUser}
+          />
+        )}
       </ScrollView>
     );
   }
