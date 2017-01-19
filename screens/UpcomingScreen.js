@@ -35,6 +35,7 @@ class UpcomingScreen extends React.Component {
     super(props);
     this.state = {
       events: [],
+      chefEvents: [],
       loading: true,
       refreshing: false,
     };
@@ -56,6 +57,21 @@ class UpcomingScreen extends React.Component {
           }
       }).then(function(events) {
         context.setState({loading: false, refreshing: false, events})
+      }).catch(function(err) {
+        alert(err);
+      });
+    });
+
+    this.setState({refreshing: true}, function() {
+      fetch(`${serverURI}/events/chefs/${this.props.currentChef}`)
+        .then(function(resp) {
+          if(resp.status === 200) {
+            return resp.json();
+          } else {
+            return resp.text();
+          }
+      }).then(function(chefEvents) {
+        context.setState({loading: false, refreshing: false, chefEvents})
       }).catch(function(err) {
         alert(err);
       });
@@ -84,6 +100,7 @@ class UpcomingScreen extends React.Component {
           />
         }>
 
+        <Text style={styles.chefText}> Host Events </Text>
         {this.state.events.map((event, index) =>
           <EventListing
             key={index}
@@ -92,10 +109,30 @@ class UpcomingScreen extends React.Component {
             time={event.time}
             location={event.location}
             description={event.text}
-            chef={event.chefInfo}
-            currentUser= {this.props.currentUser}
+            target={event.chefInfo}
+            currentUser={this.props.currentUser}
+            isChef={false}
           />
         )}
+
+        {this.props.currentChef ? 
+          (<View>
+            <Text style={styles.chefText}> Chef Events </Text>
+            {this.state.chefEvents.map((event, index) => 
+              <EventListing
+                key={index}
+                id={event.id}
+                name={event.name}
+                time={event.time}
+                location={event.location}
+                description={event.text}
+                target={event.userInfo}
+                currentUser={this.props.currentUser}
+                isChef={true}
+              />) 
+            }
+          </View>): null
+        }
       </ScrollView>
     );
   }
