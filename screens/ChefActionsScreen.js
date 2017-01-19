@@ -243,7 +243,7 @@ class ChefActionsScreen extends Component {
     console.log(width, 'is the width');
     return this.props.dishes.dishList.map((dish, index) => {
       return (
-      <View style={{heigth: dishHeight, width: width}} key={index}>
+      <View key={index}>
         <DishViewEntry
           toggleState={this.toggleState.bind(this, 'showDishesModal')}
           dish={dish}
