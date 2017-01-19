@@ -136,22 +136,22 @@ class CreateDishScreen extends Component {
 
   _saveToMenuList () {
     let { dishName, dishDescription, image, price, checkedRestrictions, checkedCuisines } = this.state;
-    var newlyCreatedDish = {
-      name: dishName,
-      text: dishDescription,
-      image: 'image',
-      price: price,
-      restrictions: checkedRestrictions,
-      cuisines: checkedCuisines
-    };
+    let newlyCreatedDish = {
+    "name" : dishName,
+    "text" : dishDescription,
+    "image": "image",
+    "price": price,
+    "cuisines": checkedCuisines,
+    "restrictions": checkedRestrictions
+    }
 
     // Create a copy, otherwise a weird type error occurs when trying
     // to push to the currentDishList in stateA  c
     var newDishArray = this.props.dishes.dishList.slice(0);    
     var newDishList = newDishArray.push(newlyCreatedDish);    
     this.props.dispatch(addToDishList(newDishArray));
+    
     let chefId = parseInt(this.props.currentChef)
-    console.log(chefId, 'is the chefId!!');
     postDishToDB(newlyCreatedDish, chefId);
   };
 
@@ -420,6 +420,7 @@ function mapStateToProps(state) {
     dishList: state.dishList,
     dishes: state.dishes,
     currentUser: state.currentUser,
+    currentChef: state.currentChef
   };
 }
 export default connect(mapStateToProps)(CreateDishScreen);
