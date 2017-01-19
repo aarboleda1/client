@@ -176,6 +176,8 @@ class SearchScreen extends React.Component {
           Location: {this.props.search.location || 'not set'}
         </Text>
          
+
+         {!this.props.search.location ? 
          <TouchableHighlight
          style={styles.touchHighlight}
          onPress={this._chooseLocation.bind(this)}
@@ -184,6 +186,16 @@ class SearchScreen extends React.Component {
             Set Location
           </Text>
         </TouchableHighlight>
+        :
+         <TouchableHighlight
+         style={styles.touchHighlight}
+         onPress={this._chooseLocation.bind(this)}
+         >
+          <Text style={styles.touchHighlightText}>
+            Edit Location
+          </Text>
+        </TouchableHighlight>
+        }
 
         {this.state.location ?
           <Text style={styles.location}>{this.state.location}</Text> : null}
