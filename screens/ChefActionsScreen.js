@@ -18,6 +18,8 @@ import { setMapContext } from '../actions/mapContextActions';
 import { clearChefLocation } from '../actions/chefActions';
 import dishActions from '../actions/dishActions';
 import { setCurrentChef } from '../actions/authActions';
+import { addToDishList } from '../actions/dishActions';
+
 
 import DishViewEntry from '../components/DishViewEntry';
 import ListItem from '../components/ListItem';
@@ -79,9 +81,20 @@ class ChefActionsScreen extends Component {
   }
 
   componentDidMount() {
-    console.log('Component did Mount????')
-    getDishesForChef(parseInt(this.props.currentChef))    
-  }
+    var context = this;
+
+    fetch (`${serverURI}/dishes/chefs/${this.props.currentChef}`)
+      .then((dishes) => dishes.json())
+      .then((dishes) => {
+        context.props.dispatch(addToDishList(dishes));
+        return dishes;
+      })
+      .catch((error) => {
+        console.error(error);
+      });    
+
+  }   
+  
 
   componentWillMount() {
     let context = this;
@@ -280,13 +293,7 @@ class ChefActionsScreen extends Component {
             onPress={this.saveChef.bind(this)}
           />
         </View>
-
-        <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Dishes:</Text>
-    
-        <Button
-          title="Edit Dishes"
-          onPress={this.toggleState.bind(this, 'showDishesModal')}
-        />
+  
         {this.props.currentChef ? 
           <View>
             <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Dishes:</Text>
