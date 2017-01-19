@@ -34,7 +34,7 @@ import getTruthyKeys from '../utilities/getTruthyKeys';
 class ChefActionsScreen extends Component {
   static route = {
     navigationBar: {
-      title: 'Chef Actions',
+      title: 'Chef Settings',
     },
   }
 
@@ -87,7 +87,7 @@ class ChefActionsScreen extends Component {
       .then((dishes) => dishes.json())
       .then((dishes) => {
         context.props.dispatch(addToDishList(dishes));
-        return dishes;
+        return;
       })
       .catch((error) => {
         console.error(error);
@@ -229,8 +229,8 @@ class ChefActionsScreen extends Component {
 
 
 
-  renderDishes() {
-    if (!this.props.dishes || !this.props.dishList) {
+  _renderDishes() {
+    if (!this.props.dishes.dishList) {
       return null;
     }
 
@@ -391,7 +391,7 @@ class ChefActionsScreen extends Component {
           visible={!!this.state.showDishesModal}>
           <ScrollView style={[styles.textPadding, styles.modal]}>
             <Text style={styles.titleText}>Your Dishes</Text>
-              {this.renderDishes()}
+              {this._renderDishes()}
           <ListItem>
             <ListItemSection>
             <Button 

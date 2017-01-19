@@ -37,6 +37,8 @@ class CreateDishScreen extends Component {
       dishDescription: '',
       image: '',
       price: '',
+      checkedRestrictions: [],
+      checkedCuisines: [],
       restrictions: [
         'Eggs',
         'Dairy',
@@ -61,9 +63,6 @@ class CreateDishScreen extends Component {
         'Korean',
         'Mexican',
       ],
-      cuisinesSelected: [],
-      checkedRestrictions: [],
-      checkedCuisines: []
     };
   }
     static route = {
@@ -78,9 +77,7 @@ class CreateDishScreen extends Component {
     this.setState(update);
   }
   _goToPreviewDishScreen () {
-    //also send this.the new dish1 to the store
     let { cuisinesSelected, dishName, dishDescription, image, price, checkedRestrictions, checkedCuisines, cuisines } = this.state;
-    console.log(image, 'IS IMAGE before going to preview screen')
     var newlyCreatedDish = {
       name: dishName,
       text: dishDescription,
@@ -106,7 +103,6 @@ class CreateDishScreen extends Component {
 
   _saveImageURL (imageURL) {
     this.setState({image: imageURL});
-    console.log(this.state.image, 'IS IMAGE')
   };
 
   _addOrRemoveRestriction(restriction) {
@@ -158,7 +154,9 @@ class CreateDishScreen extends Component {
     this.props.dispatch(addToDishList(newDishArray));
     
     let chefId = parseInt(this.props.currentChef)
+    
     postDishToDB(newlyCreatedDish, chefId);
+    this.setState({})
   };
 
   render () {
