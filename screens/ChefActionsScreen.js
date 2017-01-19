@@ -237,10 +237,13 @@ class ChefActionsScreen extends Component {
     if (!this.props.dishes.dishList) {
       return null;
     }
-
+    let {height, width} = Dimensions.get('window');
+    let dishHeight = height / 3;
+    console.log(dishHeight, 'is the height');
+    console.log(width, 'is the width');
     return this.props.dishes.dishList.map((dish, index) => {
       return (
-      <View key={index}>
+      <View style={{heigth: dishHeight, width: width}} key={index}>
         <DishViewEntry
           toggleState={this.toggleState.bind(this, 'showDishesModal')}
           dish={dish}
@@ -312,24 +315,35 @@ class ChefActionsScreen extends Component {
           style={[styles.test, {backgroundColor: '#324B38'}]}> 
           <Text style={styles.textTest}>Edit Restrictions</Text>
         </TouchableHighlight>
+
+        <View style={styles.divider}></View>        
         
-        <View style={{marginTop: 16, marginBottom: 24}}>
-          <Button
-            title="Save Chef Profile"
-            onPress={this.saveChef.bind(this)}
-          />
-        </View>
         {this.props.currentChef ? 
           <View>
             <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Dishes:</Text>
             {this.state.dishes.map((dish, index) =>
               <Text key={index}>{dish.name}</Text>
             )}
-            <Button
+            <TouchableHighlight
               title="Edit Dishes"
               onPress={this.toggleState.bind(this, 'showDishesModal')}
-            />
+              style={[styles.test, {backgroundColor: '#324B38'}]}> 
+              <Text style={styles.textTest}>Edit Menu</Text>
+            </TouchableHighlight>
           </View> : null}
+        
+        <View style={styles.divider}></View>        
+
+        <View style={{marginTop: 16, marginBottom: 24}}>
+          <TouchableHighlight
+            title="Save Chef Profile"
+            onPress={this.saveChef.bind(this)}
+            style={[styles.test, {backgroundColor: '#324B38'}]}> 
+            <Text style={styles.textTest}>Save Chef Profile</Text>
+          </TouchableHighlight>
+        </View>
+
+
 
         <Modal
           animationType="fade"
@@ -415,6 +429,12 @@ class ChefActionsScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  cardTitleText: {
+    fontSize: 25,
+    paddingLeft: 13,
+    color: 'black',
+    fontWeight: '600',
+  },
   textPadding: {
     padding: 8,
     backgroundColor: '#e7e7e6'
@@ -502,8 +522,4 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps)(ChefActionsScreen);
 
-// <Text>Locations Modal</Text>
-            
-// {this.state.locations.map((location, index) =>
-//   <Text key={index}>{location}</Text>
-// )}
+

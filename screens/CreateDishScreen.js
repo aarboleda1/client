@@ -4,11 +4,11 @@ import {
   View,
   StyleSheet,
   Button,
-  AsyncStorage,
   Text,
   TextInput,
   Image,
-  Modal
+  Modal,
+  Alert
 } from 'react-native';
 import Router from '../navigation/Router';
 import { withNavigation } from '@exponent/ex-navigation';
@@ -26,8 +26,8 @@ import CheckBox from 'react-native-checkbox';
 
 import { postDishToDB } from '../helpers/dishHelpers';
 
-//this.props.currentUser '1' 1
-//this.props.route..params
+// let cameraIcon = require('../Images/camera-icon-33.png');
+
 @withNavigation
 class CreateDishScreen extends Component {
   constructor (props) {
@@ -156,10 +156,15 @@ class CreateDishScreen extends Component {
     let chefId = parseInt(this.props.currentChef)
     
     postDishToDB(newlyCreatedDish, chefId);
-    this.setState({})
+    Alert.alert(
+      'Dish Saved!',
+      '',
+      [{text: 'Done', onPress: () => {console.log('now what?')}}])    
   };
 
   render () {
+    let cameraIcon = require('../Images/camera-icon-33.png');
+
     return (
       <ScrollView style={styles.flex}>      
       {/*Buttons in CreateDishScreen which take user to each Modal*/}
