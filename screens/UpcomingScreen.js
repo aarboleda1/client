@@ -100,7 +100,7 @@ class UpcomingScreen extends React.Component {
           />
         }>
 
-        <Text style={styles.chefText}> Host Events </Text>
+        <Text style={styles.chefText}> Your events as Host </Text>
         {this.state.events.map((event, index) =>
           <EventListing
             key={index}
@@ -117,7 +117,7 @@ class UpcomingScreen extends React.Component {
 
         {this.props.currentChef ? 
           (<View>
-            <Text style={styles.chefText}> Chef Events </Text>
+            <Text style={styles.chefText}> Your events as Chef  </Text>
             {this.state.chefEvents.map((event, index) => 
               <EventListing
                 key={index}
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   },
   chefText: {
     paddingTop: 20,
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: '500'
   },
 
