@@ -285,7 +285,7 @@ class ChefActionsScreen extends Component {
           
           {this.state.locations.length ? this.state.locations.map((location, index) =>
             <Text key={index}
-            style={styles.results}>{location}</Text>
+            style={styles.results}>-{location}</Text>
           ) : <Text style={styles.notSet}>No location set</Text>}
 
           <TouchableHighlight
@@ -302,7 +302,7 @@ class ChefActionsScreen extends Component {
 
           {getTruthyKeys(this.state.checkedCuisines).length ? 
             getTruthyKeys(this.state.checkedCuisines).map((cuisine, index) =>
-              <Text key={index} style={styles.results}>{cuisine}</Text>
+              <Text key={index} style={styles.results}>-{cuisine}</Text>
             ) : <Text style={styles.notSet}>No Cuisine Type Set</Text>}
 
           <TouchableHighlight
@@ -320,7 +320,7 @@ class ChefActionsScreen extends Component {
 
           {getTruthyKeys(this.state.checkedCuisines).length ? 
             getTruthyKeys(this.state.checkedRestrictions).map((restriction, index) =>
-              <Text key={index} style={styles.results}>{restriction}</Text>
+              <Text key={index} style={styles.results}>-{restriction}</Text>
             ) : <Text style={styles.notSet}>No Restrictions Set</Text>}
 
 
@@ -364,7 +364,7 @@ class ChefActionsScreen extends Component {
           animationType="fade"
           transparent={false}
           visible={!!this.state.showRestrictionsModal}>
-          <ScrollView style={[styles.modal]}>
+          <ScrollView contentContainerStyle={[styles.modal]}>
             <Text style={styles.titleText}>Choose Your Dietary Cooking Restrictions</Text>
             
             {this.state.restrictions.map((restriction) => 
@@ -390,7 +390,7 @@ class ChefActionsScreen extends Component {
           animationType="fade"
           transparent={false}
           visible={!!this.state.showCuisinesModal}>
-          <ScrollView style={[styles.modal]}>
+          <ScrollView contentContainerStyle={[styles.modal]}>
             
             <Text style={styles.titleText}>Choose the cuisine types that you will cater</Text>
 
@@ -417,7 +417,7 @@ class ChefActionsScreen extends Component {
           animationType="fade"
           transparent={false}
           visible={!!this.state.showDishesModal}>
-          <ScrollView style={[styles.modal]}>
+          <ScrollView contentContainerStyle={[styles.modal]}>
             <Text style={styles.titleText}>Your Dishes</Text>
               {this._renderDishes()}
           <ListItem>
