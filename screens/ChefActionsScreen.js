@@ -173,9 +173,10 @@ class ChefActionsScreen extends Component {
   saveChef() {
     let chefData = {
       name: this.state.name,
+      bio: this.state.bio,
       locations: this.state.locations,
-      restrictions: getTruthyKeys(this.state.checkedRestrictions),
-      cuisines: getTruthyKeys(this.state.checkedCuisines),
+      restrictions: getTruthyKeys(this.state.checkedRestrictions) || [],
+      cuisines: getTruthyKeys(this.state.checkedCuisines) || [],
       image: this.state.avatarURL,
     }
 
@@ -261,6 +262,14 @@ class ChefActionsScreen extends Component {
           defaultValue={this.state.name}
         />
         <TextInput
+          onChangeText={(bio)=>{this.setState({bio})}}
+          style={styles.formInput, 
+            {marginLeft: 7, marginTop: 15, marginBottom: 15, fontSize: 18}}
+          underlineColorAndroid="rgba(0,0,0,0)"
+          placeholder="Chef Bio"
+          defaultValue={this.state.bio}
+        />
+        <TextInput
           onChangeText={(url)=>{this.setState({avatarURL: url})}}
           style={[styles.formInput, {marginLeft: 7, fontSize: 18}]}
           underlineColorAndroid="rgba(0,0,0,0)"
@@ -326,27 +335,20 @@ class ChefActionsScreen extends Component {
         </View>       
         
         <View style={{backgroundColor: '#cfcfcf'}}>
-        
-        {this.props.currentChef ? 
-          <View>
-            <Text style={[styles.flex, styles.textCenter, styles.verticalMargins]}>Your Menu</Text>
-            {this.state.dishes.length ? 
-            this.state.dishes.map((dish, index) =>
-              <Text key={index}>{dish.name}</Text>
-            ) : 
-            <Text style={styles.notSet}>Menu not Set</Text>
-            }
+          <Text style={[styles.flex, 
+                        styles.textCenter, 
+                        styles.verticalMargins]}>
+            Your Menu
+          </Text>
+          {this.props.currentChef ? 
             <TouchableHighlight
               underlayColor={'white'}
               title="Edit Menu"
               onPress={this.toggleState.bind(this, 'showDishesModal')}
               style={[styles.test]}> 
               <Text style={styles.textTest}>Edit Menu</Text>
-            </TouchableHighlight>
-          </View> : null}
-        
-        
-
+            </TouchableHighlight> : null
+          }
          </View>        
 
         <View style={styles.saveStyle}>
