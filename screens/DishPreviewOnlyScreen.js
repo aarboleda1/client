@@ -59,7 +59,7 @@ class DishPreviewOnlyScreen extends Component {
     } else {
       return cuisines.map((cuisine) => {
         return (
-          <View style={{width: 50, height: 50}}>
+          <View style={{width: 20, height: 20}}>
             <Text>
               { cuisine }
             </Text>
@@ -75,13 +75,13 @@ class DishPreviewOnlyScreen extends Component {
     return (
     <ListItem>
 
-      <ListItemSection>
+      <ListItemSection style={{flexDirection: 'column'}}>
         <View style={headerContentStyle}>
           <Text style={ headerTextStyle }>{ name }</Text>
         </View>
       </ListItemSection>
 
-      <ListItemSection>
+      <ListItemSection style={{flexDirection: 'column'}}>
         <View>
           <Image
             source={{uri: image}}
@@ -90,7 +90,7 @@ class DishPreviewOnlyScreen extends Component {
         </View>
       </ListItemSection>
 
-      <ListItemSection style={{height: height /3, flexFlow: 'row wrap', justifyContent: 'space-around'}}>
+      <ListItemSection style={{flexDirection: 'column'}}>
         <Text style={ dishPropertyName }>{ 'Description' }</Text>
         <Text>{text}</Text>            
       </ListItemSection>
@@ -158,8 +158,8 @@ const styles = {
     width: null
   },
   dishPropertyName: {
-    fontSize: 14,
-    fontWeight: 'bold'
+    fontSize: 25,
+    fontWeight: '300'
   },
   textContainerStyling: {
     flexDirection: 'row',
