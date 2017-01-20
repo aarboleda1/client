@@ -149,8 +149,6 @@ class CreateDishScreen extends Component {
     "cuisines": checkedCuisines,
     "restrictions": checkedRestrictions
     }
-
-
     // Create a copy, otherwise a weird type error occurs when trying
     // to push to the currentDishList in stateA  c
     var newDishArray = this.props.dishes.dishList.slice(0);    
@@ -216,6 +214,7 @@ class CreateDishScreen extends Component {
             {this.state.isInserted ? <Text>{'Edit Image'}</Text> : null}
           </View>  
         </ListItem>
+
         <ListItem>
           <View style={ alignItemsInBar }>
             <Button 
