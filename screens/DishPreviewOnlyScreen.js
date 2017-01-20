@@ -73,7 +73,7 @@ class DishPreviewOnlyScreen extends Component {
   render () {
     let {height, width} = Dimensions.get('window');
     let { name, image, text, price } = this.props.route.params.dish
-    let { textInput, listItemText, headerTextStyle, headerContentStyle, textContainerStyling, imageStyle, dishPropertyName} = styles;
+    let { listItemTextDescription, listTextContainerStyling, textInput, listItemText, headerTextStyle, headerContentStyle, textContainerStyling, imageStyle, dishPropertyName} = styles;
     return (
     <ListItem>
       <ListItemSection style={{flexDirection: 'column'}}>
@@ -93,7 +93,7 @@ class DishPreviewOnlyScreen extends Component {
         <View style={ textContainerStyling }>
           <Text style={ dishPropertyName }>{ 'Description: ' }</Text>
         </View>
-        <View style={ listItemText }>
+        <View style={ listItemTextDescription }>
           <Text style={ textInput }>{text}</Text>
         </View>            
       </ListItemSection>
@@ -113,7 +113,7 @@ class DishPreviewOnlyScreen extends Component {
         <View style={ textContainerStyling }>
           <Text style={ dishPropertyName }>{ 'Cuisines: '}</Text>
         </View>
-        <View style={ textContainerStyling }>
+        <View style={ listTextContainerStyling }>
           {this._renderCuisines()}
         </View>
       </ListItemSection>
@@ -122,7 +122,7 @@ class DishPreviewOnlyScreen extends Component {
         <View style={ textContainerStyling }>
           <Text style={ dishPropertyName }>{ 'Restrictions: '}</Text>
         </View>
-        <View style={ textContainerStyling }>
+        <View style={ listTextContainerStyling }>
           {this._renderRestrictions()}
         </View>
       </ListItemSection>     
@@ -189,6 +189,14 @@ const styles = {
     flexDirection: 'row', 
     justifyContent: 'flex-start', 
     alignItems: 'center', 
+    width: 60,
+    height: 50,
+    marginLeft: 2
+  },
+  listItemTextDescription: {
+    flexDirection: 'row', 
+    justifyContent: 'flex-start', 
+    alignItems: 'center', 
     width: 200,
     height: 50,
     marginLeft: 2
@@ -196,6 +204,10 @@ const styles = {
   textInput: {
     fontSize: 18,
     fontWeight: '300'
+  },
+  listTextContainerStyling: {
+    flexDirection: 'row', 
+    justifyContent: 'flex-start'
   }
 }
 

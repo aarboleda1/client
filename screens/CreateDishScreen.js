@@ -80,6 +80,7 @@ class CreateDishScreen extends Component {
   }
   _goToPreviewDishScreen () {
     let { cuisinesSelected, dishName, dishDescription, image, price, checkedRestrictions, checkedCuisines, cuisines } = this.state;
+    console.log(checkedCuisines, 'should be the checked Cuisines Im about to send to dish previoew only screen' )
     var newlyCreatedDish = {
       name: dishName,
       text: dishDescription,
@@ -125,11 +126,10 @@ class CreateDishScreen extends Component {
     }
   }
   _addOrRemoveCuisine(cuisine) {
-    // let update = this.state.checkedCuisines;
     if (this.state.checkedCuisines.includes(cuisine)) {
-      this.state.checkedRestrictions.splice(cuisine, 1);
+      this.state.checkedCuisines.splice(cuisine, 1);
     } else {
-      this.state.checkedRestrictions.push(cuisine);
+      this.state.checkedCuisines.push(cuisine);
     }
     // if (this.state.checkedCuisines[cuisine]) {//   delete update[cuisine];
     // } else {
