@@ -319,11 +319,10 @@ class CreateDishScreen extends Component {
 
           {this.state.restrictions.map((restriction) => 
             <CheckBox
-              style={{backgroundColor: 'blue'}}
-              checkboxStyle={styles.checkBox}
+              checkboxStyle={styles.checkboxStyle}
+              labelStyle={styles.labelStyle}
               key={restriction}
               label={restriction}
-              labelStyle={styles.labelText}
               underlayColor={'#d3d3d3'}
               checked={this.state.checkedRestrictions[restriction]}
               onChange={() => 
@@ -396,11 +395,10 @@ class CreateDishScreen extends Component {
 
           {this.state.cuisines.map((cuisine) => 
             <CheckBox
-              style={{backgroundColor: 'blue'}}
-              checkboxStyle={styles.checkBox}            
+              checkboxStyle={styles.checkboxStyle}
+              labelStyle={styles.labelStyle}        
               key={cuisine}
               label={cuisine}
-              labelStyle={styles.labelText}
               underlayColor={'#d3d3d3'}                          
               checked={this.state.checkedCuisines[cuisine]}
               onChange={() => 
@@ -462,14 +460,14 @@ const styles = {
     borderBottomWidth: 1,
     paddingTop: 20
   },
-  checkBox: {
-    backgroundColor: '#EDEDED'
+  checkboxStyle: {
+    margin: 7,
+    marginLeft: 15, 
+    margin: -1,
   },
-  labelText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#000'
-
+  labelStyle: {
+    fontSize: 25,
+    color: 'black',
   },
   modalStyle: {
     flex: 1,
@@ -480,9 +478,7 @@ const styles = {
     marginTop: 30,
   },
   titleText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingBottom: 10,
+    fontSize: 25,
     textDecorationLine: 'underline',
     justifyContent: 'center'
   },
