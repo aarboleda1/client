@@ -107,18 +107,10 @@ class CreateDishScreen extends Component {
     this.setState({image: imageURL});
     let isInserted = !this.state.isPictureInserted;
     this.setState({isPictureInserted: isInserted})
-    console.log(this.state.isInserted, 'boolean?')
   };
 
   _addOrRemoveRestriction(restriction) {
-    // let update = this.state.checkedRestrictions;
-  {/*RUN BY ZACK*/}
-    // if (this.state.checkedRestrictions[restriction]) {
-    //   delete update[restriction];
-    // } else {
-    //   update[restriction] = true;
-    // }
-    // this.setState({checkedRestrictions: update});
+
     if (this.state.checkedRestrictions.includes(restriction)) {
       this.state.checkedRestrictions.splice(restriction, 1)
     } else {
@@ -126,17 +118,11 @@ class CreateDishScreen extends Component {
     }
   }
   _addOrRemoveCuisine(cuisine) {
-    // let update = this.state.checkedCuisines;
     if (this.state.checkedCuisines.includes(cuisine)) {
-      this.state.checkedRestrictions.splice(cuisine, 1);
+      this.state.checkedCuisines.splice(cuisine, 1);
     } else {
-      this.state.checkedRestrictions.push(cuisine);
+      this.state.checkedCuisines.push(cuisine);
     }
-    // if (this.state.checkedCuisines[cuisine]) {//   delete update[cuisine];
-    // } else {
-    //   update[cuisine] = true;
-    // }
-    // this.setState({checkedCuisines: update});
   }
 
   _saveToMenuList () {
@@ -150,8 +136,6 @@ class CreateDishScreen extends Component {
     "cuisines": checkedCuisines,
     "restrictions": checkedRestrictions
     }
-
-
     // Create a copy, otherwise a weird type error occurs when trying
     // to push to the currentDishList in stateA  c
     var newDishArray = this.props.dishes.dishList.slice(0);    
@@ -172,7 +156,6 @@ class CreateDishScreen extends Component {
           checkedCuisines: [],
           checkedRestrictions: []
         })
-        console.log('hello world')
       }}])   
   };
 
@@ -218,8 +201,9 @@ class CreateDishScreen extends Component {
             {this.state.isInserted ? <Text>{'Edit Image'}</Text> : null}
           </View>  
         </ListItem>
+
         <ListItem>
-          <View>
+          <View style={ alignItemsInBar }>
             <Button 
             title={ this.state.price ? 'Edit Price' : 'Add Price' }
             onPress={this.toggleState.bind(this, 'setPriceModal')}
@@ -260,10 +244,9 @@ class CreateDishScreen extends Component {
           animationType={"fade"}
           transparent={false}
           visible={!!this.state.showAddTitleModal}> 
-          {/*REFACTOR THIS INTO A COMPONENT*/}
           <ScrollView style={styles.textPadding}>
             <TextInput
-              editable = {true}
+              editable={true}
               underlineColorAndroid="rgba(0,0,0,0)"
               style={styles.formInput}              
               maxLength={60}
@@ -286,26 +269,25 @@ class CreateDishScreen extends Component {
           transparent={false}
           visible={!!this.state.describeDishModal}> 
         <ScrollView style={styles.textPadding}>
-
           <TextInput
-            editable = {true}
+            editable={true}
             underlineColorAndroid="rgba(0,0,0,0)"
             style={styles.formInput}              
-            maxLength={60}
+            maxLength={256}
             editable={true}
-            onChangeText={(text) => this._saveDishDescription.call(this, text) }
+            onChangeText={(text) => this._saveDishDescription.call(this, text)}
             placeholder="Enter description of dish here!"
-            multiline={true} 
-            numberOfLines={4}
+            numberOfLines={8}
             value={this.state.dishDescription ? this.state.dishDescription : null}
-          />       
+          />
          <Button
             title="Save"
             onPress={this.toggleState.bind(this, 'describeDishModal')}
           />
         </ScrollView>
         </Modal>
-        
+      
+      {/* Chooses the dietary restrictions */}
         <Modal
           animationType={"fade"}
           transparent={false}
