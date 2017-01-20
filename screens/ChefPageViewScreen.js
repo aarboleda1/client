@@ -319,7 +319,6 @@ class ChefPageViewScreen extends React.Component {
           </View>
 
       {/*Setting the location and Confirm page??*/}    
-          <Button title="Set Location" onPress={() => (console.log("TODO: IMPLEMENT LOCATION"))}/>
           <Button title="Confirm" onPress={this.confirmEvent.bind(this)} />
           <TextInput
             placeholder="Street Address"
