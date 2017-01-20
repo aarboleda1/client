@@ -172,7 +172,6 @@ class ChefPageViewScreen extends React.Component {
         fontSize: 32,
       },
       splashImage: {
-        width,
         height: height * 0.35,
         marginBottom: 12,
       },
@@ -183,16 +182,12 @@ class ChefPageViewScreen extends React.Component {
         // flexWrap: 'wrap',
       },
       dish: {
-        // height: height/10,
-        // width: width,
-        // alignItems: 'center',
         flex: 1,
         flexDirection: 'row',
       },
       dishImage: {
-        // flex: 1,
-        height: width/4,
-        width: width/2
+        height: 75,
+        width: 75
       },
       dishSelection: {
         position: 'absolute',
@@ -214,8 +209,44 @@ class ChefPageViewScreen extends React.Component {
       changeQuantityButton: {
         flex: 0.5,
       },
+      textStyling: {
+        textAlign: 'flex-start',
+        fontSize: 20,
+        fontWeight: '500',
+        marginVertical: 1,
+        marginBottom: 4,
+        paddingTop: 1,
+        marginLeft: 4
+
+      },
+      textStylingAbout: {
+        textAlign: 'flex-start',
+        fontSize: 14,
+        fontWeight: '500',
+        marginVertical: 1,
+        marginBottom: 4,
+        paddingTop: 1,
+        marginLeft: 4,
+      },
+      aboutContainer: {
+        flexDirection: 'column',
+        justifyContent: 'space-around'
+      },
+      headerTextStyle: {
+        fontSize: 25,
+        paddingLeft: 13,
+        color: 'black',
+        fontWeight: '600',    
+      },
+      dishDetailsContainer: {
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        marginLeft: 6
+      }        
+
     });
 
+    let { headerTextStyle, container, flex, aboutContainer, text } = styles;
     const dishModalStyles = StyleSheet.create({
       chefImage: {
         height: height / 3,
@@ -229,10 +260,10 @@ class ChefPageViewScreen extends React.Component {
     let context = this;
 
     return (
-      <View style={styles.flex}>
-        <Text>{this.props.details.name}</Text>
+      <View style={flex}>
+        <Text style={ headerTextStyle }>{this.props.details.name}</Text>
         <ScrollView
-          style={styles.container}
+          style={ container }
           contentContainerStyle={this.props.route.getContentContainerStyle()}>
           <Image style={styles.splashImage} source={{uri: this.props.details.img}}/>
 
@@ -241,16 +272,16 @@ class ChefPageViewScreen extends React.Component {
 
         {/*Apply styling About title list*/} 
       <ListItemSection> 
-        <View>  
-          <Text>About</Text>
-          <Text>{this.props.details.desc}</Text>
+        <View style={ styles.aboutContainer }>  
+          <Text style={ styles.textStyling }>About</Text>
+          <Text style={ styles.textStylingAbout }>{this.props.details.desc}</Text>
         </View>
       </ListItemSection>
 
 
       {/*Title things for the menu*/}
 
-          <Text>Menu:</Text>
+          <Text style={ styles.textStylingAbout }>Menu:</Text>
 
 
         {/*Dish List Component*/}
@@ -336,12 +367,12 @@ class ChefPageViewScreen extends React.Component {
       return (
 
         <TouchableOpacity key={dish} style={styles.dish} onPress={toggleCheck.bind(context)}>
-          <View style={styles.dish}>
+          <ListItemSection>
             <Image style={styles.dishImage} source={{ uri: dish.image }}/>
-            <View style={styles.dishDetails}>
-              <Text>{dish.name}</Text>
-              <Text>{dish.text}</Text>
-              <Text style={styles.flex}>{`${formatCash(dish.price)}`}</Text>
+            <View style={styles.dishDetailsContainer}>
+              <Text style={styles.textStylingAbout}>{dish.name}</Text>
+              <Text style={styles.textStylingAbout}>{dish.text}</Text>
+              <Text style={styles.textStylingAbout}>{`${formatCash(dish.price)}`}</Text>
             </View>
             {context.state.selected[dish.id] ?
               <View style={styles.dishSelection}>
@@ -352,7 +383,7 @@ class ChefPageViewScreen extends React.Component {
                 />
               </View>
               : null}
-          </View>
+          </ListItemSection>
         </TouchableOpacity>
       );
     }
