@@ -254,7 +254,8 @@ var styles = StyleSheet.create({
   },
   location: {
     fontSize: 20,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    color: 'red',
   },
   button: {
     borderColor: 'black',
