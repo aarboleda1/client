@@ -257,10 +257,9 @@ class CreateDishScreen extends Component {
           animationType={"fade"}
           transparent={false}
           visible={!!this.state.showAddTitleModal}> 
-          {/*REFACTOR THIS INTO A COMPONENT*/}
           <ScrollView style={styles.textPadding}>
             <TextInput
-              editable = {true}
+              editable={true}
               underlineColorAndroid="rgba(0,0,0,0)"
               style={styles.formInput}              
               maxLength={60}
@@ -283,26 +282,25 @@ class CreateDishScreen extends Component {
           transparent={false}
           visible={!!this.state.describeDishModal}> 
         <ScrollView style={styles.textPadding}>
-
           <TextInput
-            editable = {true}
+            editable={true}
             underlineColorAndroid="rgba(0,0,0,0)"
             style={styles.formInput}              
-            maxLength={60}
+            maxLength={256}
             editable={true}
-            onChangeText={(text) => this._saveDishDescription.call(this, text) }
+            onChangeText={(text) => this._saveDishDescription.call(this, text)}
             placeholder="Enter description of dish here!"
-            multiline={true} 
-            numberOfLines={4}
+            numberOfLines={8}
             value={this.state.dishDescription ? this.state.dishDescription : null}
-          />       
+          />
          <Button
             title="Save"
             onPress={this.toggleState.bind(this, 'describeDishModal')}
           />
         </ScrollView>
         </Modal>
-        
+      
+      {/* Chooses the dietary restrictions */}
         <Modal
           animationType={"fade"}
           transparent={false}
