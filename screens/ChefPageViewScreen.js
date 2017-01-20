@@ -110,14 +110,14 @@ class ChefPageViewScreen extends React.Component {
   }
 
   confirmEvent() {
+    let address = this.state.address.trim();
     let eventData = {
-      name: 'Upcoming Event',
-      // time: Date.now(),
-      location: this.props.location,
-      text: 'An upcoming event',
+      name: this.state.eventName,
+      location: address + ', ' + this.props.location,
+      text: this.state.eventText,
       chefId: this.props.details.id,
       userId: this.props.currentUser,
-      quantity: {}
+      quantity: {},
     };
 
     let selected = this.state.selected;
@@ -263,8 +263,25 @@ class ChefPageViewScreen extends React.Component {
             </View>   
             <Text style={styles.textCenter}>Total Cost: {formatCash(this.getTotalCost())}</Text>
           </View>
-          <Button title="Set Location" onPress={() => (console.log("TODO: IMPLEMENT LOCATION"))}/>
-          <Button title="Confirm" onPress={this.confirmEvent.bind(this)} />
+          <TextInput
+            placeholder="Street Address"
+            onChangeText={text => this.setState({address: text})}
+            style={{height: 32}}
+          />
+          <Text>{this.props.location}</Text>
+
+          <TextInput
+            placeholder="Event Title"
+            onChangeText={text => this.setState({eventName: text})}
+            style={{height: 32, marginTop: 16}}
+          />
+          <TextInput
+            placeholder="Event description"
+            onChangeText={text => this.setState({eventText: text})}
+            style={{height: 72}}
+            multiline={true}
+          />
+          <Button title="Confirm Event" onPress={this.confirmEvent.bind(this)} />
         </ScrollView>
       </View>
     );
