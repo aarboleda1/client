@@ -273,23 +273,20 @@ class ChefActionsScreen extends Component {
         <View 
         style={{backgroundColor: '#e9e9e9'}}
         >
-        <Text style={styles.textCenter}>Your Locations</Text>
-        
-        {this.state.locations.length ? this.state.locations.map((location, index) =>
-          <Text key={index}
-          style={styles.results}>-{location}</Text>
-        ) : <Text style={styles.notSet}>No location set</Text>}
+          <Text style={styles.textCenter}>Your Locations</Text>
+          
+          {this.state.locations.length ? this.state.locations.map((location, index) =>
+            <Text key={index}
+            style={styles.results}>{location}</Text>
+          ) : <Text style={styles.notSet}>No location set</Text>}
 
-        <TouchableHighlight
-          underlayColor={'white'}
-          title="Add Location"
-          onPress={this.addLocation.bind(this)}
-          style={styles.test}> 
-          <Text style={styles.textTest}>+New Location</Text>
-        </TouchableHighlight>
-
-        
-
+          <TouchableHighlight
+            underlayColor={'white'}
+            title="Add Location"
+            onPress={this.addLocation.bind(this)}
+            style={styles.test}> 
+            <Text style={styles.textTest}>+New Location</Text>
+          </TouchableHighlight>
         </View>
 
         <View style={{backgroundColor: '#cfcfcf'}}>
@@ -297,7 +294,7 @@ class ChefActionsScreen extends Component {
 
           {getTruthyKeys(this.state.checkedCuisines).length ? 
             getTruthyKeys(this.state.checkedCuisines).map((cuisine, index) =>
-              <Text key={index} style={styles.results}>-{cuisine}</Text>
+              <Text key={index} style={styles.results}>{cuisine}</Text>
             ) : <Text style={styles.notSet}>No Cuisine Type Set</Text>}
 
           <TouchableHighlight
@@ -315,7 +312,7 @@ class ChefActionsScreen extends Component {
 
           {getTruthyKeys(this.state.checkedCuisines).length ? 
             getTruthyKeys(this.state.checkedRestrictions).map((restriction, index) =>
-              <Text key={index} style={styles.results}>-{restriction}</Text>
+              <Text key={index} style={styles.results}>{restriction}</Text>
             ) : <Text style={styles.notSet}>No Restrictions Set</Text>}
 
 
@@ -530,5 +527,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(ChefActionsScreen);
-
-

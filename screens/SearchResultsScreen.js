@@ -48,7 +48,7 @@ export default class SearchResultsScreen extends React.Component {
               id={chef.id}
             />
           ))}
-          {this.state.chefs.length ? null : <Text>There are currently no chefs that match your search</Text>}
+          {this.state.chefs.length ? null : <Text style={styles.status}>Sorry, there are currently no chefs that match your search</Text>}
           <ChefListing
             img="http://lorempixel.com/192/192/people/1"
             name="Luv2Cook"
@@ -118,10 +118,16 @@ export default class SearchResultsScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
+    backgroundColor: '#e7e7e6'
   },
   scrollViewContainer: {
     paddingBottom: 30,
     alignItems: 'center',
+  },
+  status: {
+    fontSize: 15,
+    // margin: 3,
+    marginLeft: 5,
+    color: 'red',
   },
 });
