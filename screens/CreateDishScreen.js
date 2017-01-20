@@ -334,21 +334,25 @@ class CreateDishScreen extends Component {
         </Modal>
 
       {/*Modals to input a URL for dishes*/}
+
+
         <Modal
           animationType={"fade"}
           transparent={false}
-          visible={!!this.state.inputImageURLModal}> 
+          visible={!!this.state.inputImageURLModal}>
+
           {/*REFACTOR THIS INTO A COMPONENT*/}
+
           <ScrollView style={styles.textPadding}>
             <TextInput
               editable = {true}
               underlineColorAndroid="rgba(0,0,0,0)"
               style={styles.formInput}              
-              maxLength={100}
+              maxLength={250}
               editable={true}
               onChangeText={ (text) => this._saveImageURL.call(this, text) }
               placeholder="Input Image URL" 
-              numberOfLines={4}
+              numberOfLines={15}
               value={ this.state.image ? this.state.image : null }
             />
           <Button
@@ -450,6 +454,8 @@ const styles = {
   },
   textPadding: {
     padding: 20,
+    borderBottomColor: '#000000',
+    borderBottomWidth: 1    
   },
   dishModalOptionView: {
     borderBottomColor: '#000000',
