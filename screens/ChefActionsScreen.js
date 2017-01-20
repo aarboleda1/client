@@ -28,7 +28,6 @@ import ListItem from '../components/ListItem';
 import ListItemSection from '../components/ListItemSection';
 import { getDishesForChef } from '../helpers/dishHelpers';
 
-
 import { connect } from 'react-redux';
 
 import getTruthyKeys from '../utilities/getTruthyKeys';
@@ -426,10 +425,13 @@ class ChefActionsScreen extends Component {
               {this._renderDishes()}
           <ListItem>
             <ListItemSection>
-            <Button 
-              title="+Add New Dish"
-              onPress={ this._handleCreateDishPress.bind(this) }
-            />
+            <View style={ styles.saveDishTextContainer }>
+              <Button 
+                title="+Add New Dish"
+                onPress={ this._handleCreateDishPress.bind(this) }
+                color="#d9534f"
+              />
+              </View>
             </ListItemSection>
           </ListItem>
             <Button
@@ -464,7 +466,9 @@ const styles = StyleSheet.create({
   },
   modal: {
     paddingTop: 15,
-    backgroundColor: '#e7e7e6'
+    backgroundColor: '#e7e7e6',
+    flexDirection: 'column',
+    justifyContent: 'center'
   },
   titleText: {
     fontSize: 25,
@@ -473,17 +477,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   test: {
-    // borderColor: 'black',
-    // borderWidth: 4,
-    // backgroundColor: '#4b3832',
     margin: 8,
     height: WINDOW_HEIGHT / 14,
     width: WINDOW_WIDTH / 1.6,
     alignItems: 'center',
     justifyContent: 'center',
-    // marginLeft: 15,
     alignSelf: 'center',
-    // marginTop: 10, 
   },
   textTest: {
     fontSize: 20,
@@ -518,9 +517,12 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'black',
   },
+  saveDishTextContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center'
+  }
 });
 
-//this.props.dish is now availabale in the app
 function mapStateToProps(state) {
   return {
     currentChef: state.currentChef,
