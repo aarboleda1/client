@@ -44,7 +44,6 @@ export default class SearchResultsScreen extends React.Component {
               img={chef.image || chef.md5}
               name={chef.name}
               desc={chef.bio}
-              // rating={chef.avgRating}
               id={chef.id}
             />
           ))}
@@ -66,7 +65,6 @@ const styles = StyleSheet.create({
   },
   status: {
     fontSize: 15,
-    // margin: 3,
     marginLeft: 5,
     color: 'red',
   },
