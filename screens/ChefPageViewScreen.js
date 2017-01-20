@@ -210,7 +210,7 @@ class ChefPageViewScreen extends React.Component {
         flex: 0.5,
       },
       textStyling: {
-        textAlign: 'flex-start',
+        textAlign: 'left',
         fontSize: 20,
         fontWeight: '500',
         marginVertical: 1,
@@ -220,7 +220,7 @@ class ChefPageViewScreen extends React.Component {
 
       },
       textStylingAbout: {
-        textAlign: 'flex-start',
+        textAlign: 'left',
         fontSize: 14,
         fontWeight: '500',
         marginVertical: 1,

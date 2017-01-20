@@ -251,7 +251,9 @@ class ChefActionsScreen extends Component {
   }
 
   render() {
-    return ( this.state.loading ? <ActivityIndicator size="large"/> :
+    return ( this.state.loading ? <View style={{flex: 1, justifyContent: 'center'}}>
+      <ActivityIndicator size="large"/>
+    </View> :
       <ScrollView>
         <TextInput
           onChangeText={(name)=>{this.setState({name})}}
@@ -334,20 +336,21 @@ class ChefActionsScreen extends Component {
         </View>       
         
         <View style={{backgroundColor: '#cfcfcf'}}>
-          <Text style={[styles.flex, 
-                        styles.textCenter, 
-                        styles.verticalMargins]}>
-            Your Menu
-          </Text>
           {this.props.currentChef ? 
-            <TouchableHighlight
-              underlayColor={'white'}
-              title="Edit Menu"
-              onPress={this.toggleState.bind(this, 'showDishesModal')}
-              style={[styles.test]}> 
-              <Text style={styles.textTest}>Edit Menu</Text>
-            </TouchableHighlight> : null
-          }
+            <View>
+              <Text style={[styles.flex, 
+                            styles.textCenter, 
+                            styles.verticalMargins]}>
+                Your Menu
+              </Text>
+              <TouchableHighlight
+                underlayColor={'white'}
+                title="Edit Menu"
+                onPress={this.toggleState.bind(this, 'showDishesModal')}
+                style={[styles.test]}> 
+                <Text style={styles.textTest}>Edit Menu</Text>
+              </TouchableHighlight>
+            </View> : null}
          </View>        
 
         <View style={styles.saveStyle}>
