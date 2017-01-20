@@ -56,12 +56,12 @@ const styles = {
     justifyContent: 'space-around'
   },
   headerTextStyle: {
-    fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 22,
+    fontWeight: '300'
   },
   imageStyle: {
-    height: 50,
-    width: 50
+    height: 80,
+    width: 80
   },
   imageContainerStyle: {
     justifyContent: 'center',
