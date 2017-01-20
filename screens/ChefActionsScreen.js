@@ -285,7 +285,7 @@ class ChefActionsScreen extends Component {
           
           {this.state.locations.length ? this.state.locations.map((location, index) =>
             <Text key={index}
-            style={styles.results}>-{location}</Text>
+            style={styles.results}>{location}</Text>
           ) : <Text style={styles.notSet}>No location set</Text>}
 
           <TouchableHighlight
@@ -302,7 +302,7 @@ class ChefActionsScreen extends Component {
 
           {getTruthyKeys(this.state.checkedCuisines).length ? 
             getTruthyKeys(this.state.checkedCuisines).map((cuisine, index) =>
-              <Text key={index} style={styles.results}>-{cuisine}</Text>
+              <Text key={index} style={styles.results}>{cuisine}</Text>
             ) : <Text style={styles.notSet}>No Cuisine Type Set</Text>}
 
           <TouchableHighlight
