@@ -49,20 +49,25 @@ export default class EventListing extends Component {
     return (
       <TouchableHighlight 
       onPress={this.viewEvent.bind(this)}
-      style={styles.outer}
       >
         <View 
         style={[styles.container, dynamicStyles.eventListing]}>
-          <View>
-            <Text style={styles.text}>{this.props.name}</Text>
-            <Text style={[styles.flex, styles.alignStart]}>{this.props.location}</Text>
-            <Text style={[styles.flex, styles.alignEnd, styles.textRight]}>{this.props.target.name}</Text>
+          <View sytle={styles.text}>
+            <Text style={styles.title}>{this.props.name}</Text>
+            <View style={styles.divider}></View>
+            
+            <Text style={[styles.info]}>
+            <Text style={{fontWeight:'bold'}}>Location: </Text>
+             {this.props.location}</Text>
+            <Text style={styles.info}>{this.props.isChef ? 'Chef Name: ' : 'Client Name: ' }{this.props.target.name}</Text>
           </View>
+          
           <View
           style={styles.icon}>
             <FontAwesome
               name={this.props.isChef ? 'fire' : 'cutlery'}
-              size={30}
+              size={45}
+              style={{marginRight: 5}}
             />
           </View>
         </View>
@@ -80,17 +85,35 @@ const styles = StyleSheet.create({
     borderColor: '#4b3832',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
+    padding: 5,
   },
-  text: {
-    fontSize: 20,
-    alignSelf: 'flex-start'
+  title: {
+    fontSize: 22,
+    alignSelf: 'flex-start',
+    fontWeight: '400',
+    marginLeft: 5,
+  },
+  info: {
+    // fontWeight: 'bold',
+    marginLeft: 5,
+    marginTop: 5,
+    fontSize: 17,
+    // padding: 2,
   },
   icon: {
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
   },
-  outer: {
-    flexDirection: 'row',
-    flex: 2,
-  }
+  divider: {
+    borderColor: 'black',
+    borderTopWidth: 2,
+    marginLeft: 5,
+  },
+  text: {
+    marginLeft: 20,
+  },
 });
+
+
+
+
+

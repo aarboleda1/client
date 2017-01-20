@@ -31,8 +31,9 @@ export default class EventDetailsScreen extends Component {
         style={styles.dishes}
         contentContainerStyle={styles.dishesContainer}>
         <View style={[styles.flex, styles.textPadding]}>
-          <Text style={styles.textCenter}>{this.props.details.name}</Text>
-          <Text style={styles.textCenter}>{this.props.details.location}</Text>
+          <Text style={styles.textCenter}>Event: {this.props.details.name}</Text>
+          <Text style={styles.textCenter}>Location: {this.props.details.location}</Text>
+          <Text style={styles.textCenter}>Chef: {this.props.details.target.name}</Text>
           <View style={[styles.flex, styles.row]}>
             <Image
             style={styles.chef}
@@ -40,7 +41,7 @@ export default class EventDetailsScreen extends Component {
                            `http://www.gravatar.com/avatar/${this.props.details.target.md5}?s=256&d=mm&r=g` }}
             />
             <View style={[styles.flex, styles.textPadding, {}]}>
-              <Text style={styles.textCenter}>{this.props.details.target.name}</Text>
+              
               <Text>{this.props.details.target.bio}</Text>
             </View>
           </View>
@@ -80,9 +81,9 @@ export default class EventDetailsScreen extends Component {
             </View>
           );
         }.bind(this))}
-        <View style={[styles.flex, styles.row, styles.textPadding]}>
-          <Text style={styles.flex}>Total:</Text>
-          <Text style={[styles.flex, styles.textRight]}>
+        <View style={[styles.row, styles.textPadding]}>
+          <Text style={styles.totalText}>Total:</Text>
+          <Text style={[styles.flex, styles.textRight, styles.totalText]}>
             { formatCash(dishes.reduce((total, dish) => {
                 return total + (dish.price * dish.quantities)
               }, 0)) }
@@ -97,8 +98,9 @@ export default class EventDetailsScreen extends Component {
 
     const dynamicStyles = StyleSheet.create({
       dishImage: {
-        width: width / 4,
-        height: width / 4,
+        width: width / 3,
+        height: height / 7,
+        margin: 3,
       },
     });
 
@@ -109,9 +111,9 @@ export default class EventDetailsScreen extends Component {
           style={dynamicStyles.dishImage}
         />
         <View style={[styles.flex, styles.textPadding]}>
-          <Text style={[styles.flex, styles.textCenter]}>{dish.name}</Text>
+          <Text style={[styles.flex, styles.textCenter, styles.dishTitle]}>{dish.name}</Text>
           <View style={styles.row}>
-            <Text style={styles.flex}>{`${formatCash(dish.price)} x ${dish.quantities}`}</Text>
+            <Text style={styles.itemCost}>{`${formatCash(dish.price)} x ${dish.quantities}    =`}</Text>
             <Text style={[styles.flex, styles.textRight]}>{formatCash(dish.price * dish.quantities)}</Text>
           </View>
         </View>
@@ -133,21 +135,35 @@ function formatCash(number) {
 
 const styles = StyleSheet.create({
   menuItem: {
-    flex: 1,
     flexDirection: 'row',
-    paddingRight: 8,
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
   },
   dishes: {
     flex: 1,
   },
   dishesContainer: {
   },
+  chefName: {
+    marginLeft: 30,
+    fontSize: 22
+  },
+  dishText: {
+    fontSize: 24
+  },
   textCenter: {
-    textAlign: 'center',
+    alignSelf: 'center',
+    fontSize: 22,
+    fontWeight: '300'
+  },
+  foodText: {
+
+  },
+  itemCost:{
+    fontSize: 21,
   },
   textRight: {
     textAlign: 'right',
+    fontSize: 20
   },
   flex: {
     flex: 1,
@@ -155,20 +171,22 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
+  totalText: {
+    fontSize: 21,
+    fontWeight: 'bold'
+  },
   dishTitle: {
     flex: 1,
     textAlign: 'center',
+    fontWeight: 'bold',
+
   },
   textPadding: {
-    paddingTop: 8,
-    paddingBottom: 8,
-    paddingRight: 8,
-    paddingLeft: 8,
+    margin: 8,
   },
   chef: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignSelf: 'center',
+    width: 78,
+    height: 78,
+    borderRadius: 30,
   }
 });

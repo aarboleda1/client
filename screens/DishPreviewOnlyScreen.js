@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 
 import ListItem from '../components/ListItem';
 import ListItemSection from '../components/ListItemSection';
+import CuisineSelectionEntry from '../components/CuisineSelectionEntry';
 
 import windowDimensions from '../constants/Layout';
 
@@ -27,17 +28,18 @@ class DishPreviewOnlyScreen extends Component {
   }
   // REFACTOR, DOING EXACT SAME THINGS
   _renderRestrictions () {
+    let { listItemText, textInput } = styles;
     let restrictions = this.props.route.params.dish.restrictions;
     if (!this.props.route.params.dish.restrictions) {
       return (
-        <View style={{borderColor: 'blue', borderWidth: 2, width: 50, height: 50}}>
-          <Text style={{fontStyle: 'italic'}}>{'none'}</Text>
+        <View style={ styles.listItemText }>
+          <Text style={ textInput }>{'none'}</Text>
         </View>
       )
     } else {
       return restrictions.map((restriction) => {
         return (
-          <View style={{borderColor: 'blue', borderWidth: 2, width: 50, height: 50, flexDirection: 'row'}}>
+          <View style={ styles.listItemText }>
             <Text>
               { restriction }
             </Text>
@@ -48,17 +50,18 @@ class DishPreviewOnlyScreen extends Component {
   };
 
   _renderCuisines () {
+    let { listItemText, textInput } = styles;
     let cuisines = this.props.route.params.dish.cuisines;
     if (!cuisines) {
       return (
-        <View style={{width: 20, height: 20, flexDirection: 'row'}}>
-          <Text style={{fontStyle: 'italic'}}>{'none'}</Text>
+        <View style={ listItemText }>
+          <Text style={ textInput }>{'none'}</Text>
         </View>        
       ) 
     } else {
       return cuisines.map((cuisine) => {
         return (
-          <View style={{width: 50, height: 50}}>
+          <View style={ listItemText }>
             <Text>
               { cuisine }
             </Text>
@@ -70,45 +73,58 @@ class DishPreviewOnlyScreen extends Component {
   render () {
     let {height, width} = Dimensions.get('window');
     let { name, image, text, price } = this.props.route.params.dish
-    let { headerTextStyle, headerContentStyle, imageStyle, dishPropertyName} = styles;
+    let { textInput, listItemText, headerTextStyle, headerContentStyle, textContainerStyling, imageStyle, dishPropertyName} = styles;
     return (
     <ListItem>
-      <ListItemSection>
-        <View style={headerContentStyle}>
+      <ListItemSection style={{flexDirection: 'column'}}>
+        <View style={ headerContentStyle }>
           <Text style={ headerTextStyle }>{ name }</Text>
         </View>
       </ListItemSection>
+
       <ListItemSection>
-        <View>
           <Image
             source={{uri: image}}
-            style={{height: height / 3, width: width}}
+            style={imageStyle}
           />
+      </ListItemSection>
+
+      <ListItemSection>
+        <View style={ textContainerStyling }>
+          <Text style={ dishPropertyName }>{ 'Description: ' }</Text>
         </View>
+        <View style={ listItemText }>
+          <Text style={ textInput }>{text}</Text>
+        </View>            
       </ListItemSection>
-      <ListItemSection style={{flexFlow: 'row wrap', justifyContent: 'space-around'}}>
-        <Text style={ dishPropertyName }>{ 'Description' }</Text>
-        <Text>{text}</Text>
-      </ListItemSection>
+      
       <ListItemSection>
-        <Text style={dishPropertyName}>{'Price: '}</Text>
-        <Text>
-          {price}
-        </Text>
-      </ListItemSection> 
-      <ListItemSection>
-        <Text style={dishPropertyName}>{ 'Cuisines: '}</Text>
-        <View>
-          <Text>
-            {this._renderCuisines()}
+        <View style={ textContainerStyling }>
+          <Text style={dishPropertyName}>{'Price: '}</Text>
+        </View>
+        <View style={ listItemText }>
+          <Text style={ textInput }>        
+            {price}
           </Text>
         </View>
-      </ListItemSection>       
+      </ListItemSection>
+
       <ListItemSection>
-        <Text style={dishPropertyName}>{ 'Restrictions: '}</Text>
-        <Text>
+        <View style={ textContainerStyling }>
+          <Text style={ dishPropertyName }>{ 'Cuisines: '}</Text>
+        </View>
+        <View style={ textContainerStyling }>
+          {this._renderCuisines()}
+        </View>
+      </ListItemSection>
+             
+      <ListItemSection>
+        <View style={ textContainerStyling }>
+          <Text style={ dishPropertyName }>{ 'Restrictions: '}</Text>
+        </View>
+        <View style={ textContainerStyling }>
           {this._renderRestrictions()}
-        </Text>
+        </View>
       </ListItemSection>     
     </ListItem>
     ) 
@@ -151,12 +167,35 @@ const styles = {
     width: null
   },
   dishPropertyName: {
-    fontSize: 14,
-    fontWeight: 'bold'
+    marginLeft: 10,
+    fontSize: 25,
+    fontWeight: '300'
   },
   textContainerStyling: {
-    flexDirection: 'row',
-    justifyContent: 'space-around'
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
+  entry: {
+    borderBottomWidth: 1
+  },
+  entryText: {
+    textAlign: 'center',
+    fontSize: 20,
+    flex: 1,
+    height: 50,
+    padding: 10,
+  },
+  listItemText: {
+    flexDirection: 'row', 
+    justifyContent: 'flex-start', 
+    alignItems: 'center', 
+    width: 200,
+    height: 50,
+    marginLeft: 2
+  },
+  textInput: {
+    fontSize: 18,
+    fontWeight: '300'
   }
 }
 

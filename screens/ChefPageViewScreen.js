@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Button,
   Modal,
+  Alert,
 } from 'react-native';
 import {
   FontAwesome,
@@ -72,28 +73,10 @@ class ChefPageViewScreen extends React.Component {
       quantity: number,
     });
   }
+  
+  doConfirm(eventData) {
+    const rootNavigator = this.props.navigation.getNavigator('root');
 
-  confirmEvent() {
-    let eventData = {
-      name: 'Upcoming Event',
-      time: Date.now(),
-      location: this.props.location,
-      text: 'An upcoming event',
-      chefId: this.props.details.id,
-      userId: this.props.currentUser,
-      quantity: {},
-      dishes: [],
-    }
-
-    let selected = this.state.selected;
-    for (let key in selected) {
-      if (selected[key] === true) {
-        eventData.dishes.push(key);
-        eventData.quantity[key] = this.state.quantity;
-      }
-    }
-
-    let context = this;
     fetch(`${serverURI}/events`, {
       method: 'POST',
       headers: {
@@ -103,11 +86,58 @@ class ChefPageViewScreen extends React.Component {
       body: JSON.stringify(eventData)
     })
     .then(function() {
-      context.props.navigator.push(Router.getRoute('confirmEvent', eventData));
+      rootNavigator.navigationContext.performAction(({ tabs, stacks }) => {
+        tabs('main').jumpToTab('upcoming');
+        stacks('search').popToTop();
+      });
     })
     .catch(function(err){
       alert(err);
     });
+  }
+
+  getTotalCost() {
+    let totalCost = 0;
+    let selected = this.state.selected;
+    let dishes = this.state.dishes;
+    for (let i = 0; i < dishes.length; i++) {
+      let dishId = dishes[i].id;
+      if (selected[dishId] === true) {
+        totalCost += this.state.quantity * dishes[i].price;
+      }
+    }
+    return totalCost;
+  }
+
+  confirmEvent() {
+    let address = this.state.address.trim();
+    let eventData = {
+      name: this.state.eventName,
+      location: address + ', ' + this.props.location,
+      text: this.state.eventText,
+      chefId: this.props.details.id,
+      userId: this.props.currentUser,
+      quantity: {},
+    };
+
+    let selected = this.state.selected;
+    for (let key in selected) {
+      if (selected[key] === true) {
+        // eventData.dishes.push(key);
+        eventData.quantity[key] = this.state.quantity;
+      }
+    }
+
+    let context = this;
+    if (Object.keys(selected).length) {
+      Alert.alert('Confirm Event', '',
+        [{text: 'Submit', onPress: () => (this.doConfirm(eventData))},
+         {text: 'Cancel', onPress: () => (0)}]);
+      
+    } else {
+      Alert.alert('No Dish Selected!', 'Please select dishes for your event',
+        [{text: 'Okay', onPress: () => (0)}]);
+    }
   }
 
   changeQuantity(change) {
@@ -157,13 +187,10 @@ class ChefPageViewScreen extends React.Component {
         flexDirection: 'row',
       },
       dishImage: {
-        flex: 1,
+        // flex: 1,
         height: width/4,
-        width: width/4
+        width: width/2
       },
-      // dishDetails: {
-
-      // }
       dishSelection: {
         position: 'absolute',
         right: 2,
@@ -179,6 +206,7 @@ class ChefPageViewScreen extends React.Component {
       },
       textCenter: {
         textAlign: 'center',
+        marginTop: 12
       },
       changeQuantityButton: {
         flex: 0.5,
@@ -217,40 +245,59 @@ class ChefPageViewScreen extends React.Component {
               );
             })}
           </View>
-
-          <Button title="Modal" onPress={()=>{this.setState({
-            showDishModal: !this.state.showDishModal,
-          })}}/>
-          <Button title="Set Location" onPress={() => (console.log("TODO: Set location for ChefPageViewScreen.js"))}/>
-          <Button title="Next" onPress={this.confirmEvent.bind(this)} />
-        </ScrollView>
-
-        <Modal
-          animimationType="fade"
-          transparent={false}
-          visible={!!this.state.showDishModal}
-        >
-          <Image style={dishModalStyles.chefImage} source={{ uri: this.state.selectedDish.image }}/>
-          <View style={dishModalStyles.container}>
-            <Text>{this.state.selectedDish.name}</Text>
-            <Text>{this.state.selectedDish.description}</Text>
-            <Text>{this.state.selectedDish.cuisine}</Text>
-            {this.state.selectedDish.restrictions.map(restriction =>
-              <Text key={restriction}>{restriction}</Text>
-            )}
-            <Text>{this.state.selectedDish.cost}</Text>
-            <Text>{'>>>Quantity Stuff Here<<<'}</Text>
-            <Button title="Close" onPress={()=>{this.setState({
-                  showDishModal: !this.state.showDishModal,
-                })}}/>
+          <View style={styles.quantity}>    
+            <View style={styles.row}>   
+              <View style={styles.changeQuantityButton}>    
+                <Button   
+                  title="-"   
+                 onPress={this.changeQuantity.bind(this, -1)}    
+                />    
+              </View>   
+              <Text style={styles.textCenter}>Quantity: {this.state.quantity}</Text>    
+              <View style={styles.changeQuantityButton}>    
+                <Button   
+                  title="+"   
+                  onPress={this.changeQuantity.bind(this, 1)}   
+                />    
+              </View>
+            </View>   
+            <Text style={styles.textCenter}>Total Cost: {formatCash(this.getTotalCost())}</Text>
           </View>
-        </Modal>
+          <TextInput
+            placeholder="Street Address"
+            onChangeText={text => this.setState({address: text})}
+            style={{height: 32}}
+          />
+          <Text>{this.props.location}</Text>
+
+          <TextInput
+            placeholder="Event Title"
+            onChangeText={text => this.setState({eventName: text})}
+            style={{height: 32, marginTop: 16}}
+          />
+          <TextInput
+            placeholder="Event description"
+            onChangeText={text => this.setState({eventText: text})}
+            style={{height: 72}}
+            multiline={true}
+          />
+          <Button title="Confirm Event" onPress={this.confirmEvent.bind(this)} />
+        </ScrollView>
       </View>
     );
 
+    function formatCash(number) {
+      if (number % 1 === 0) { //if no tenths
+        return `$${number}.00`;
+      } 
+
+      if (number * 10 % 1 === 0) { //if no hundredths
+         return `$${number}0`;
+      }
+      return `$${number}`;
+    }
+
     function renderDish(dish, context) {
-      // TODO Change this to open a modal with details about the food,
-      // a quantity field, & an add to event button
       function toggleCheck() {
         let stateUpdate = {
           selected: context.state.selected,
@@ -266,7 +313,7 @@ class ChefPageViewScreen extends React.Component {
             <View style={styles.dishDetails}>
               <Text>{dish.name}</Text>
               <Text>{dish.text}</Text>
-              <Text>${dish.price}</Text>
+              <Text style={styles.flex}>{`${formatCash(dish.price)}`}</Text>
             </View>
             {context.state.selected[dish.id] ?
               <View style={styles.dishSelection}>
