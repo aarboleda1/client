@@ -262,8 +262,8 @@ class ChefActionsScreen extends Component {
         />
         <TextInput
           onChangeText={(bio)=>{this.setState({bio})}}
-          style={styles.formInput, 
-            {marginLeft: 7, fontSize: 18}}
+          style={[styles.formInput, 
+            {marginLeft: 7, marginTop: 10, marginBottom: 10, fontSize: 18}]}
           underlineColorAndroid="rgba(0,0,0,0)"
           placeholder="Chef Bio"
           defaultValue={this.state.bio}
