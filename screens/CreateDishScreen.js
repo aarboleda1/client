@@ -480,7 +480,7 @@ const styles = {
   titleText: {
     fontSize: 25,
     textDecorationLine: 'underline',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   alignItemsInBar: { 
     flexDirection: 'column', 
