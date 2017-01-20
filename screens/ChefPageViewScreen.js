@@ -20,6 +20,9 @@ import { connect } from 'react-redux';
 import Router from '../navigation/Router';
 import Colors from '../constants/Colors';
 
+import ListItem from '../components/ListItem';
+import ListItemSection from '../components/ListItemSection';
+
 import { serverURI } from '../config';
 
 class ChefPageViewScreen extends React.Component {
@@ -215,7 +218,6 @@ class ChefPageViewScreen extends React.Component {
 
     const dishModalStyles = StyleSheet.create({
       chefImage: {
-        width,
         height: height / 3,
       },
       container: {
@@ -233,9 +235,26 @@ class ChefPageViewScreen extends React.Component {
           style={styles.container}
           contentContainerStyle={this.props.route.getContentContainerStyle()}>
           <Image style={styles.splashImage} source={{uri: this.props.details.img}}/>
-          <Text>Biography:</Text>
+
+
+
+
+        {/*Apply styling About title list*/} 
+      <ListItemSection> 
+        <View>  
+          <Text>About</Text>
           <Text>{this.props.details.desc}</Text>
+        </View>
+      </ListItemSection>
+
+
+      {/*Title things for the menu*/}
+
           <Text>Menu:</Text>
+
+
+        {/*Dish List Component*/}
+
           <View style={styles.dishes}>
             {this.state.dishes.map(function(dish, index) {
               return (
@@ -245,6 +264,10 @@ class ChefPageViewScreen extends React.Component {
               );
             })}
           </View>
+
+
+
+        {/*View for the Quantity stuff*/}  
           <View style={styles.quantity}>    
             <View style={styles.row}>   
               <View style={styles.changeQuantityButton}>    
@@ -263,6 +286,8 @@ class ChefPageViewScreen extends React.Component {
             </View>   
             <Text style={styles.textCenter}>Total Cost: {formatCash(this.getTotalCost())}</Text>
           </View>
+
+      {/*Setting the location and Confirm page??*/}    
           <Button title="Set Location" onPress={() => (console.log("TODO: IMPLEMENT LOCATION"))}/>
           <Button title="Confirm" onPress={this.confirmEvent.bind(this)} />
         </ScrollView>
@@ -290,6 +315,7 @@ class ChefPageViewScreen extends React.Component {
       }
 
       return (
+
         <TouchableOpacity key={dish} style={styles.dish} onPress={toggleCheck.bind(context)}>
           <View style={styles.dish}>
             <Image style={styles.dishImage} source={{ uri: dish.image }}/>
