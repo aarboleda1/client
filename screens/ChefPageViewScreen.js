@@ -161,9 +161,6 @@ class ChefPageViewScreen extends React.Component {
         height: width/4,
         width: width/4
       },
-      // dishDetails: {
-
-      // }
       dishSelection: {
         position: 'absolute',
         right: 2,
