@@ -364,7 +364,7 @@ class ChefActionsScreen extends Component {
           animationType="fade"
           transparent={false}
           visible={!!this.state.showRestrictionsModal}>
-          <ScrollView style={[styles.modal]}>
+          <ScrollView contentContainerStyle={[styles.modal]}>
             <Text style={styles.titleText}>Choose Your Dietary Cooking Restrictions</Text>
             
             {this.state.restrictions.map((restriction) => 
@@ -390,7 +390,7 @@ class ChefActionsScreen extends Component {
           animationType="fade"
           transparent={false}
           visible={!!this.state.showCuisinesModal}>
-          <ScrollView style={[styles.modal]}>
+          <ScrollView contentContainerStyle={[styles.modal]}>
             
             <Text style={styles.titleText}>Choose the cuisine types that you will cater</Text>
 
@@ -417,7 +417,7 @@ class ChefActionsScreen extends Component {
           animationType="fade"
           transparent={false}
           visible={!!this.state.showDishesModal}>
-          <ScrollView style={[styles.modal]}>
+          <ScrollView contentContainerStyle={[styles.modal]}>
             <Text style={styles.titleText}>Your Dishes</Text>
               {this._renderDishes()}
           <ListItem>

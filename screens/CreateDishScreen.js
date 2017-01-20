@@ -107,7 +107,6 @@ class CreateDishScreen extends Component {
     this.setState({image: imageURL});
     let isInserted = !this.state.isPictureInserted;
     this.setState({isPictureInserted: isInserted})
-    console.log(this.state.isInserted, 'boolean?')
   };
 
   _addOrRemoveRestriction(restriction) {
@@ -172,7 +171,6 @@ class CreateDishScreen extends Component {
           checkedCuisines: [],
           checkedRestrictions: []
         })
-        console.log('hello world')
       }}])   
   };
 
@@ -219,7 +217,7 @@ class CreateDishScreen extends Component {
           </View>  
         </ListItem>
         <ListItem>
-          <View>
+          <View style={ alignItemsInBar }>
             <Button 
             title={ this.state.price ? 'Edit Price' : 'Add Price' }
             onPress={this.toggleState.bind(this, 'setPriceModal')}
