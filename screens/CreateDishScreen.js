@@ -8,7 +8,9 @@ import {
   TextInput,
   Image,
   Modal,
-  Alert
+  Alert,
+  TouchableHighlight,
+  Dimensions  
 } from 'react-native';
 import Router from '../navigation/Router';
 import { withNavigation } from '@exponent/ex-navigation';
@@ -172,10 +174,10 @@ class CreateDishScreen extends Component {
         })
         console.log('hello world')
       }}])   
-      console.log(this.state, 'IS THE DISNAME') 
   };
 
   render () {
+    let { alignItemsInBar } = styles;
     let cameraIcon = require('../Images/camera-icon-33.png');
     let image = this.state.image ? {uri: this.state.image} : require('../Images/camera-icon-33.png');
     let dishDescription = this.state.dishDescription ? 'Dish Description ' + this.state.dishDescription : 'Dish Description';
@@ -189,7 +191,7 @@ class CreateDishScreen extends Component {
           />
         </ListItemSection>
         <ListItem>
-          <View style={{flexDirection: 'column', justifyContent: 'space-between'}}>
+          <View style={ alignItemsInBar }>
            <Button 
               title={ this.state.dishName ? 'Edit Title' : 'Add Title' }
               onPress={this.toggleState.bind(this, 'showAddTitleModal')}
@@ -199,7 +201,7 @@ class CreateDishScreen extends Component {
         </ListItem>
 
         <ListItem>
-          <View style={{flexDirection: 'column', justifyContent: 'space-between'}}>
+          <View style={ alignItemsInBar }>
             <Button 
               title={ this.state.dishDescription ? 'Edit Description' : 'Add Description' }
               onPress={ this.toggleState.bind(this, 'describeDishModal') }
@@ -208,10 +210,13 @@ class CreateDishScreen extends Component {
           </View>
         </ListItem>
         <ListItem>
-          <Button 
-            title={this.state.isPictureInserted ? 'Edit Dish Image' : 'Add Dish Image'} 
-            onPress={ this.toggleState.bind(this, 'inputImageURLModal') }
-          />
+          <View style={ alignItemsInBar }>
+            <Button 
+              title={this.state.isPictureInserted ? 'Edit Dish Image' : 'Add Dish Image'} 
+              onPress={ this.toggleState.bind(this, 'inputImageURLModal') }
+            />
+            {this.state.isInserted ? <Text>{'Edit Image'}</Text> : null}
+          </View>  
         </ListItem>
         <ListItem>
           <View>
@@ -246,11 +251,10 @@ class CreateDishScreen extends Component {
           title="Save To Menu"
           style={{flexDirection: 'column', justifyContent: 'flex-end'}}
           onPress={this._saveToMenuList.bind(this)}
+          color='#d9534f'
         />
         </ListItem>
      
-
-
       {/*Modals to create dishes*/}
         <Modal
           animationType={"fade"}
@@ -334,15 +338,10 @@ class CreateDishScreen extends Component {
         </Modal>
 
       {/*Modals to input a URL for dishes*/}
-
-
         <Modal
           animationType={"fade"}
           transparent={false}
           visible={!!this.state.inputImageURLModal}>
-
-          {/*REFACTOR THIS INTO A COMPONENT*/}
-
           <ScrollView style={styles.textPadding}>
             <TextInput
               editable = {true}
@@ -421,6 +420,9 @@ class CreateDishScreen extends Component {
   };
 }
 
+const WINDOW_WIDTH = Dimensions.get('window').width;
+const WINDOW_HEIGHT = Dimensions.get('window').height;
+
 const styles = {
   flex: {
     flex: 1,
@@ -454,8 +456,6 @@ const styles = {
   },
   textPadding: {
     padding: 20,
-    borderBottomColor: '#000000',
-    borderBottomWidth: 1    
   },
   dishModalOptionView: {
     borderBottomColor: '#000000',
@@ -485,7 +485,31 @@ const styles = {
     paddingBottom: 10,
     textDecorationLine: 'underline',
     justifyContent: 'center'
-  }  
+  },
+  alignItemsInBar: { 
+    flexDirection: 'column', 
+    justifyContent: 'center', 
+    alignItems: 'center' 
+  },
+  buttonBackgroundColor: {
+    backgroundColor: '#d9534f',    
+  },
+  test: {
+    margin: 8,
+    height: WINDOW_HEIGHT / 14,
+    width: WINDOW_WIDTH / 1.6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
+  saveStyle: {
+    backgroundColor: '#d9534f',
+  },
+  saveText: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: 'black',
+  }
 };
 
 //this.props.dish is now available in here thru redux store
