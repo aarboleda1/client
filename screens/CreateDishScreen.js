@@ -80,7 +80,6 @@ class CreateDishScreen extends Component {
   }
   _goToPreviewDishScreen () {
     let { cuisinesSelected, dishName, dishDescription, image, price, checkedRestrictions, checkedCuisines, cuisines } = this.state;
-    console.log(checkedCuisines, 'should be the checked Cuisines Im about to send to dish previoew only screen' )
     var newlyCreatedDish = {
       name: dishName,
       text: dishDescription,
@@ -111,14 +110,7 @@ class CreateDishScreen extends Component {
   };
 
   _addOrRemoveRestriction(restriction) {
-    // let update = this.state.checkedRestrictions;
-  {/*RUN BY ZACK*/}
-    // if (this.state.checkedRestrictions[restriction]) {
-    //   delete update[restriction];
-    // } else {
-    //   update[restriction] = true;
-    // }
-    // this.setState({checkedRestrictions: update});
+
     if (this.state.checkedRestrictions.includes(restriction)) {
       this.state.checkedRestrictions.splice(restriction, 1)
     } else {
@@ -131,11 +123,6 @@ class CreateDishScreen extends Component {
     } else {
       this.state.checkedCuisines.push(cuisine);
     }
-    // if (this.state.checkedCuisines[cuisine]) {//   delete update[cuisine];
-    // } else {
-    //   update[cuisine] = true;
-    // }
-    // this.setState({checkedCuisines: update});
   }
 
   _saveToMenuList () {
