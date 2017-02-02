@@ -12,6 +12,7 @@ import {
   TouchableHighlight,
   Dimensions  
 } from 'react-native';
+
 import Router from '../navigation/Router';
 import { withNavigation } from '@exponent/ex-navigation';
 
