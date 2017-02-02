@@ -11,10 +11,6 @@
 ## Table of Contents
 
 1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
-    1. [Installing Dependencies](#installing-dependencies)
-    1. [Tasks](#tasks)
 1. [Team](#team)
 1. [Contributing](#contributing)
 
@@ -36,7 +32,7 @@ An SMS with a deep link will be sent to you, simply tap that link and it will op
 - React-Native >= 0.37.0
 - Exponent.js
 
-Tech Stack
+## Tech Stack
 
 - React Native
 
@@ -47,3 +43,8 @@ Tech Stack
 - Express.js
 
 - MySQL
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
