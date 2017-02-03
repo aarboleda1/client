@@ -174,9 +174,7 @@ class SearchScreen extends React.Component {
 
         <Text style={styles.location}>
           Location: {this.props.search.location || 'not set'}
-        </Text>
-         
-
+        </Text>         
          {!this.props.search.location ? 
          <TouchableHighlight
          style={styles.touchHighlight}
@@ -245,7 +243,6 @@ var styles = StyleSheet.create({
     fontWeight: '500',
   },
   square: {
-    // flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     flexDirection: 'row',

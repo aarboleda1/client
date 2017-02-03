@@ -13,7 +13,7 @@ export default class TabContainer extends Component {
     super(props);
     this.state = {
       tabView: <Text>About</Text>,
-    }
+    };
   }
 
   _changeTab(tabName) {

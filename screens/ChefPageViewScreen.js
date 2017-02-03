@@ -155,7 +155,7 @@ class ChefPageViewScreen extends React.Component {
 
   render() {
     const details = this.props.route.params.details;
-    const {height, width} = Dimensions.get('window'); //This must be in the render function to adjust to device rotation
+    const { height, width } = Dimensions.get('window'); //This must be in the render function to adjust to device rotation
 
     const styles = StyleSheet.create({
       flex: {
@@ -241,7 +241,16 @@ class ChefPageViewScreen extends React.Component {
       dishDetailsContainer: {
         flexDirection: 'column',
         justifyContent: 'space-around',
-        marginLeft: 6
+        marginLeft: 10
+      },
+      textStylingDishTitle: {
+        textAlign: 'left',
+        fontSize: 16,
+        fontWeight: '500',
+        marginVertical: 1,
+        marginBottom: 4,
+        paddingTop: 1,
+        marginLeft: 4,
       }        
 
     });
@@ -260,12 +269,12 @@ class ChefPageViewScreen extends React.Component {
     let context = this;
 
     return (
-      <View style={flex}>
-        <Text style={ headerTextStyle }>{this.props.details.name}</Text>
+      <View style={ flex }>
+        <Text style={ headerTextStyle }>{ this.props.details.name }</Text>
         <ScrollView
           style={ container }
           contentContainerStyle={this.props.route.getContentContainerStyle()}>
-          <Image style={styles.splashImage} source={{uri: this.props.details.img}}/>
+          <Image style={ styles.splashImage } source={{ uri: this.props.details.img }}/>
 
 
 
@@ -295,8 +304,6 @@ class ChefPageViewScreen extends React.Component {
               );
             })}
           </View>
-
-
 
         {/*View for the Quantity stuff*/}  
           <View style={styles.quantity}>    
@@ -367,11 +374,11 @@ class ChefPageViewScreen extends React.Component {
 
         <TouchableOpacity key={dish} style={styles.dish} onPress={toggleCheck.bind(context)}>
           <ListItemSection>
-            <Image style={styles.dishImage} source={{ uri: dish.image }}/>
-            <View style={styles.dishDetailsContainer}>
-              <Text style={styles.textStylingAbout}>{dish.name}</Text>
-              <Text style={styles.textStylingAbout}>{dish.text}</Text>
-              <Text style={styles.textStylingAbout}>{`${formatCash(dish.price)}`}</Text>
+            <Image style={ styles.dishImage } source={{ uri: dish.image }}/>
+            <View style={ styles.dishDetailsContainer }>
+              <Text style={ styles.textStylingDishTitle }>{ dish.name }</Text>
+              <Text style={ styles.textStylingAbout }>{ dish.text }</Text>
+              <Text style={ styles.textStylingAbout }>{  'Price: ' + `${formatCash(dish.price)}` }</Text>
             </View>
             {context.state.selected[dish.id] ?
               <View style={styles.dishSelection}>
