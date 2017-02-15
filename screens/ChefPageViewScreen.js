@@ -250,7 +250,7 @@ class ChefPageViewScreen extends React.Component {
         marginVertical: 1,
         marginBottom: 4,
         paddingTop: 1,
-        marginLeft: 4,
+        marginLeft: 6
       }        
 
     });
@@ -269,16 +269,13 @@ class ChefPageViewScreen extends React.Component {
     let context = this;
 
     return (
-      <View style={ flex }>
-        <Text style={ headerTextStyle }>{ this.props.details.name }</Text>
+
+      <View style={flex}>
+        <Text style={ headerTextStyle }>{this.props.details.name}</Text>
         <ScrollView
           style={ container }
           contentContainerStyle={this.props.route.getContentContainerStyle()}>
-          <Image style={ styles.splashImage } source={{ uri: this.props.details.img }}/>
-
-
-
-
+          <Image style={styles.splashImage} source={{uri: this.props.details.img}}/>
         {/*Apply styling About title list*/} 
       <ListItemSection> 
         <View style={ styles.aboutContainer }>  
@@ -304,7 +301,6 @@ class ChefPageViewScreen extends React.Component {
               );
             })}
           </View>
-
         {/*View for the Quantity stuff*/}  
           <View style={styles.quantity}>    
             <View style={styles.row}>   
@@ -374,11 +370,11 @@ class ChefPageViewScreen extends React.Component {
 
         <TouchableOpacity key={dish} style={styles.dish} onPress={toggleCheck.bind(context)}>
           <ListItemSection>
-            <Image style={ styles.dishImage } source={{ uri: dish.image }}/>
-            <View style={ styles.dishDetailsContainer }>
-              <Text style={ styles.textStylingDishTitle }>{ dish.name }</Text>
-              <Text style={ styles.textStylingAbout }>{ dish.text }</Text>
-              <Text style={ styles.textStylingAbout }>{  'Price: ' + `${formatCash(dish.price)}` }</Text>
+            <Image style={styles.dishImage} source={{ uri: dish.image }}/>
+            <View style={styles.dishDetailsContainer}>
+              <Text style={styles.textStylingAbout}>{dish.name}</Text>
+              <Text style={styles.textStylingAbout}>{dish.text}</Text>
+              <Text style={styles.textStylingAbout}>{`${formatCash(dish.price)}`}</Text>
             </View>
             {context.state.selected[dish.id] ?
               <View style={styles.dishSelection}>
